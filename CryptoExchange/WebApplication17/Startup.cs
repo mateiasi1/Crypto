@@ -31,11 +31,11 @@ namespace WebApplication17
         {
             //services.AddDbContext<TodoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             var connection = @"Server=(localdb)\mssqllocaldb;Database=CryptoExchange;Trusted_Connection=True;ConnectRetryCount=0";
-            //services.AddDbContext<Contexts>
-            //    (options => options.UseInMemoryDatabase("Crypto"));
-            /*for create a db: Add - Migration si numele  */
             services.AddDbContext<Contexts>
-               (options => options.UseSqlServer(connection));
+                (options => options.UseInMemoryDatabase("Crypto"));
+            /*for create a db: Add - Migration si numele  */
+            //services.AddDbContext<Contexts>
+            //   (options => options.UseSqlServer(connection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddXmlDataContractSerializerFormatters();
         }
