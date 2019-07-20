@@ -10,97 +10,97 @@ using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
 {
-[Route("api/[controller]")]
-[ApiController]
-public class CurrenciesController : ControllerBase
-{
-private readonly Contexts _context;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CurrenciesController : ControllerBase
+    {
+        private readonly Contexts _context;
 
-public CurrenciesController(Contexts context)
-{
-_context = context;
-}
+        public CurrenciesController(Contexts context)
+        {
+            _context = context;
+        }
 
-// GET: api/Currencies
-[HttpGet]
-public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
-{
-return await _context.Currency.ToListAsync();
-}
+        // GET: api/Currencies
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
+        {
+            return await _context.Currency.ToListAsync();
+        }
 
-// GET: api/Currencies/5
-[HttpGet("{id}")]
-public async Task<ActionResult<Currency>> GetCurrency(int id)
-{
-var currency = await _context.Currency.FindAsync(id);
+        // GET: api/Currencies/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Currency>> GetCurrency(int id)
+        {
+            var currency = await _context.Currency.FindAsync(id);
 
-if (currency == null)
-{
-return NotFound();
-}
+            if (currency == null)
+            {
+                return NotFound();
+            }
 
-return currency;
-}
+            return currency;
+        }
 
-// PUT: api/Currencies/5
-[HttpPut("{id}")]
-public async Task<IActionResult> PutCurrency(int id, Currency currency)
-{
-if (id != currency.Id)
-{
-return BadRequest();
-}
+        // PUT: api/Currencies/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCurrency(int id, Currency currency)
+        {
+            if (id != currency.Id)
+            {
+                return BadRequest();
+            }
 
-_context.Entry(currency).State = EntityState.Modified;
+            _context.Entry(currency).State = EntityState.Modified;
 
-try
-{
-await _context.SaveChangesAsync();
-}
-catch (DbUpdateConcurrencyException)
-{
-if (!CurrencyExists(id))
-{
-return NotFound();
-}
-else
-{
-throw;
-}
-}
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CurrencyExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-return NoContent();
-}
+            return NoContent();
+        }
 
-// POST: api/Currencies
-[HttpPost]
-public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
-{
-_context.Currency.Add(currency);
-await _context.SaveChangesAsync();
+        // POST: api/Currencies
+        [HttpPost]
+        public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
+        {
+            _context.Currency.Add(currency);
+            await _context.SaveChangesAsync();
 
-return CreatedAtAction("GetCurrency", new { id = currency.Id }, currency);
-}
+            return CreatedAtAction("GetCurrency", new { id = currency.Id }, currency);
+        }
 
-// DELETE: api/Currencies/5
-[HttpDelete("{id}")]
-public async Task<ActionResult<Currency>> DeleteCurrency(int id)
-{
-var currency = await _context.Currency.FindAsync(id);
-if (currency == null)
-{
-return NotFound();
-}
+        // DELETE: api/Currencies/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Currency>> DeleteCurrency(int id)
+        {
+            var currency = await _context.Currency.FindAsync(id);
+            if (currency == null)
+            {
+                return NotFound();
+            }
 
-_context.Currency.Remove(currency);
-await _context.SaveChangesAsync();
+            _context.Currency.Remove(currency);
+            await _context.SaveChangesAsync();
 
-return currency;
-}
+            return currency;
+        }
 
-private bool CurrencyExists(int id)
-{
-return _context.Currency.Any(e => e.Id == id);
-}
-}
+        private bool CurrencyExists(int id)
+        {
+            return _context.Currency.Any(e => e.Id == id);
+        }
+    }
 }

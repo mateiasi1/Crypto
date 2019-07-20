@@ -26,7 +26,7 @@ namespace WebApplication17.Controllers
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();
-                    var rawCrypto= JsonConvert.DeserializeObject<Crypto>(stringResult);
+                    var rawCrypto = JsonConvert.DeserializeObject<Crypto>(stringResult);
                     return Ok(new
                     {
                         Name = rawCrypto.Name,
