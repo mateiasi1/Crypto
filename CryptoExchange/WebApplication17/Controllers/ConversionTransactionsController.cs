@@ -74,8 +74,9 @@ namespace WebApplication17.Controllers
 
         // POST: api/ConversionTransactions
         [HttpPost]
-        public async Task<ActionResult<ConversionTransaction>> PostConversionTransaction(ConversionTransaction conversionTransaction)
+        public async Task<ActionResult<ConversionTransaction>> PostConversionTransaction(ConversionTransaction conversionTransaction,string percentage)
         {
+            conversionTransaction.Ammount-=((Convert.ToDouble(percentage)/100)*conversionTransaction.Ammount);
             _context.ConversionTransaction.Add(conversionTransaction);
             await _context.SaveChangesAsync();
 

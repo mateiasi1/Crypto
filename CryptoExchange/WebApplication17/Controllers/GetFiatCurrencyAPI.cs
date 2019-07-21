@@ -1,37 +1,47 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using WebApplication17.Data;
 using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
-    public class GetCurrencyAPI : Controller
+    public class GetFiatCurrencyAPI : Controller
     {
+
+        private readonly Contexts _context;
+
+        public GetFiatCurrencyAPI(Contexts context)
+        {
+            _context = context;
+        }
         // GET: /<controller>/
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrencyFromAPI()
         {
+            List<Currency> currency;
             using (var client = new HttpClient())
             {
                 try
                 {
-                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/all/coinlist");
-                    var response = await client.GetAsync($"/getPrice?2149e65731f02e67abf4fd485d77e24a88931fe884fb974841718fd3a37b4e38");
+                    client.BaseAddress = new Uri("http://apilayer.net/api/live");
+                    var response = await client.GetAsync($"?access_key=6a68fbb7153ff890b106018dd642c8bb");
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();
-                    var rawCrypto = JsonConvert.DeserializeObject<Crypto>(stringResult);
-                    return Ok(new
+                    var jsonData = JObject.Parse(stringResult);
+                    foreach (var item in jsonData)
                     {
-                        Name = rawCrypto.Name,
-                        Price = string.Join(":", rawCrypto.Name)
-                    });
+                        //aici o sa fie afisarea in pagina
+                    }
+                    return Ok();
                 }
                 catch (HttpRequestException httpRequestException)
                 {
@@ -39,5 +49,6 @@ namespace WebApplication17.Controllers
                 }
             }
         }
+
     }
 }
