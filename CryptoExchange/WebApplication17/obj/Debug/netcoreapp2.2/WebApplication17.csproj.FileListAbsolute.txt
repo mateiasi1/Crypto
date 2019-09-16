@@ -1,0 +1,14 @@
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\bin\Debug\netcoreapp2.2\WebApplication17.deps.json
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\bin\Debug\netcoreapp2.2\WebApplication17.runtimeconfig.json
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\bin\Debug\netcoreapp2.2\WebApplication17.runtimeconfig.dev.json
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\bin\Debug\netcoreapp2.2\WebApplication17.dll
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\bin\Debug\netcoreapp2.2\WebApplication17.pdb
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.csprojAssemblyReference.cache
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.csproj.CoreCompileInputs.cache
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.RazorAssemblyInfo.cache
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.RazorAssemblyInfo.cs
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.AssemblyInfoInputs.cache
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.AssemblyInfo.cs
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.RazorTargetAssemblyInfo.cache
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.dll
+C:\Users\d.s.mateiasi\Desktop\Test\Crypto-master\CryptoExchange\WebApplication17\obj\Debug\netcoreapp2.2\WebApplication17.pdb

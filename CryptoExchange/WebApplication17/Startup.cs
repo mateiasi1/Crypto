@@ -36,13 +36,18 @@ namespace WebApplication17
             /*for create a db: Add - Migration si numele  */
             //services.AddDbContext<Contexts>
             //   (options => options.UseSqlServer(connection));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddCors().AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddXmlDataContractSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
