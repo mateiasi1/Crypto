@@ -52,10 +52,12 @@ namespace WebApplication17.Controllers
         }
         
 
-        // PUT: api/BankAccounts/5  for Add sold
+        // PUT: api/BankAccounts/add  for Add sold
         [HttpPut("add")]
-        public IActionResult PutBankAccount()
+        public IActionResult AddBankAccount()
         {
+            BankAccountTransaction bankAccountTransaction = new BankAccountTransaction();
+
             string body = this.InputBodyData;
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
@@ -63,6 +65,30 @@ namespace WebApplication17.Controllers
 
             var bankAccount = _context.BankAccount.Find(id);
             bankAccount.Sold += amount;
+            _context.SaveChanges();
+
+            bankAccountTransaction.Ammount = amount;
+            bankAccountTransaction.IdBankAccount = id;
+            bankAccountTransaction.IdFlatRateFee = 0;
+            bankAccountTransaction.Status = "Done";
+            _context.BankAccountTransaction.Add(bankAccountTransaction);
+            _context.SaveChanges();
+
+            var bankList = _context.BankAccount.ToList();
+            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+        }
+
+        // PUT: api/BankAccounts/withdraw for withdraw sold
+        [HttpPut("withdraw")]
+        public IActionResult WithdrawBankAccount()
+        {
+            string body = this.InputBodyData;
+            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
+            int id = Convert.ToInt32(fieldData["id"]);
+            double amount = Convert.ToDouble(fieldData["amount"]);
+
+            var bankAccount = _context.BankAccount.Find(id);
+            bankAccount.Sold -= amount;
             _context.SaveChanges();
 
             var bankList = _context.BankAccount.ToList();

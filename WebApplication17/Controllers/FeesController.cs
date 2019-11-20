@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
+using WebApplication17.DTO;
 using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
@@ -15,9 +17,11 @@ namespace WebApplication17.Controllers
     public class FeesController : ControllerBase
     {
         private readonly Contexts _context;
+        private readonly IMapper _mapper;
 
-        public FeesController(Contexts context)
+        public FeesController(Contexts context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -77,22 +81,22 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Fee>> PostFee(Fee fee)
         {
-
             Fee fees = _context.Fee.Where(item => item.Obsolete == false).FirstOrDefault();
             if (fees == null)
             {
                 _context.Fee.Add(fee);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             else
             {
                 fees.Obsolete = true;
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 _context.Fee.Add(fee);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
-            return CreatedAtAction("GetFee", new { id = fee.Id }, fee);
+            var feeList = _context.Fee.ToList();
+            return Ok(_mapper.Map<IEnumerable<FeeDTO>>(feeList));
         }
 
         // DELETE: api/Fees/5

@@ -6,5 +6,8 @@ namespace WebApplication17.DTO
 {
     class FeeDTO
     {
+        public double Percentage { get; set; }
+        public bool Obsolete { get; set; }
+
     }
 }

@@ -34,8 +34,8 @@ namespace WebApplication17.Controllers
             {
                 try
                 {
-                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/price");
-                    var response = await client.GetAsync($"?fsym=BTC&tsyms=USD,JPY,EUR?2149e65731f02e67abf4fd485d77e24a88931fe884fb974841718fd3a37b4e38");
+                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/all/coinlist");
+                    var response = await client.GetAsync($"?access_key=6a68fbb7153ff890b106018dd642c8bb");
                     response.EnsureSuccessStatusCode();
 
                     var stringResult = await response.Content.ReadAsStringAsync();
