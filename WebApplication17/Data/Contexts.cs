@@ -27,5 +27,9 @@ public DbSet<WebApplication17.Models.FlatRateFee> FlatRateFee { get; set; }
 public DbSet<WebApplication17.Models.Wallet> Wallet { get; set; }
 public DbSet<WebApplication17.Models.Login> Login { get; set; }
 public DbSet<WebApplication17.Models.Token> Token { get; set; }
-}
+public DbSet<WebApplication17.Models.Crypto> Crypto { get; set; }
+public DbSet<WebApplication17.Models.CryptoAccount> CryptoAccount { get; set; }
+public DbSet<WebApplication17.Models.CryptoCurrency>CryptoCurrency { get; set; }
+public DbSet<WebApplication17.Models.CryptoAccountTransaction> CryptoAccountTransaction { get; set; }
+    }
 }

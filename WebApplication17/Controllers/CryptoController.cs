@@ -28,35 +28,35 @@ namespace WebApplication17.Controllers
 
         // GET: api/Banks
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
+        public async Task<ActionResult<IEnumerable<Crypto>>> GetCrypto()
         {
-            return await _context.Bank.ToListAsync();
+            return await _context.Crypto.ToListAsync();
         }
 
         // GET: api/Banks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Bank>> GetBank(int id)
+        public async Task<ActionResult<Crypto>> GetCrypto(int id)
         {
-            var bank = await _context.Bank.FindAsync(id);
+            var crypto = await _context.Crypto.FindAsync(id);
 
-            if (bank == null)
+            if (crypto == null)
             {
                 return NotFound();
             }
 
-            return bank;
+            return crypto;
         }
 
         // PUT: api/Banks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBank(int id, Bank bank)
+        public async Task<IActionResult> PutCrypto(int id, Crypto crypto)
         {
-            if (id != bank.Id)
+            if (id != crypto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(bank).State = EntityState.Modified;
+            _context.Entry(crypto).State = EntityState.Modified;
 
             try
             {
@@ -64,7 +64,7 @@ namespace WebApplication17.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BankExists(id))
+                if (!CryptoExists(id))
                 {
                     return NotFound();
                 }
@@ -79,37 +79,37 @@ namespace WebApplication17.Controllers
 
         // POST: api/Banks
         [HttpPost]
-        public async Task<ActionResult<Bank>> PostBank(Bank bank)
+        public async Task<ActionResult<Crypto>> PostCrypto(Crypto crypto)
         {
-            var currency = _context.Currency.Where(c => c.CurrencyAbbreviation == bank.CurrencyAbbreviation).FirstOrDefault();
-            bank.CurrencyName = currency.CurrencyName;
-            _context.Bank.Add(bank);
+            var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyAbbreviation == crypto.CryptoCurrencyAbbreviation).FirstOrDefault();
+            crypto.CryptoCurrencyName = cryptoCurrency.CryptoCurrencyName;
+            _context.Crypto.Add(crypto);
             _context.SaveChanges();
 
-            var bankList = _context.Bank.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
+            var cryptoList = _context.Crypto.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 
         // DELETE: api/Banks/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Bank>> DeleteBank(int id)
+        public async Task<ActionResult<Crypto>> DeleteCrypto(int id)
         {
-            var bank = await _context.Bank.FindAsync(id);
-            if (bank == null)
+            var crypto = await _context.Crypto.FindAsync(id);
+            if (crypto == null)
             {
                 return NotFound();
             }
 
-            _context.Bank.Remove(bank);
+            _context.Crypto.Remove(crypto);
             _context.SaveChanges();
 
-            var bankList = _context.Bank.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
+            var cryptoList = _context.Crypto.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 
-        private bool BankExists(int id)
+        private bool CryptoExists(int id)
         {
-            return _context.Bank.Any(e => e.Id == id);
+            return _context.Crypto.Any(e => e.Id == id);
         }
     }
 }

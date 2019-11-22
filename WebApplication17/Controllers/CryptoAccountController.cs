@@ -28,109 +28,109 @@ namespace WebApplication17.Controllers
             _context = context;
         }
 
-        // GET: api/BankAccounts
+        // GET: api/CryptoAccount
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CryptoAccount>>> GetBankAccount()
+        public async Task<ActionResult<IEnumerable<CryptoAccount>>> GetCryptoAccount()
         {
-            var bankList = _context.BankAccount.ToList();
+            var cryptoList = _context.CryptoAccount.ToList();
 
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
 
         // GET: api/BankAccounts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CryptoAccount>> GetBankAccount(int id)
+        public async Task<ActionResult<CryptoAccount>> GetCryptoAccount(int id)
         {
-            var bankAccount = await _context.BankAccount.FindAsync(id);
+            var cryptoAccount = await _context.CryptoAccount.FindAsync(id);
 
-            if (bankAccount == null)
+            if (cryptoAccount == null)
             {
                 return NotFound();
             }
 
-            return bankAccount;
+            return cryptoAccount;
         }
 
 
-        // PUT: api/BankAccounts/add  for Add sold
+        // PUT: api/AddCryptoAccount/add  for Add sold
         [HttpPut("add")]
-        public IActionResult AddBankAccount()
+        public IActionResult AddCryptoAccount()
         {
-            BankAccountTransaction bankAccountTransaction = new BankAccountTransaction();
+            CryptoAccountTransaction cryptoAccountTransaction = new CryptoAccountTransaction();
 
             string body = this.InputBodyData;
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
             double amount = Convert.ToDouble(fieldData["amount"]);
 
-            var bankAccount = _context.BankAccount.Find(id);
-            bankAccount.Sold += amount;
+            var cryptoAccount = _context.CryptoAccount.Find(id);
+            cryptoAccount.Sold += amount;
             _context.SaveChanges();
 
-            bankAccountTransaction.Ammount = amount;
-            bankAccountTransaction.IdBankAccount = id;
-            bankAccountTransaction.IdFlatRateFee = 0;
-            bankAccountTransaction.Status = "Done";
-            _context.BankAccountTransaction.Add(bankAccountTransaction);
+            cryptoAccountTransaction.Ammount = amount;
+            cryptoAccountTransaction.IdCryptoAccount = id;
+            cryptoAccountTransaction.IdFee = 0;
+            cryptoAccountTransaction.Status = "Done";
+            _context.CryptoAccountTransaction.Add(cryptoAccountTransaction);
             _context.SaveChanges();
 
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            var cryptoList = _context.CryptoAccount.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
 
-        // PUT: api/BankAccounts/withdraw for withdraw sold
+        // PUT: api/WithdrawCryptoAccount/withdraw for withdraw sold
         [HttpPut("withdraw")]
-        public IActionResult WithdrawBankAccount()
+        public IActionResult WithdrawCryptoAccount()
         {
             string body = this.InputBodyData;
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
             double amount = Convert.ToDouble(fieldData["amount"]);
 
-            var bankAccount = _context.BankAccount.Find(id);
-            bankAccount.Sold -= amount;
+            var cryptoAccount = _context.CryptoAccount.Find(id);
+            cryptoAccount.Sold -= amount;
             _context.SaveChanges();
 
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            var cryptoList = _context.CryptoAccount.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
 
-        // POST: api/BankAccounts
+        // POST: api/PostCryptoAccount
         [HttpPost]
-        public async Task<ActionResult<CryptoAccount>> PostBankAccount(CryptoAccount cryptoAccount)
+        public async Task<ActionResult<CryptoAccount>> PostCryptoAccount(CryptoAccount cryptoAccount)
         {
-            var bank = _context.Bank.Find(cryptoAccount.IdBank);
-            var currency = _context.Currency.Where(b => b.CurrencyName == cryptoAccount.CurrencyName).FirstOrDefault();
+            var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
+            var cryptoCurrency = _context.CryptoCurrency.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
 
-            cryptoAccount.IdBank = bank.Id;
-            cryptoAccount.IdCurrency = currency.Id;
+            cryptoAccount.IdCrypto = crypto.Id;
+            cryptoAccount.IdCryptoCurrency = cryptoCurrency.Id;
             cryptoAccount.Sold = 0;
-            _context.BankAccount.Add(cryptoAccount);
+            _context.CryptoAccount.Add(cryptoAccount);
             _context.SaveChanges();
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            var cryptoList = _context.CryptoAccount.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
 
-        // DELETE: api/BankAccounts/5
+        // DELETE: api/DeleteCryptoAccount/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CryptoAccount>> DeleteBankAccount(int id)
+        public async Task<ActionResult<CryptoAccount>> DeleteCryptoAccount(int id)
         {
-            var bankAccount = await _context.BankAccount.FindAsync(id);
-            if (bankAccount == null)
+            var cryptoAccount = await _context.CryptoAccount.FindAsync(id);
+            if (cryptoAccount == null)
             {
                 return NotFound();
             }
 
-            _context.BankAccount.Remove(bankAccount);
+            _context.CryptoAccount.Remove(cryptoAccount);
             await _context.SaveChangesAsync();
 
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            var cryptoList = _context.CryptoAccount.ToList();
+            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
 
-        private bool BankAccountExists(int id)
+        private bool CryptoAccountExists(int id)
         {
-            return _context.BankAccount.Any(e => e.Id == id);
+            return _context.CryptoAccount.Any(e => e.Id == id);
         }
     }
 }
