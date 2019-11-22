@@ -15,7 +15,7 @@ namespace WebApplication17.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GetCryptoCurrencyAPI : Controller
+    public class GetCryptoCurrencyAPI : CustomBaseController
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
@@ -27,9 +27,9 @@ namespace WebApplication17.Controllers
         }
         // GET: /<controller>/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Currency>>> GetCurrencyFromAPI()
+        public async Task<ActionResult<IEnumerable<CryptoCurrency>>> GetCryptoCurrencyFromAPI()
         {
-            List<Crypto> crypto = new List<Crypto>();
+            List<CryptoCurrency> cryptoCurrencyList = new List<CryptoCurrency>();
             using (var client = new HttpClient())
             {
                 try
@@ -37,16 +37,21 @@ namespace WebApplication17.Controllers
                     client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/all/coinlist");
                     var response = await client.GetAsync($"?access_key=6a68fbb7153ff890b106018dd642c8bb");
                     response.EnsureSuccessStatusCode();
-
                     var stringResult = await response.Content.ReadAsStringAsync();
-                    var jsonData = JObject.Parse(stringResult);
-                    foreach (var item in jsonData)
+                    CryptoCurrency cryptoCurrency = new CryptoCurrency();
+
+                    JObject field = JsonConvert.DeserializeObject<JObject>(stringResult);
+                    JObject fieldData = JsonConvert.DeserializeObject<JObject>(field["Data"].ToString());
+                    foreach ( var item in fieldData)
                     {
-                        Crypto cryptoObject = new Crypto();
-                        cryptoObject.Name = item.Key;
-                        crypto.Add(cryptoObject);
+                        cryptoCurrency.Id = 0;
+                        cryptoCurrency.CryptoCurrencyName = (item["FullName"]).ToString();
+                        cryptoCurrency.CryptoCurrencyAbbreviation = (item["Symbol"]).ToString();
+                        cryptoCurrencyList.Add(cryptoCurrency);
                     }
-                    return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(crypto));
+
+                    return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrencyList));
+
                 }
                 catch (HttpRequestException httpRequestException)
                 {

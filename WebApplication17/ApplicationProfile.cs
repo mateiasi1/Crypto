@@ -28,6 +28,7 @@ namespace WebApplication17
             CreateMap<User, UnconfirmedUsersDTO>().ReverseMap();
             CreateMap<Crypto, CryptoDTO>().ReverseMap();
             CreateMap<CryptoAccount, CryptoAccountDTO>().ReverseMap();
+            CreateMap<CryptoCurrency, CryptoCurrencyDTO>().ReverseMap();
         }
     }
 }
