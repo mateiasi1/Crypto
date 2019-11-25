@@ -30,6 +30,7 @@ namespace WebApplication17.Controllers
         public async Task<ActionResult<IEnumerable<CryptoCurrency>>> GetCryptoCurrencyFromAPI()
         {
             List<CryptoCurrency> cryptoCurrencyList = new List<CryptoCurrency>();
+
             using (var client = new HttpClient())
             {
                 try
@@ -38,7 +39,7 @@ namespace WebApplication17.Controllers
                         var request = "https://min-api.cryptocompare.com/data/all/coinlist?access_key=6a68fbb7153ff890b106018dd642c8bb";
                         var response = client.GetAsync(request).Result;
                         var content = response.Content.ReadAsStringAsync().Result;
-
+                    
 
                     JObject field = JsonConvert.DeserializeObject<JObject>(content);
                     JObject fieldData = JsonConvert.DeserializeObject<JObject>(field["Data"].ToString());
@@ -47,8 +48,12 @@ namespace WebApplication17.Controllers
                     JObject results = JsonConvert.DeserializeObject<JObject>(content1);
                     foreach (KeyValuePair<string, JToken> item in results)
                     {
-                        var symbol = item.Value["Symbol"];
-                        var fullName = item.Value["FullName"];
+                        CryptoCurrency cryptoCurrency = new CryptoCurrency();
+                        var symbol = item.Value["Symbol"].ToString();
+                        var fullName = item.Value["FullName"].ToString();
+                        cryptoCurrency.CryptoCurrencyAbbreviation = symbol;
+                        cryptoCurrency.CryptoCurrencyName = fullName;
+                        cryptoCurrencyList.Add(cryptoCurrency);
                     }
                    
 
