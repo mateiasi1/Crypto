@@ -34,21 +34,23 @@ namespace WebApplication17.Controllers
             {
                 try
                 {
-                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/all/coinlist");
-                    var response = await client.GetAsync($"?access_key=6a68fbb7153ff890b106018dd642c8bb");
-                    response.EnsureSuccessStatusCode();
-                    var stringResult = await response.Content.ReadAsStringAsync();
-                    CryptoCurrency cryptoCurrency = new CryptoCurrency();
+                    
+                        var request = "https://min-api.cryptocompare.com/data/all/coinlist?access_key=6a68fbb7153ff890b106018dd642c8bb";
+                        var response = client.GetAsync(request).Result;
+                        var content = response.Content.ReadAsStringAsync().Result;
 
-                    JObject field = JsonConvert.DeserializeObject<JObject>(stringResult);
+
+                    JObject field = JsonConvert.DeserializeObject<JObject>(content);
                     JObject fieldData = JsonConvert.DeserializeObject<JObject>(field["Data"].ToString());
-                    foreach ( var item in fieldData)
+                    var content1 = fieldData.ToString();
+
+                    JObject results = JsonConvert.DeserializeObject<JObject>(content1);
+                    foreach (KeyValuePair<string, JToken> item in results)
                     {
-                        cryptoCurrency.Id = 0;
-                        cryptoCurrency.CryptoCurrencyName = (item["FullName"]).ToString();
-                        cryptoCurrency.CryptoCurrencyAbbreviation = (item["Symbol"]).ToString();
-                        cryptoCurrencyList.Add(cryptoCurrency);
+                        var symbol = item.Value["Symbol"];
+                        var fullName = item.Value["FullName"];
                     }
+                   
 
                     return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrencyList));
 
