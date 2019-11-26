@@ -100,7 +100,7 @@ namespace WebApplication17.Controllers
         public async Task<ActionResult<CryptoAccount>> PostCryptoAccount(CryptoAccount cryptoAccount)
         {
             var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
-            var cryptoCurrency = _context.CryptoCurrency.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
+            var cryptoCurrency = _context.Crypto.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
 
             cryptoAccount.IdCrypto = crypto.Id;
             cryptoAccount.IdCryptoCurrency = cryptoCurrency.Id;
