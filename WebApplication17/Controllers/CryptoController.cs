@@ -81,6 +81,8 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Crypto>> PostCrypto(Crypto crypto)
         {
+            var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
+            crypto.CryptoCurrencyAbbreviation = cryptoCurrency.CryptoCurrencyAbbreviation;
             _context.Crypto.Add(crypto);
             _context.SaveChanges();
 
