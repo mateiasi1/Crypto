@@ -101,7 +101,9 @@ namespace WebApplication17.Controllers
         {
             var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
             var cryptoCurrency = _context.Crypto.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
+            var bankAccount = _context.Bank.Where(b => b.Id == cryptoAccount.IdBankAccount).FirstOrDefault();
 
+            cryptoAccount.Refference = bankAccount.Id + bankAccount.BankName + cryptoAccount.IdUser;
             cryptoAccount.IdCrypto = crypto.Id;
             cryptoAccount.IdCryptoCurrency = cryptoCurrency.Id;
             cryptoAccount.Sold = 0;
