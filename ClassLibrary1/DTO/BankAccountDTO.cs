@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebApplication17.DTO
 {
-    class BankAccountDTO
+  public  class BankAccountDTO
     {
         public int Id { get; set; }
         public string CurrencyName { get; set; }

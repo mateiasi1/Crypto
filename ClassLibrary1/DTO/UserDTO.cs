@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebApplication17.DTO
 {
-    class UserDTO
+    public class UserDTO
     {
     }
 }
