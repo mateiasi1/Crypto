@@ -57,35 +57,29 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Login>> PostLogin([FromBody]Login login)
         {
-            string passHashFromDB = _context.User.Where(item => item.Username == login.Username).Select(item => item.Password).FirstOrDefault();
             int userID = _context.User.Where(item => item.Username == login.Username).Select(item => item.Id).FirstOrDefault();
-            Token thisToken = _context.Token.FirstOrDefault(item => item.UserId == userID);
 
-            var passwordSalt = new Salt();
+            var user = _context.User.Find(userID);
+
+            var passwordSalt = user.PasswordSalt;
             string passwordHash = Hash.Create(login.Password, passwordSalt.ToString());
-            if (passHashFromDB == passwordHash)
+
+            if (user.Password == passwordHash)
             {
+                var thisToken = new Token();
 
-                if (thisToken == null || thisToken.TokenGuid == login.Token && thisToken.EndDate >= DateTime.Now)
-                {
-                    var guid = Guid.NewGuid();
-                    thisToken = new Token();
-                    thisToken.UserId = userID;
-                    thisToken.StartDate = DateTime.Now;
-                    thisToken.EndDate = DateTime.Now.AddMinutes(60);
-                    thisToken.TokenGuid = guid;
-                    login.Token = guid;
-                    _context.Token.Add(thisToken);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    thisToken.EndDate = thisToken.EndDate.AddMinutes(60);
-                    _context.SaveChanges();
+                thisToken.UserId = user.Id;
+                thisToken.StartDate = DateTime.Now;
+                thisToken.EndDate = DateTime.Now.AddMinutes(60);
+                thisToken.TokenGuid = " ";
 
-                }
+                login.Token = thisToken;
+                _context.Token.Add(thisToken);
+                _context.Login.Add(login);
+              await  _context.SaveChangesAsync();
+
                 return Ok(login.Token);
-            }
+            } 
             // de facut request in baza pe baza de username  si de retrive password + verify password + verify consirmed state + return status
             else
             {
@@ -95,10 +89,10 @@ namespace WebApplication17.Controllers
 
         // DELETE: api/Login/5
         [HttpDelete("{token}")]
-        public async Task<ActionResult<Login>> DeleteLogin(Guid token)
+        public async Task<ActionResult<Login>> DeleteLogin(string token)
         {
-            Token updateToken = _context.Token.FirstOrDefault(item => item.TokenGuid == token);
-            _context.Remove(updateToken);
+            Token deleteToken = _context.Token.FirstOrDefault(item => item.TokenGuid == token);
+            _context.Remove(deleteToken);
             await _context.SaveChangesAsync();
 
             return Ok();

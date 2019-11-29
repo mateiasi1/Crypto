@@ -10,6 +10,6 @@ namespace WebApplication17.Models
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public Guid Token { get; set; }
+        public Token Token { get; set; }
     }
 }
