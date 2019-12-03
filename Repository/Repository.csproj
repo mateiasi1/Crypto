@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="EntityFramework" Version="6.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\iRepository\iRepository.csproj" />
+    <ProjectReference Include="..\WebApplication17\WebApplication17.csproj" />
   </ItemGroup>
 
 </Project>

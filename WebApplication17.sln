@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication17", "WebAppl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "ClassLibrary1\BusinessLayer.csproj", "{3256BF3A-0FF9-40DB-A2E3-10DECBF0145D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "Data Layer\DataLayer.csproj", "{43B3536E-5E72-42DD-8D3D-D64E49048141}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "Data Layer\DataLayer.csproj", "{43B3536E-5E72-42DD-8D3D-D64E49048141}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iRepository", "iRepository\iRepository.csproj", "{CEE807B3-BEB2-4093-8F13-ED7BB32D9C2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iRepository", "iRepository\iRepository.csproj", "{CEE807B3-BEB2-4093-8F13-ED7BB32D9C2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

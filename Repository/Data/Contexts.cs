@@ -1,13 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication17.Models;
-
-namespace WebApplication17.Data
+﻿namespace WebApplication17.Data
 {
-public class Contexts : DbContext
+    public class Contexts : DbContext
 {
 public Contexts(DbContextOptions<Contexts> options) : base(options)
 {
