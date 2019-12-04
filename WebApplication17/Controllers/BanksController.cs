@@ -19,21 +19,23 @@ namespace WebApplication17.Controllers
     {
         private readonly IMapper _mapper;
         private readonly Contexts _context;
-       
+        private readonly BanksManager _banksManager;
 
-        public BanksController(Contexts context, IMapper mapper)
+
+        public BanksController(Contexts context, IMapper mapper, BanksManager banksManager)
         {
             _context = context;
             _mapper = mapper;
+            _banksManager = banksManager(_context);
         }
 
         // GET: api/Banks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
         {
-            BanksManager bankManager = new BanksManager(_context);
-            bankManager.GetAllBanks();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankManager));
+           
+            _banksManager.GetAllBanks();
+            return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
         }
 
         // GET: api/Banks/5

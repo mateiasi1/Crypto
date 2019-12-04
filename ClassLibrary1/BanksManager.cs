@@ -35,6 +35,9 @@ namespace BusinessLayer
             return bankList;
         }
 
-        
-}
+        public Bank GetBankById()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

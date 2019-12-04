@@ -14,5 +14,7 @@ namespace iRepository
         List<Bank> GetAllBanks();
         List<Bank> AddBank(Bank bank);
 
+        Bank GetBankById();
+
     }
 }
