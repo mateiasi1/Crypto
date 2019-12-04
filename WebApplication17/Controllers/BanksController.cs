@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,19 +19,23 @@ namespace WebApplication17.Controllers
     {
         private readonly IMapper _mapper;
         private readonly Contexts _context;
-       
+        private readonly BanksManager _banksManager;
 
-        public BanksController(Contexts context, IMapper mapper)
+
+        public BanksController(Contexts context, IMapper mapper, BanksManager banksManager)
         {
             _context = context;
             _mapper = mapper;
+            _banksManager = banksManager(_context);
         }
 
         // GET: api/Banks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
         {
-            return await _context.Bank.ToListAsync();
+           
+            _banksManager.GetAllBanks();
+            return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
         }
 
         // GET: api/Banks/5
@@ -81,12 +86,8 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Bank>> PostBank(Bank bank)
         {
-            var currency = _context.Currency.Where(c => c.CurrencyAbbreviation == bank.CurrencyAbbreviation).FirstOrDefault();
-            bank.CurrencyName = currency.CurrencyName;
-            _context.Bank.Add(bank);
-            _context.SaveChanges();
-
-            var bankList = _context.Bank.ToList();
+            BanksManager bankManager = new BanksManager(_context);
+            var bankList = bankManager.AddBank(bank);
             return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
         }
 

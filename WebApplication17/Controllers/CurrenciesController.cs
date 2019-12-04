@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
 using WebApplication17.Models;
 using WebApplication17.DTO;
+using BusinessLayer;
 
 namespace WebApplication17.Controllers
 {
@@ -18,6 +19,7 @@ namespace WebApplication17.Controllers
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
+        
 
         public CurrenciesController(Contexts context, IMapper mapper)
         {
@@ -29,7 +31,9 @@ namespace WebApplication17.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
         {
-            return await _context.Currency.ToListAsync();
+            CurrenciesManager currencies = new CurrenciesManager(_context);
+            currencies.GetAllCurrencies();
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencies));
         }
 
         // GET: api/Currencies/5
@@ -80,10 +84,10 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
         {
-                _context.Currency.Add(currency);
-                _context.SaveChanges();
-                var currencyList = _context.Currency.ToList();
-                return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
+            CurrenciesManager currencies = new CurrenciesManager(_context);
+            currencies.AddCurrency(currency);
+            var currencyList = currencies.GetAllCurrencies();
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
         }
 
         // DELETE: api/Currencies/5
