@@ -26,7 +26,7 @@ namespace WebApplication17.Controllers
         {
             _context = context;
             _mapper = mapper;
-            _banksManager = banksManager(_context);
+            _banksManager = banksManager;
         }
 
         // GET: api/Banks

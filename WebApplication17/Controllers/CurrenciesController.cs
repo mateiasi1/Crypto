@@ -32,8 +32,8 @@ namespace WebApplication17.Controllers
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
         {
             CurrenciesManager currencies = new CurrenciesManager(_context);
-            currencies.GetAllCurrencies();
-            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencies));
+           var currencyList = currencies.GetAllCurrencies();
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
         }
 
         // GET: api/Currencies/5
