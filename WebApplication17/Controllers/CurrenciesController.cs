@@ -19,20 +19,20 @@ namespace WebApplication17.Controllers
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
-        
+        private readonly CurrenciesManager _currenciesManager;
 
-        public CurrenciesController(Contexts context, IMapper mapper)
+        public CurrenciesController(Contexts context, IMapper mapper, CurrenciesManager currenciesManager)
         {
             _mapper = mapper;
             _context = context;
+            _currenciesManager = currenciesManager;
         }
 
         // GET: api/Currencies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
         {
-            CurrenciesManager currencies = new CurrenciesManager(_context);
-           var currencyList = currencies.GetAllCurrencies();
+           var currencyList = _currenciesManager.GetAllCurrencies();
             return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
         }
 
@@ -40,70 +40,31 @@ namespace WebApplication17.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Currency>> GetCurrency(int id)
         {
-            var currency = await _context.Currency.FindAsync(id);
+            var currency =  _currenciesManager.GetCurrencyById(id);
 
             if (currency == null)
             {
                 return NotFound();
             }
 
-            return currency;
-        }
-
-        // PUT: api/Currencies/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurrency(int id, Currency currency)
-        {
-            if (id != currency.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(currency).State = EntityState.Modified;
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CurrencyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currency));
         }
 
         // POST: api/Currencies
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
         {
-            CurrenciesManager currencies = new CurrenciesManager(_context);
-            currencies.AddCurrency(currency);
-            var currencyList = currencies.GetAllCurrencies();
-            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
+            _currenciesManager.AddCurrency(currency);
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currency));
         }
 
         // DELETE: api/Currencies/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Currency>> DeleteCurrency(int id)
         {
-            var currency = await _context.Currency.FindAsync(id);
-            if (currency == null)
-            {
-                return NotFound();
-            }
+            _currenciesManager.DeleteCurrency(id);
 
-            _context.Currency.Remove(currency);
-            await _context.SaveChangesAsync();
-
-            return currency;
+            return Ok();
         }
 
         private bool CurrencyExists(int id)
