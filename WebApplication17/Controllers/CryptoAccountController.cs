@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,18 +22,20 @@ namespace WebApplication17.Controllers
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
-        
-        public CryptoAccountController(Contexts context, IMapper mapper)
+        private readonly CryptoManager _cryptoManager;
+
+        public CryptoAccountController(Contexts context, IMapper mapper, CryptoManager cryptoManager)
         {
             _mapper = mapper;
             _context = context;
+            _cryptoManager = cryptoManager;
         }
 
         // GET: api/CryptoAccount
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CryptoAccount>>> GetCryptoAccount()
         {
-            var cryptoList = _context.CryptoAccount.ToList();
+            var cryptoList = _cryptoManager.GetAllCryptoAccounts();
 
             return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
         }
@@ -41,7 +44,7 @@ namespace WebApplication17.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CryptoAccount>> GetCryptoAccount(int id)
         {
-            var cryptoAccount = await _context.CryptoAccount.FindAsync(id);
+            var cryptoAccount = _cryptoManager.GetCryptoAccountById(id);
 
             if (cryptoAccount == null)
             {
@@ -59,23 +62,8 @@ namespace WebApplication17.Controllers
             CryptoAccountTransaction cryptoAccountTransaction = new CryptoAccountTransaction();
 
             string body = this.InputBodyData;
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
-
-            var cryptoAccount = _context.CryptoAccount.Find(id);
-            cryptoAccount.Sold += amount;
-            _context.SaveChanges();
-
-            cryptoAccountTransaction.Ammount = amount;
-            cryptoAccountTransaction.IdCryptoAccount = id;
-            cryptoAccountTransaction.IdFee = 0;
-            cryptoAccountTransaction.Status = "Done";
-            _context.CryptoAccountTransaction.Add(cryptoAccountTransaction);
-            _context.SaveChanges();
-
-            var cryptoList = _context.CryptoAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
+            _cryptoManager.AddToCryptoAccount(body);
+            return Ok();
         }
 
         // PUT: api/WithdrawCryptoAccount/withdraw for withdraw sold
@@ -83,56 +71,26 @@ namespace WebApplication17.Controllers
         public IActionResult WithdrawCryptoAccount()
         {
             string body = this.InputBodyData;
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
-
-            var cryptoAccount = _context.CryptoAccount.Find(id);
-            cryptoAccount.Sold -= amount;
-            _context.SaveChanges();
-
-            var cryptoList = _context.CryptoAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
+            _cryptoManager.WithdrawFromCryptoAccount(body);
+            return Ok();
         }
 
         // POST: api/PostCryptoAccount
         [HttpPost]
         public async Task<ActionResult<CryptoAccount>> PostCryptoAccount(CryptoAccount cryptoAccount)
         {
-            var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
-            var cryptoCurrency = _context.Crypto.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
-            var bankAccount = _context.Bank.Where(b => b.Id == cryptoAccount.IdBankAccount).FirstOrDefault();
-
-            cryptoAccount.Refference = bankAccount.Id + bankAccount.BankName + cryptoAccount.IdUser;
-            cryptoAccount.IdCrypto = crypto.Id;
-            cryptoAccount.IdCryptoCurrency = cryptoCurrency.Id;
-            cryptoAccount.Sold = 0;
-            _context.CryptoAccount.Add(cryptoAccount);
-            _context.SaveChanges();
-            var cryptoList = _context.CryptoAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
+            _cryptoManager.AddCryptoAccount(cryptoAccount);
+            return Ok();
         }
 
         // DELETE: api/DeleteCryptoAccount/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<CryptoAccount>> DeleteCryptoAccount(int id)
         {
-            var cryptoAccount = await _context.CryptoAccount.FindAsync(id);
-            if (cryptoAccount == null)
-            {
-                return NotFound();
-            }
-
-            _context.CryptoAccount.Remove(cryptoAccount);
-            await _context.SaveChangesAsync();
-
-            var cryptoList = _context.CryptoAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
+            _cryptoManager.DeleteCryptoAccount(id);
+            return Ok();
         }
 
-        private bool CryptoAccountExists(int id)
-        {
-            return _context.CryptoAccount.Any(e => e.Id == id);
-        }
+        
     }
 }

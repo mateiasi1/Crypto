@@ -19,34 +19,34 @@ namespace WebApplication17.Controllers
     {
         private readonly IMapper _mapper;
         private readonly Contexts _context;
-        private readonly CurrenciesManager _currenciesManager;
+        private readonly CryptoManager _cryptoManager;
 
-        public CryptoController(Contexts context, IMapper mapper, CurrenciesManager currenciesManager)
+        public CryptoController(Contexts context, IMapper mapper, CryptoManager cryptoManager)
         {
             _context = context;
             _mapper = mapper;
-            _currenciesManager = currenciesManager;
+            _cryptoManager = cryptoManager;
         }
 
         // GET: api/Banks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Crypto>>> GetCrypto()
         {
-            return _currenciesManager.GetAllCryptoCurrencies();
+            return _cryptoManager.GetAllCrypto();
         }
 
         // GET: api/Banks/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CryptoCurrency>> GetCrypto(int id)
+        public async Task<ActionResult<Crypto>> GetCrypto(int id)
         {
-            var crypto = _currenciesManager.GetCryptoCurrencyById(id);
+            var crypto = _cryptoManager.GetCryptoById(id);
 
             if (crypto == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(_currenciesManager));
+            return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(_cryptoManager));
         }
 
        
@@ -55,7 +55,7 @@ namespace WebApplication17.Controllers
         public async Task<ActionResult<Crypto>> PostCrypto(Crypto crypto)
         {
 
-            var cryptoList = _currenciesManager.AddCryptoCurrency(crypto);
+            var cryptoList = _cryptoManager.AddCrypto(crypto);
             return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 
@@ -63,7 +63,7 @@ namespace WebApplication17.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Crypto>> DeleteCrypto(int id)
         {
-            var cryptoList = _currenciesManager.DeleteCryptoCurrency(id);
+            var cryptoList = _cryptoManager.DeleteCrypto(id);
             return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 

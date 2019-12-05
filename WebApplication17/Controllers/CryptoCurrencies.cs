@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
 using WebApplication17.Models;
 using WebApplication17.DTO;
+using BusinessLayer;
 
 namespace WebApplication17.Controllers
 {
@@ -18,93 +19,48 @@ namespace WebApplication17.Controllers
     {
             private readonly Contexts _context;
             private readonly IMapper _mapper;
+        private readonly CurrenciesManager _currenciesManager;
 
-            public CryptoCurrencies(Contexts context, IMapper mapper)
+        public CryptoCurrencies(Contexts context, IMapper mapper, CurrenciesManager currenciesManager)
             {
                 _mapper = mapper;
                 _context = context;
+            _currenciesManager = currenciesManager;
             }
 
             // GET: api/Currencies
             [HttpGet]
             public async Task<ActionResult<IEnumerable<CryptoCurrency>>> GetCurrency()
             {
-                return await _context.CryptoCurrency.ToListAsync();
-            }
+            var cryptoCurrencyList = _currenciesManager.GetAllCryptoCurrencies();
+            return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrencyList));
+        }
 
             // GET: api/Currencies/5
             [HttpGet("{id}")]
-            public async Task<ActionResult<CryptoCurrency>> GetCurrency(int id)
+            public async Task<ActionResult<CryptoCurrency>> GetCryptoCurrency(int id)
             {
-                var cryptoCurrency = await _context.CryptoCurrency.FindAsync(id);
+                var cryptoCurrency = _currenciesManager.GetCryptoCurrencyById(id);
 
-                if (cryptoCurrency == null)
-                {
-                    return NotFound();
-                }
-
-                return cryptoCurrency;
-            }
-
-            // PUT: api/Currencies/5
-            [HttpPut("{id}")]
-            public async Task<IActionResult> PutCryptoCurrency(int id, CryptoCurrency cryptoCurrency)
-            {
-                if (id != cryptoCurrency.Id)
-                {
-                    return BadRequest();
-                }
-
-                _context.Entry(cryptoCurrency).State = EntityState.Modified;
-
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CurrencyExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return NoContent();
+            return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrency));
             }
 
             // POST: api/Currencies
             [HttpPost]
             public async Task<ActionResult<Currency>> PostCurrency(CryptoCurrency cryptoCurrency)
             {
-                _context.CryptoCurrency.Add(cryptoCurrency);
-                _context.SaveChanges();
-                var cryptoCurrencyList = _context.CryptoCurrency.ToList();
-                return Ok(_mapper.Map<IEnumerable<CryptoCurrency>>(cryptoCurrencyList));
-            }
+            _currenciesManager.AddCryptoCurrency(cryptoCurrency);
+            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(cryptoCurrency));
+        }
 
             // DELETE: api/Currencies/5
             [HttpDelete("{id}")]
             public async Task<ActionResult<CryptoCurrency>> DeleteCurrency(int id)
             {
-                var cryptoCurrency = await _context.CryptoCurrency.FindAsync(id);
-                if (cryptoCurrency == null)
-                {
-                    return NotFound();
-                }
+            _currenciesManager.DeleteCryptoCurrency(id);
 
-                _context.CryptoCurrency.Remove(cryptoCurrency);
-                await _context.SaveChangesAsync();
+            return Ok();
+        }
 
-                return cryptoCurrency;
-            }
-
-            private bool CurrencyExists(int id)
-            {
-                return _context.CryptoCurrency.Any(e => e.Id == id);
-            }
     }
 }

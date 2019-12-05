@@ -84,9 +84,6 @@ namespace WebApplication17.Controllers
             return Ok();
         }
 
-        private bool BankAccountExists(int id)
-        {
-            return _context.BankAccount.Any(e => e.Id == id);
-        }
+        
     }
 }

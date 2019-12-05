@@ -14,9 +14,9 @@ namespace BusinessLayer
 {
     public class BanksManager : IBanks
     {
-        protected WebApplication17.Data.Contexts _context;
+        protected Contexts _context;
         BankAccountTransaction bankAccountTransaction = new BankAccountTransaction();
-        public BanksManager(WebApplication17.Data.Contexts context)
+        public BanksManager(Contexts context)
         {
             _context = context;
         }

@@ -42,28 +42,28 @@ namespace BusinessLayer
         #endregion
 
         #region Crypto Currency
-        public List<Crypto> GetAllCryptoCurrencies()
+        public List<CryptoCurrency> GetAllCryptoCurrencies()
         {
-            return _context.Crypto.ToList();
+            return _context.CryptoCurrency.ToList();
         }
-        public Crypto GetCryptoCurrencyById(int id)
+        public CryptoCurrency GetCryptoCurrencyById(int id)
         {
-            return _context.Crypto.Find(id);
+            return _context.CryptoCurrency.Find(id);
         }
-        public Crypto AddCryptoCurrency(Crypto crypto)
+        public CryptoCurrency AddCryptoCurrency(CryptoCurrency crypto)
         {
             var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
             crypto.CryptoCurrencyAbbreviation = cryptoCurrency.CryptoCurrencyAbbreviation;
-            _context.Crypto.Add(crypto);
+            _context.CryptoCurrency.Add(crypto);
             _context.SaveChanges();
 
             return crypto;
         }
-        public Crypto DeleteCryptoCurrency(int id)
+        public CryptoCurrency DeleteCryptoCurrency(int id)
         {
-            var cryptoCurrency = _context.Crypto.Find(id);
+            var cryptoCurrency = _context.CryptoCurrency.Find(id);
 
-            _context.Crypto.Remove(cryptoCurrency);
+            _context.CryptoCurrency.Remove(cryptoCurrency);
             _context.SaveChangesAsync();
 
             return cryptoCurrency;
