@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,18 +22,20 @@ namespace WebApplication17.Controllers
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
+        private readonly BanksManager _banksManager;
 
-        public BankAccountsController(Contexts context, IMapper mapper)
+        public BankAccountsController(Contexts context, IMapper mapper, BanksManager banksManager)
         {
             _mapper = mapper;
             _context = context;
+            _banksManager = banksManager;
         }
 
         // GET: api/BankAccounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BankAccount>>> GetBankAccount()
         {
-            var bankList = _context.BankAccount.ToList();
+            var bankList = _banksManager.GetAllBankAccounts();
 
             return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
         }
@@ -41,12 +44,7 @@ namespace WebApplication17.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BankAccount>> GetBankAccount(int id)
         {
-            var bankAccount = await _context.BankAccount.FindAsync(id);
-
-            if (bankAccount == null)
-            {
-                return NotFound();
-            }
+           var bankAccount = _banksManager.GetBankAccountById(id);
 
             return bankAccount;
         }
@@ -56,26 +54,9 @@ namespace WebApplication17.Controllers
         [HttpPut("add")]
         public IActionResult AddBankAccount()
         {
-            BankAccountTransaction bankAccountTransaction = new BankAccountTransaction();
-
             string body = this.InputBodyData;
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
-
-            var bankAccount = _context.BankAccount.Find(id);
-            bankAccount.Sold += amount;
-            _context.SaveChanges();
-
-            bankAccountTransaction.Ammount = amount;
-            bankAccountTransaction.IdBankAccount = id;
-            bankAccountTransaction.IdFlatRateFee = 0;
-            bankAccountTransaction.Status = "Done";
-            _context.BankAccountTransaction.Add(bankAccountTransaction);
-            _context.SaveChanges();
-
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            _banksManager.AddToBankAccount(body);
+            return Ok();
         }
 
         // PUT: api/BankAccounts/withdraw for withdraw sold
@@ -83,49 +64,24 @@ namespace WebApplication17.Controllers
         public IActionResult WithdrawBankAccount()
         {
             string body = this.InputBodyData;
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
-
-            var bankAccount = _context.BankAccount.Find(id);
-            bankAccount.Sold -= amount;
-            _context.SaveChanges();
-
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            _banksManager.WithdrawFromBankAccount(body);
+            return Ok();
         }
 
         // POST: api/BankAccounts
         [HttpPost]
         public async Task<ActionResult<BankAccount>> PostBankAccount(BankAccount bankAccount)
         {
-            var bank = _context.Bank.Find(bankAccount.IdBank);
-            var currency = _context.Currency.Where(b => b.CurrencyName == bankAccount.CurrencyName).FirstOrDefault();
-
-            bankAccount.IdBank = bank.Id;
-            bankAccount.IdCurrency = currency.Id;
-            bankAccount.Sold = 0;
-            _context.BankAccount.Add(bankAccount);
-            _context.SaveChanges();
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            _banksManager.AddBankAccount(bankAccount);
+            return Ok();
         }
 
         // DELETE: api/BankAccounts/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<BankAccount>> DeleteBankAccount(int id)
         {
-            var bankAccount = await _context.BankAccount.FindAsync(id);
-            if (bankAccount == null)
-            {
-                return NotFound();
-            }
-
-            _context.BankAccount.Remove(bankAccount);
-            await _context.SaveChangesAsync();
-
-            var bankList = _context.BankAccount.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankList));
+            _banksManager.DeleteBankAccount(id);
+            return Ok();
         }
 
         private bool BankAccountExists(int id)

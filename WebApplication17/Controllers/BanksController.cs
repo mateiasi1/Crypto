@@ -42,14 +42,13 @@ namespace WebApplication17.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Bank>> GetBank(int id)
         {
-            var bank = await _context.Bank.FindAsync(id);
-
+            var bank = _banksManager.GetBankById(id);
             if (bank == null)
             {
                 return NotFound();
             }
 
-            return bank;
+            return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
         }
 
         // PUT: api/Banks/5
@@ -86,8 +85,7 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Bank>> PostBank(Bank bank)
         {
-            BanksManager bankManager = new BanksManager(_context);
-            var bankList = bankManager.AddBank(bank);
+            var bankList = _banksManager.AddBank(bank);
             return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
         }
 
@@ -95,17 +93,8 @@ namespace WebApplication17.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Bank>> DeleteBank(int id)
         {
-            var bank = await _context.Bank.FindAsync(id);
-            if (bank == null)
-            {
-                return NotFound();
-            }
-
-            _context.Bank.Remove(bank);
-            _context.SaveChanges();
-
-            var bankList = _context.Bank.ToList();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
+            var bank = _banksManager.DeleteBank(id);
+            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bank));
         }
 
         private bool BankExists(int id)
