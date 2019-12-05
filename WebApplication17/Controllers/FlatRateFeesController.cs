@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BusinessLayer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +17,14 @@ namespace WebApplication17.Controllers
     public class FlatRateFeesController : ControllerBase
     {
         private readonly Contexts _context;
-
-        public FlatRateFeesController(Contexts context)
+        private readonly IMapper _mapper;
+        private readonly FeesManager _feesManager;
+        public FlatRateFeesController(Contexts context, IMapper mapper, FeesManager feesManager)
         {
             _context = context;
+            _mapper = mapper;
+            _feesManager = feesManager;
+
         }
 
         // GET: api/FlatRateFees
@@ -26,72 +32,17 @@ namespace WebApplication17.Controllers
         public async Task<ActionResult<double>> GetFlatRateFee()
         {
             double flat = _context.FlatRateFee.Where(item => item.Obsolete == false).Select(item => item.Ammount).FirstOrDefault();
-            return flat;
-        }
+           
 
-        // GET: api/FlatRateFees/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FlatRateFee>> GetFlatRateFee(int id)
-        {
-            var flatRateFee = await _context.FlatRateFee.FindAsync(id);
-
-            if (flatRateFee == null)
-            {
-                return NotFound();
-            }
-
-            return flatRateFee;
-        }
-
-        // PUT: api/FlatRateFees/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFlatRateFee(int id, FlatRateFee flatRateFee)
-        {
-            if (id != flatRateFee.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(flatRateFee).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FlatRateFeeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(_mapper.Map<IEnumerable<FlatRateFee>>(flat));
         }
 
         // POST: api/FlatRateFees
         [HttpPost]
         public async Task<ActionResult<FlatRateFee>> PostFlatRateFee(FlatRateFee flatRateFee)
         {
-            FlatRateFee flat = _context.FlatRateFee.Where(item => item.Obsolete == false).FirstOrDefault();
-            if (flat == null)
-            {
-                _context.FlatRateFee.Add(flatRateFee);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                flat.Obsolete = true;
-                await _context.SaveChangesAsync();
-
-                _context.FlatRateFee.Add(flatRateFee);
-                await _context.SaveChangesAsync();
-            }
-            return CreatedAtAction("GetFlatRateFee", new { id = flatRateFee.Id }, flatRateFee);
+            var flatRate = _feesManager.AddFlatRateFee(flatRateFee);
+            return Ok(flatRate);
         }
 
         // DELETE: api/FlatRateFees/5
