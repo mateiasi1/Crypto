@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WebApplication17
 {
-public class Hash
+    public class Hash
 {
 public static string Create(string value, string salt)
 {

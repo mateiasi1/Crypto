@@ -15,10 +15,10 @@ namespace iRepository
         #endregion
 
         #region Crypto Currencies
-        List<Crypto> GetAllCryptoCurrencies();
-        Crypto GetCryptoCurrencyById(int id);
-        Crypto AddCryptoCurrency(Crypto cryptoCurrency);
-        Crypto DeleteCryptoCurrency(int id);
+        List<CryptoCurrency> GetAllCryptoCurrencies();
+        CryptoCurrency GetCryptoCurrencyById(int id);
+        CryptoCurrency AddCryptoCurrency(CryptoCurrency cryptoCurrency);
+        CryptoCurrency DeleteCryptoCurrency(int id);
         #endregion
     }
 }

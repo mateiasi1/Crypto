@@ -11,6 +11,6 @@ namespace WebApplication17.Models
         public double AmmountToExchange { get; set; }
         public int IdWalletFrom { get; set; }
         public int IdWalletTo { get; set; }
-        public int IdCommission { get; set; }
+        public string Percentage { get; set; }
     }
 }

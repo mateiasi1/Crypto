@@ -50,37 +50,7 @@ namespace WebApplication17.Controllers
 
             return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
         }
-
-        // PUT: api/Banks/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBank(int id, Bank bank)
-        {
-            if (id != bank.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(bank).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BankExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
+        
         // POST: api/Banks
         [HttpPost]
         public async Task<ActionResult<Bank>> PostBank(Bank bank)
