@@ -53,16 +53,33 @@ namespace BusinessLayer
         #region Fee
         public List<Fee> GetAllFees()
         {
-            throw new NotImplementedException();
+           return _context.Fee.ToList();
         }
 
         public Fee AddFee(Fee fee)
         {
-            throw new NotImplementedException();
+            Fee fees = _context.Fee.Where(item => item.Obsolete == false).FirstOrDefault();
+            if (fees == null)
+            {
+                _context.Fee.Add(fee);
+                _context.SaveChanges();
+            }
+            else
+            {
+                fees.Obsolete = true;
+                _context.SaveChanges();
+
+                _context.Fee.Add(fee);
+                _context.SaveChanges();
+            }
+            return fee;
         }
         public Fee DeleteFee(int id)
         {
-            throw new NotImplementedException();
+            var fee =  _context.Fee.Find(id);
+            _context.Fee.Remove(fee);
+            _context.SaveChangesAsync();
+            return fee;
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace WebApplication17.Controllers
 
         // GET: api/FlatRateFees
         [HttpGet]
-        public async Task<ActionResult<double>> GetFlatRateFee()
+        public async Task<ActionResult<FlatRateFee>> GetFlatRateFee()
         {
             double flat = _context.FlatRateFee.Where(item => item.Obsolete == false).Select(item => item.Ammount).FirstOrDefault();
            
