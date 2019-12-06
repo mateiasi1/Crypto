@@ -7,9 +7,9 @@ namespace iRepository
 {
     public interface IRegisterUser
     {
-        RegisterUser GetAllUsers();
+        List<RegisterUser> GetAllRegisteredUsers();
         RegisterUser GetRegisterUserById(int id);
         RegisterUser AddUser(RegisterUser registerUser);
-        RegisterUser DeleteUser(int id);
+        RegisterUser UpdateUserStatus(int id, RegisterUser registerUser);
     }
 }
