@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -56,6 +57,7 @@ namespace WebApplication17.Controllers
 
 
         // PUT: api/AddCryptoAccount/add  for Add sold
+        [Authorize]
         [HttpPut("add")]
         public IActionResult AddCryptoAccount()
         {
@@ -67,6 +69,7 @@ namespace WebApplication17.Controllers
         }
 
         // PUT: api/WithdrawCryptoAccount/withdraw for withdraw sold
+        [Authorize]
         [HttpPut("withdraw")]
         public IActionResult WithdrawCryptoAccount()
         {
@@ -76,6 +79,7 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/PostCryptoAccount
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CryptoAccount>> PostCryptoAccount(CryptoAccount cryptoAccount)
         {
@@ -84,6 +88,7 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/DeleteCryptoAccount/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<CryptoAccount>> DeleteCryptoAccount(int id)
         {

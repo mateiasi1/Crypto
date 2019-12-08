@@ -10,6 +10,7 @@ using WebApplication17.Data;
 using WebApplication17.Models;
 using WebApplication17.DTO;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication17.Controllers
 {
@@ -45,16 +46,18 @@ namespace WebApplication17.Controllers
             return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrency));
             }
 
-            // POST: api/Currencies
-            [HttpPost]
+        // POST: api/Currencies
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
             public async Task<ActionResult<Currency>> PostCurrency(CryptoCurrency cryptoCurrency)
             {
             _currenciesManager.AddCryptoCurrency(cryptoCurrency);
             return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(cryptoCurrency));
         }
 
-            // DELETE: api/Currencies/5
-            [HttpDelete("{id}")]
+        // DELETE: api/Currencies/5
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
             public async Task<ActionResult<CryptoCurrency>> DeleteCurrency(int id)
             {
             _currenciesManager.DeleteCryptoCurrency(id);

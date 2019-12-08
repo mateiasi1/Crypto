@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,7 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/Fees
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Fee>> PostFee(Fee fee)
         {
@@ -45,6 +47,7 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Fees/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Fee>> DeleteFee(int id)
         {

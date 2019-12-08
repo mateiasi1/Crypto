@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,8 +36,9 @@ namespace WebApplication17.Controllers
             _conversionsManager.GetAllConversions();
             return Ok(_mapper.Map<IEnumerable<ConversionDTO>>(_conversionsManager));
         }
-        
+
         // POST: api/Conversions
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Conversion>> PostConversion(Conversion conversion, string percentage)
         {

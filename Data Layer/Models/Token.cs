@@ -10,6 +10,7 @@ namespace WebApplication17.Models
         public int Id { get; set; }
        public int UserId { get; set; }
        public string TokenGuid { get; set; }
+        public string Role { get; set; }
        public DateTime StartDate { get; set; }
        public DateTime EndDate { get; set; }
     }

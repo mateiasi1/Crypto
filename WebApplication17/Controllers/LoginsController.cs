@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginsController : ControllerBase
@@ -45,10 +47,15 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/Logins
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<Login>> PostLogin([FromBody]Login login)
         {
             var loginList = _loginManager.AddLogin(login);
+            if(loginList == null)
+            {
+                return BadRequest(new { message ="Username or password is incorrect"});
+            }
             return Ok(_mapper.Map<IEnumerable<LoginDTO>>(loginList));
         }
 

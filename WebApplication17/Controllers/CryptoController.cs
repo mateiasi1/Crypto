@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -49,8 +50,9 @@ namespace WebApplication17.Controllers
             return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(_cryptoManager));
         }
 
-       
+
         // POST: api/Banks
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Crypto>> PostCrypto(Crypto crypto)
         {
@@ -60,6 +62,7 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Banks/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Crypto>> DeleteCrypto(int id)
         {
