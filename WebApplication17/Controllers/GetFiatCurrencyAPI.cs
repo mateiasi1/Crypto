@@ -18,12 +18,10 @@ namespace WebApplication17.Controllers
     public class GetFiatCurrencyAPI : Controller
     {
 
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
-        public GetFiatCurrencyAPI(Contexts context, IMapper mapper)
+        public GetFiatCurrencyAPI(IMapper mapper)
         {
             _mapper = mapper;
-            _context = context;
         }
         // GET: /<controller>/
         [HttpGet]

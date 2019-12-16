@@ -18,14 +18,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class FeesController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly FeesManager _feesManager;
 
-        public FeesController(Contexts context, IMapper mapper, FeesManager feesManager)
+        public FeesController(IMapper mapper, FeesManager feesManager)
         {
             _mapper = mapper;
-            _context = context;
             _feesManager = feesManager;
         }
 

@@ -19,14 +19,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class LoginsController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly LoginManager _loginManager;
 
         public LoginsController(Contexts context, IMapper mapper, LoginManager loginManager)
         {
             _mapper = mapper;
-            _context = context;
             _loginManager = loginManager;
         }
 

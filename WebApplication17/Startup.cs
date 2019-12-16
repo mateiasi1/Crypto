@@ -49,13 +49,13 @@ namespace WebApplication17
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                                .RequireAuthenticatedUser()
-                                .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            //services.AddMvc(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                    .RequireAuthenticatedUser()
+            //                    .Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

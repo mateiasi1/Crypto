@@ -17,12 +17,10 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class FlatRateFeesController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly FeesManager _feesManager;
-        public FlatRateFeesController(Contexts context, IMapper mapper, FeesManager feesManager)
+        public FlatRateFeesController(IMapper mapper, FeesManager feesManager)
         {
-            _context = context;
             _mapper = mapper;
             _feesManager = feesManager;
 
@@ -32,7 +30,7 @@ namespace WebApplication17.Controllers
         [HttpGet]
         public async Task<ActionResult<FlatRateFee>> GetFlatRateFee()
         {
-            double flat = _context.FlatRateFee.Where(item => item.Obsolete == false).Select(item => item.Ammount).FirstOrDefault();
+            double flat = _feesManager.GetAllFlatRateFees();
            
 
             return Ok(_mapper.Map<IEnumerable<FlatRateFee>>(flat));
@@ -52,21 +50,8 @@ namespace WebApplication17.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<FlatRateFee>> DeleteFlatRateFee(int id)
         {
-            var flatRateFee = await _context.FlatRateFee.FindAsync(id);
-            if (flatRateFee == null)
-            {
-                return NotFound();
-            }
-
-            _context.FlatRateFee.Remove(flatRateFee);
-            await _context.SaveChangesAsync();
-
-            return flatRateFee;
-        }
-
-        private bool FlatRateFeeExists(int id)
-        {
-            return _context.FlatRateFee.Any(e => e.Id == id);
+            _feesManager.DeleteFlatRateFee(id);
+            return Ok();
         }
     }
 }

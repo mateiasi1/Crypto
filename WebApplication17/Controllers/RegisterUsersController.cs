@@ -15,7 +15,7 @@ using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
 {
-    [Authorize]
+   
     [Route("api/[controller]")]
     [ApiController]
     public class RegisterUsersController : ControllerBase
@@ -60,7 +60,6 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/RegisterUsers
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<RegisterUser>> PostRegisterUser([FromBody]RegisterUser registerUser)
         {

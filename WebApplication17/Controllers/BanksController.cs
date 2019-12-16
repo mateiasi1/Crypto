@@ -19,13 +19,11 @@ namespace WebApplication17.Controllers
     public class BanksController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly Contexts _context;
         private readonly BanksManager _banksManager;
 
 
-        public BanksController(Contexts context, IMapper mapper, BanksManager banksManager)
+        public BanksController(IMapper mapper, BanksManager banksManager)
         {
-            _context = context;
             _mapper = mapper;
             _banksManager = banksManager;
         }
@@ -70,9 +68,6 @@ namespace WebApplication17.Controllers
             return Ok(_mapper.Map<IEnumerable<BankDTO>>(bank));
         }
 
-        private bool BankExists(int id)
-        {
-            return _context.Bank.Any(e => e.Id == id);
-        }
+        
     }
 }

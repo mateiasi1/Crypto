@@ -17,13 +17,11 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class BankAccountTransactionsController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly BanksManager _banksManager;
         private readonly IMapper _mapper;
-        public BankAccountTransactionsController(Contexts context, IMapper mapper, BanksManager banksManager)
+        public BankAccountTransactionsController(IMapper mapper, BanksManager banksManager)
         {
             _mapper = mapper;
-            _context = context;
             _banksManager = banksManager;
         }
 
@@ -45,9 +43,6 @@ namespace WebApplication17.Controllers
             return Ok(_mapper.Map<IEnumerable<BankAccountTransactionDTO>>(transactionList));
         }
 
-        private bool BankAccountTransactionExists(int id)
-        {
-            return _context.BankAccountTransaction.Any(e => e.Id == id);
-        }
+       
     }
 }

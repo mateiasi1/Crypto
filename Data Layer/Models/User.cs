@@ -10,7 +10,6 @@ namespace WebApplication17.Models
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-
         public string PasswordSalt { get; set; }
         public string ReferralId { get; set; }
         public string Role { get; set; }

@@ -18,14 +18,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class CurrenciesController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly CurrenciesManager _currenciesManager;
 
-        public CurrenciesController(Contexts context, IMapper mapper, CurrenciesManager currenciesManager)
+        public CurrenciesController(IMapper mapper, CurrenciesManager currenciesManager)
         {
             _mapper = mapper;
-            _context = context;
             _currenciesManager = currenciesManager;
         }
 
@@ -68,11 +66,6 @@ namespace WebApplication17.Controllers
             _currenciesManager.DeleteCurrency(id);
 
             return Ok();
-        }
-
-        private bool CurrencyExists(int id)
-        {
-            return _context.Currency.Any(e => e.Id == id);
         }
     }
 }

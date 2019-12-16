@@ -10,6 +10,8 @@ namespace WebApplication17.Controllers
 {
     public class CustomBaseController : ControllerBase
     {
+        //de adaugat config reader
+        // AppSetting - research
 
         private string _cachedInputBodyData = null;
         protected string InputBodyData

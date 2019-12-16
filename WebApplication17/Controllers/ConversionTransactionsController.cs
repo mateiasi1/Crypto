@@ -17,13 +17,11 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class ConversionTransactionsController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly ConversionsManager _conversionsManager;
         private readonly IMapper _mapper;
 
-        public ConversionTransactionsController(Contexts context, ConversionsManager conversionsManager, IMapper mapper)
+        public ConversionTransactionsController(ConversionsManager conversionsManager, IMapper mapper)
         {
-            _context = context;
             _conversionsManager = conversionsManager;
             _mapper = mapper;
         }

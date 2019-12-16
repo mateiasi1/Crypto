@@ -19,12 +19,10 @@ namespace WebApplication17.Controllers
     public class CryptoController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly Contexts _context;
         private readonly CryptoManager _cryptoManager;
 
-        public CryptoController(Contexts context, IMapper mapper, CryptoManager cryptoManager)
+        public CryptoController(IMapper mapper, CryptoManager cryptoManager)
         {
-            _context = context;
             _mapper = mapper;
             _cryptoManager = cryptoManager;
         }
@@ -68,11 +66,6 @@ namespace WebApplication17.Controllers
         {
             var cryptoList = _cryptoManager.DeleteCrypto(id);
             return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
-        }
-
-        private bool CryptoExists(int id)
-        {
-            return _context.Crypto.Any(e => e.Id == id);
         }
     }
 }

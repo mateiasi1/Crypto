@@ -18,14 +18,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class CryptoCurrencies : ControllerBase
     {
-            private readonly Contexts _context;
             private readonly IMapper _mapper;
         private readonly CurrenciesManager _currenciesManager;
 
-        public CryptoCurrencies(Contexts context, IMapper mapper, CurrenciesManager currenciesManager)
+        public CryptoCurrencies(IMapper mapper, CurrenciesManager currenciesManager)
             {
                 _mapper = mapper;
-                _context = context;
             _currenciesManager = currenciesManager;
             }
 

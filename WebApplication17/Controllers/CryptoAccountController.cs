@@ -21,14 +21,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class CryptoAccountController : CustomBaseController
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly CryptoManager _cryptoManager;
 
-        public CryptoAccountController(Contexts context, IMapper mapper, CryptoManager cryptoManager)
+        public CryptoAccountController(IMapper mapper, CryptoManager cryptoManager)
         {
             _mapper = mapper;
-            _context = context;
             _cryptoManager = cryptoManager;
         }
 

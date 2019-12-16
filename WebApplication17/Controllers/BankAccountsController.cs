@@ -20,14 +20,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class BankAccountsController : CustomBaseController
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly BanksManager _banksManager;
 
-        public BankAccountsController(Contexts context, IMapper mapper, BanksManager banksManager)
+        public BankAccountsController(IMapper mapper, BanksManager banksManager)
         {
             _mapper = mapper;
-            _context = context;
             _banksManager = banksManager;
         }
 

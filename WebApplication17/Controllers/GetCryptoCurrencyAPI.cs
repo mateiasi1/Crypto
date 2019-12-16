@@ -17,13 +17,11 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class GetCryptoCurrencyAPI : CustomBaseController
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
 
-        public GetCryptoCurrencyAPI(Contexts context, IMapper mapper)
+        public GetCryptoCurrencyAPI(IMapper mapper)
         {
             _mapper = mapper;
-            _context = context;
         }
         // GET: /<controller>/
         [HttpGet]
