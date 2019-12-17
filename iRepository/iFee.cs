@@ -9,7 +9,7 @@ namespace iRepository
     {
 
         #region Flat rate fee
-        List<FlatRateFee> GetAllFlatRateFees();
+        double GetAllFlatRateFees();
         FlatRateFee AddFlatRateFee(FlatRateFee flatRateFee);
         FlatRateFee DeleteFlatRateFee(int id);
         #endregion

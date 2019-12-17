@@ -47,6 +47,8 @@ namespace WebApplication17
             });
 
             var mapper = config.CreateMapper();
+            services.RegisterServices(Configuration);
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton(mapper);
 
             //services.AddMvc(options =>

@@ -32,9 +32,9 @@ namespace WebApplication17.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
         {
-           
-            _banksManager.GetAllBanks();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
+
+            var bankList = _banksManager.GetAllBanks();
+            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
         }
 
         // GET: api/Banks/5
