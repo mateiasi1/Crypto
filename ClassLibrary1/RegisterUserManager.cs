@@ -14,7 +14,7 @@ namespace BusinessLayer
     {
         protected Contexts _context;
         EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("Email/EmailTemplate.html"));
+        string Body = System.IO.File.ReadAllText(("D:/Didactical projects/backend/ClassLibrary1/Email/EmailTemplate.html"));
 
         public RegisterUserManager(Contexts context)
         {

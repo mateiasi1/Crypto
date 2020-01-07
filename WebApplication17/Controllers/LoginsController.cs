@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using iRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,32 @@ namespace WebApplication17.Controllers
     {
         private readonly IMapper _mapper;
         private readonly LoginManager _loginManager;
+        private ILogin _userService;
 
-        public LoginsController(Contexts context, IMapper mapper, LoginManager loginManager)
+        public LoginsController(Contexts context, IMapper mapper, LoginManager loginManager, ILogin userService)
         {
             _mapper = mapper;
             _loginManager = loginManager;
+            _userService = userService;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody]User userParam)
+        {
+            var user = _userService.Authenticate(userParam.Username, userParam.Password);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userService.GetAll();
+            return Ok(users);
         }
 
         // GET: api/Banks/5
@@ -42,19 +64,6 @@ namespace WebApplication17.Controllers
         {
             var tokens = _loginManager.RefreshToken(token);
             return Ok(_mapper.Map<IEnumerable<Token>>(tokens));
-        }
-
-        // POST: api/Logins
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<ActionResult<Login>> PostLogin([FromBody]Login login)
-        {
-            var loginList = _loginManager.AddLogin(login);
-            if(loginList == null)
-            {
-                return BadRequest(new { message ="Username or password is incorrect"});
-            }
-            return Ok(_mapper.Map<IEnumerable<LoginDTO>>(loginList));
         }
 
         // DELETE: api/Login/5
