@@ -40,7 +40,7 @@ namespace WebApplication17.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            return Ok(user);
+            return Ok(_mapper.Map<LoginDTO>(user));
         }
 
         [HttpGet]
@@ -67,10 +67,11 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Login/5
-        [HttpDelete("{token}")]
-        public async Task<ActionResult<Login>> DeleteLogin(string token)
+        [AllowAnonymous]
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Login>> DeleteLogin(int id)
         {
-            _loginManager.DeleteLogin(token);
+            _loginManager.DeleteLogin(id);
             return Ok();
         }
     }

@@ -52,7 +52,7 @@ namespace BusinessLayer
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-
+            _context.SaveChanges();
             var passwordSalt = user.PasswordSalt;
             string passwordHash = Hash.Create(password, passwordSalt.ToString());
             if (user.Password == passwordHash)
@@ -75,12 +75,13 @@ namespace BusinessLayer
             });
         }
 
-        public string DeleteLogin(string token)
+        public int DeleteLogin(int id)
         {
-            Token deleteToken = _context.Token.FirstOrDefault(item => item.TokenGuid == token);
-            _context.Remove(deleteToken);
+            Token deleteToken = _context.Token.FirstOrDefault(item => item.Id == id);
+            User user = _context.User.FirstOrDefault(i => i.Id == id);
+            user.Token = null;
             _context.SaveChanges();
-            return token;
+            return id;
         }
 
         public Login GetLoginById(string username, string password)
