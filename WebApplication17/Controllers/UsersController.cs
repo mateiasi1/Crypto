@@ -41,11 +41,12 @@ namespace WebApplication17.Controllers
             }
         }
 
-        // GET: api/Users
+        // GET: api/Users/confirmed
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUses()
+        public IActionResult GetConfirmedUsers()
         {
-            return await _context.User.ToListAsync();
+            var users = _context.User.Where(u => u.Confirmed == true);
+            return Ok(_mapper.Map<IEnumerable<UnconfirmedUsersDTO>>(users));
         }
 
         
@@ -161,6 +162,17 @@ namespace WebApplication17.Controllers
             {
                 return BadRequest();
             }
+
+        }
+        [HttpPut ("suspend")]
+        public async Task<ActionResult> SuspendUser([FromBody]int id)
+        {
+            var user = await _context.User.FindAsync(id);
+            user.Confirmed = false;
+            _context.SaveChanges();
+            return Ok();
+
+           
 
         }
 

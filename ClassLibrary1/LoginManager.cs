@@ -31,12 +31,18 @@ namespace BusinessLayer
         public User Authenticate(string username, string password)
         {
             int userID = _context.User.Where(item => item.Username == username).Select(item => item.Id).FirstOrDefault();
-
             var user = _context.User.Find(userID);
+
+            
 
             // return null if user not found
             if (user == null)
                 return null;
+            //return null if the user is not confirmed by admin
+            if (user.Confirmed == false)
+            {
+                return null;
+            }
 
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
