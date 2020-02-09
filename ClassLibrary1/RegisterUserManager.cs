@@ -14,7 +14,7 @@ namespace BusinessLayer
     {
         protected Contexts _context;
         EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
+        string Body = System.IO.File.ReadAllText(("D:/Didactical/back/ClassLibrary1/Email/EmailTemplate.html"));
 
         public RegisterUserManager(Contexts context)
         {
@@ -40,14 +40,14 @@ namespace BusinessLayer
             user.PasswordSalt = passwordSalt.ToString();
             user.Confirmed = false;
             user.Role = registerUser.Role;
-            //_context.RegisterUser.Add(registerUser);
+            //_context.RegisterUser.Add(registrerUser);
             _context.User.Add(user);
              _context.SaveChanges();
 
             EmailModel model = new EmailModel();
             model.EmailTo = "dragosdm22@gmail.com";
             model.Subject = "test subject";
-            model.Message = Body + "http://localhost:4200/validateAccount/" + user.Id + " " + user.Username + user.Token;
+            model.Message = Body + "http://localhost:4200/setPassword/" + user.Id + " " + user.Username + user.Token;
             model.UserId = user.Id;
             emailService.SendEmail(model);
             return registerUser;

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
 using WebApplication17.DTO;
+using WebApplication17.Email;
 using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
@@ -18,6 +19,8 @@ namespace WebApplication17.Controllers
     {
         private readonly Contexts _context;
         private readonly IMapper _mapper;
+        readonly EmailService emailService = new EmailService();
+        string Body = System.IO.File.ReadAllText(("D:/Didactical/back/ClassLibrary1/Email/EmailTemplate.html"));
 
         public UsersController(Contexts context, IMapper mapper)
         {
@@ -109,6 +112,12 @@ namespace WebApplication17.Controllers
                     throw;
                 }
             }
+            EmailModel model = new EmailModel();
+            model.EmailTo = "dragosdm22@gmail.com";
+            model.Subject = "test subject";
+            model.Message = Body + "http://localhost:4200/validateAccount/" + user.Id + " " + user.Username + user.Token;
+            model.UserId = user.Id;
+            emailService.SendEmail(model);
             // de legat de serviciul de email si de trimis GUID + Id in link ul de email pentru resetare
             return Ok();
         }
