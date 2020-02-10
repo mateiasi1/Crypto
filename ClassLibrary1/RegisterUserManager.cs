@@ -14,7 +14,7 @@ namespace BusinessLayer
     {
         protected Contexts _context;
         EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("D:/Didactical/back/ClassLibrary1/Email/EmailTemplate.html"));
+        string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
 
         public RegisterUserManager(Contexts context)
         {
@@ -49,6 +49,7 @@ namespace BusinessLayer
             model.Subject = "test subject";
             model.Message = Body + "http://localhost:4200/setPassword/" + user.Id + " " + user.Username + user.Token;
             model.UserId = user.Id;
+            model.Username = user.Username;
             emailService.SendEmail(model);
             return registerUser;
         }

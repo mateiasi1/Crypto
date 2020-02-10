@@ -8,12 +8,18 @@ namespace WebApplication17.Email
     {
         public void SendEmail(EmailModel emailModel)
         {
+            string baseURL = "http://localhost:4200/setPassword";
             var credentials = new NetworkCredential("dragosmateiasi@gmail.com", "Pghelper1.");
+            string body = emailModel.Message;
+            body = body.Replace("{name}", emailModel.Username);
+            body = body.Replace("{baseURL}", baseURL);
+            body = body.Replace("{id}", emailModel.UserId.ToString());
+
             var mail = new MailMessage()
             {
                 From = new MailAddress("noreplay@test.com"),
                 Subject = emailModel.Subject,
-                Body = emailModel.Message
+                Body = body
 
             };
             mail.IsBodyHtml = true;
