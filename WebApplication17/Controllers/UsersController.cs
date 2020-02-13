@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
 using WebApplication17.DTO;
+using iRepository;
 using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
@@ -17,16 +18,12 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly UsersManager _userManager;
 
-       
-
-        public UsersController(Contexts context, IMapper mapper, UsersManager userManager)
+        public UsersController(IMapper mapper, UsersManager userManager)
         {
             _mapper = mapper;
-            _context = context;
             _userManager = userManager;
         }
         [HttpGet]
@@ -36,7 +33,7 @@ namespace WebApplication17.Controllers
             return role;
         }
         // GET: api/Users/confirmed
-        [HttpGet]
+        [HttpGet("confirmed")]
         public IActionResult GetConfirmedUsers()
         {
             var users = _userManager.GetConfirmedUsers();

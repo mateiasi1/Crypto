@@ -20,18 +20,13 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class RegisterUsersController : ControllerBase
     {
-        private readonly Contexts _context;
         private readonly IMapper _mapper;
         private readonly RegisterUserManager _registerUserManager;
-
-        EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
         
 
-        public RegisterUsersController(Contexts context, IMapper mapper, RegisterUserManager registerUserManager)
+        public RegisterUsersController(IMapper mapper, RegisterUserManager registerUserManager)
         {
             _mapper = mapper;
-            _context = context;
             _registerUserManager = registerUserManager;
         }
 

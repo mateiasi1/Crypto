@@ -19,6 +19,7 @@ namespace WebApplication17
             services.AddTransient<FeesManager, FeesManager>();
             services.AddTransient<LoginManager, LoginManager>();
             services.AddTransient<RegisterUserManager, RegisterUserManager>();
+            services.AddTransient<UsersManager, UsersManager>();
         }
     }
 }

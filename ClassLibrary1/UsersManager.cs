@@ -11,11 +11,12 @@ using WebApplication17.Models;
 
 namespace BusinessLayer
 {
-    public class UsersManager : iUsers
+    public class UsersManager : IUsers
     {
+        protected Contexts _context;
         readonly EmailService emailService = new EmailService();
         string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
-        protected Contexts _context;
+        
 
         public UsersManager(Contexts context)
         {

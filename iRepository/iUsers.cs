@@ -5,9 +5,8 @@ using WebApplication17.Models;
 
 namespace iRepository
 {
-    public interface iUsers
+    public interface IUsers
     {
-
         List<User> GetAllRegisteredUsers();
         User GetRegisterUserById(int id);
         List<User> GetConfirmedUsers();
@@ -18,8 +17,5 @@ namespace iRepository
         bool SetPassword(int id, string password);
         bool DeleteUser(int id);
         string GetRole(int id);
-
-
-
     }
 }
