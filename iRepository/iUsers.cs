@@ -17,5 +17,6 @@ namespace iRepository
         bool SetPassword(int id, string password);
         bool DeleteUser(int id);
         string GetRole(int id);
+        bool ForgotPassword(int id);
     }
 }

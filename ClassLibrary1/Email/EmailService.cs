@@ -13,7 +13,7 @@ namespace WebApplication17.Email
             string body = emailModel.Message;
             body = body.Replace("{name}", emailModel.Username);
             body = body.Replace("{baseURL}", baseURL);
-            body = body.Replace("{id}", emailModel.UserId.ToString());
+            body = body.Replace("{token}", emailModel.Token.ToString());
 
             var mail = new MailMessage()
             {

@@ -41,7 +41,7 @@ namespace WebApplication17.Controllers
         }
 
         [HttpGet("unconfirmed")]
-        public  IActionResult GetUnconfirmedUsers()
+        public IActionResult GetUnconfirmedUsers()
         {
             var users = _userManager.GetUnConfirmedUsers();
             return Ok(_mapper.Map<IEnumerable<UnconfirmedUsersDTO>>(users));
@@ -70,7 +70,7 @@ namespace WebApplication17.Controllers
             return BadRequest();
         }
 
-        [HttpPut ("suspend")]
+        [HttpPut("suspend")]
         public async Task<ActionResult> SuspendUser([FromBody]int id)
         {
             if (_userManager.SuspendUser(id))
@@ -83,7 +83,7 @@ namespace WebApplication17.Controllers
         [HttpPut("setPassword")]
         public async Task<ActionResult> SetPassword([FromBody]int id, string password)
         {
-            if(_userManager.SetPassword(id, password))
+            if (_userManager.SetPassword(id, password))
             {
                 return Ok();
             }
@@ -104,6 +104,12 @@ namespace WebApplication17.Controllers
             }
         }
 
-       
+        [HttpPost("forgot")]
+        public async Task<ActionResult<User>> ForgotPassword([FromBody] int id)
+        {
+            _userManager.ForgotPassword(id);
+            return Ok();
+        }
+
     }
 }

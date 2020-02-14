@@ -1,8 +1,13 @@
-﻿using iRepository;
+﻿using Data_Layer.Models;
+using iRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using WebApplication17;
 using WebApplication17.Data;
@@ -14,13 +19,16 @@ namespace BusinessLayer
     public class UsersManager : IUsers
     {
         protected Contexts _context;
+
+        private readonly AppSettings _appSettings;
         readonly EmailService emailService = new EmailService();
         string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
         
 
-        public UsersManager(Contexts context)
+        public UsersManager(Contexts context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
         public List<User> GetAllRegisteredUsers()
@@ -82,11 +90,23 @@ namespace BusinessLayer
 
             _context.SaveChanges();
 
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
             EmailModel model = new EmailModel();
             model.EmailTo = "dragosdm22@gmail.com";
-            model.Subject = "test subject";
-            model.Message = Body + "http://localhost:4200/validateAccount/" + user.Id + " " + user.Username + user.Token;
-            model.UserId = user.Id;
+            model.Subject = "Activate account";
+            model.Token = tokenHandler.WriteToken(token);
             model.Username = user.Username;
             emailService.SendEmail(model);
 
@@ -98,8 +118,10 @@ namespace BusinessLayer
             var user = _context.User.Find(id);
             if (user != null)
             {
-                var passwordSalt = new Salt();
+                Salt salt = new Salt();
+                var passwordSalt = salt.ReturnSalt();
                 string passwordHash = Hash.Create(user.Password, passwordSalt.ToString());
+                user.PasswordSalt = passwordSalt.ToString();
                 user.Password = passwordHash;
                 _context.SaveChangesAsync();
 
@@ -131,6 +153,37 @@ namespace BusinessLayer
                 return null;
             }
             return user.Role;
+        }
+
+        public bool ForgotPassword(int id)
+        {
+            var user = _context.User.Find(id);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            EmailModel model = new EmailModel();
+            model.EmailTo = "dragosdm22@gmail.com";
+            model.Subject = "Activate account";
+            model.Token = tokenHandler.WriteToken(token);
+            model.Username = user.Username;
+            emailService.SendEmail(model);
+
+            return true;
         }
     }
 }

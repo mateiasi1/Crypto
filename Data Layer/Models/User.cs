@@ -16,5 +16,8 @@ namespace WebApplication17.Models
         public bool IsOver18 { get; set; }
         public bool Confirmed { get; set; }
         public string Token { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
