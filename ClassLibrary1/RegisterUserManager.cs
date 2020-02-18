@@ -43,8 +43,6 @@ namespace BusinessLayer
             user.IsOver18 = registerUser.IsOver18;
             user.FirstName = registerUser.FirstName;
             user.LastName = registerUser.LastName;
-            _context.User.Add(user);
-            _context.SaveChanges();
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -58,6 +56,9 @@ namespace BusinessLayer
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            user.Token = tokenHandler.WriteToken(token);
+            _context.User.Add(user);
+            _context.SaveChanges();
 
             EmailModel model = new EmailModel();
             model.EmailTo = registerUser.Email;

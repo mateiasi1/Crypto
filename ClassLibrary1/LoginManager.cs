@@ -58,11 +58,12 @@ namespace BusinessLayer
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-            _context.SaveChanges();
+           
             var passwordSalt = user.PasswordSalt;
             string passwordHash = Hash.Create(password, passwordSalt.ToString());
             if (user.Password == passwordHash)
             {
+                _context.SaveChanges();
                 // remove password before returning
                 user.Password = null;
                 return user;

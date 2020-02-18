@@ -36,10 +36,13 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/Fees
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Fee>> PostFee(Fee fee)
         {
+            if(fee.UserRole != "Admin" || fee.UserRole != "admin")
+            {
+                return BadRequest();
+            }
             var feeList = _feesManager.AddFee(fee);
             return Ok(_mapper.Map<IEnumerable<FeeDTO>>(feeList));
         }

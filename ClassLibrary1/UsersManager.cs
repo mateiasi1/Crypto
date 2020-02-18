@@ -113,18 +113,17 @@ namespace BusinessLayer
             return true;
         }
 
-        public bool SetPassword(int id, string password)
+        public bool SetPassword(PasswordToSet password)
         {
-            var user = _context.User.Find(id);
+            var user = _context.User.Where(u=> u.Token == password.Token).FirstOrDefault();
             if (user != null)
             {
                 Salt salt = new Salt();
                 var passwordSalt = salt.ReturnSalt();
-                string passwordHash = Hash.Create(user.Password, passwordSalt.ToString());
+                string passwordHash = Hash.Create(password.Password, passwordSalt.ToString());
                 user.PasswordSalt = passwordSalt.ToString();
                 user.Password = passwordHash;
-                _context.SaveChangesAsync();
-
+                _context.SaveChanges();
                 return true;
             }
             else

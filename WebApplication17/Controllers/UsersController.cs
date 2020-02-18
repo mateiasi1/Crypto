@@ -11,6 +11,7 @@ using WebApplication17.Data;
 using WebApplication17.DTO;
 using iRepository;
 using WebApplication17.Models;
+using Data_Layer.Models;
 
 namespace WebApplication17.Controllers
 {
@@ -81,9 +82,9 @@ namespace WebApplication17.Controllers
         }
 
         [HttpPut("setPassword")]
-        public async Task<ActionResult> SetPassword([FromBody]int id, string password)
+        public async Task<ActionResult> SetPassword([FromBody]PasswordToSet password)
         {
-            if (_userManager.SetPassword(id, password))
+            if (_userManager.SetPassword(password))
             {
                 return Ok();
             }
