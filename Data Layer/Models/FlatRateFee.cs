@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace WebApplication17.Models
 {
-public class FlatRateFee
-{
-public int Id { get; set; }
-public double Ammount { get; set; }
-public bool Obsolete { get; set; }
-}
+    public class FlatRateFee
+    {
+        public int Id { get; set; }
+        public double Ammount { get; set; }
+        public bool Obsolete { get; set; }
+        public string UserRole { get; set; }
+    }
 }

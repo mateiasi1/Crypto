@@ -37,10 +37,13 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/FlatRateFees
-        [Authorize(Roles="Admin")]
         [HttpPost]
         public async Task<ActionResult<FlatRateFee>> PostFlatRateFee(FlatRateFee flatRateFee)
         {
+            if (flatRateFee.UserRole != "admin")
+            {
+                return BadRequest();
+            }
             var flatRate = _feesManager.AddFlatRateFee(flatRateFee);
             return Ok(flatRate);
         }

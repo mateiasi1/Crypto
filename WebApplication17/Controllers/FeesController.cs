@@ -39,7 +39,7 @@ namespace WebApplication17.Controllers
         [HttpPost]
         public async Task<ActionResult<Fee>> PostFee(Fee fee)
         {
-            if(fee.UserRole != "Admin" || fee.UserRole != "admin")
+            if( fee.UserRole != "admin")
             {
                 return BadRequest();
             }
