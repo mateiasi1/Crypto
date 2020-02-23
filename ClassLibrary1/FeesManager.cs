@@ -19,7 +19,8 @@ namespace BusinessLayer
         #region Flat rate fee
         public double GetAllFlatRateFees()
         {
-            return _context.FlatRateFee.Where(item => item.Obsolete == false).Select(a => a.Ammount).FirstOrDefault();
+            FlatRateFee flat = _context.FlatRateFee.Where(i => i.Obsolete == false).FirstOrDefault();
+            return flat.Ammount;
         }
         public FlatRateFee AddFlatRateFee(FlatRateFee flatRateFee)
         {
@@ -51,9 +52,10 @@ namespace BusinessLayer
 
 
         #region Fee
-        public List<Fee> GetAllFees()
+        public double GetAllFees()
         {
-           return _context.Fee.ToList();
+            Fee fee = _context.Fee.Where(i => i.Obsolete == false).FirstOrDefault();
+           return fee.Percentage;
         }
 
         public Fee AddFee(Fee fee)

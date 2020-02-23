@@ -15,7 +15,7 @@ namespace iRepository
         #endregion
 
         #region Fee
-        List<Fee> GetAllFees();
+        double GetAllFees();
         Fee AddFee(Fee fee);
         Fee DeleteFee(int id);
         #endregion

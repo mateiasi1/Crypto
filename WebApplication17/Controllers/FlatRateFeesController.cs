@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
+using WebApplication17.DTO;
 using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
@@ -28,12 +29,12 @@ namespace WebApplication17.Controllers
 
         // GET: api/FlatRateFees
         [HttpGet]
-        public async Task<ActionResult<FlatRateFee>> GetFlatRateFee()
+        public double GetFlatRateFee()
         {
             double flat = _feesManager.GetAllFlatRateFees();
-           
 
-            return Ok(_mapper.Map<IEnumerable<FlatRateFee>>(flat));
+
+            return flat;
         }
 
         // POST: api/FlatRateFees
@@ -45,7 +46,7 @@ namespace WebApplication17.Controllers
                 return BadRequest();
             }
             var flatRate = _feesManager.AddFlatRateFee(flatRateFee);
-            return Ok(flatRate);
+            return Ok(_mapper.Map<IEnumerable<FlatRateFeeDTO>>(flatRate));
         }
 
         // DELETE: api/FlatRateFees/5

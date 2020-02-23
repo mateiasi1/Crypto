@@ -29,10 +29,10 @@ namespace WebApplication17.Controllers
 
         // GET: api/Fees
         [HttpGet]
-        public async Task<ActionResult<Fee>> GetFee()
+        public double GetFee()
         {
-            var feeList = _feesManager.GetAllFees();
-            return Ok(_mapper.Map<IEnumerable<FeeDTO>>(feeList));
+            var fee = _feesManager.GetAllFees();
+            return fee;
         }
 
         // POST: api/Fees
