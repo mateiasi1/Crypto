@@ -21,7 +21,7 @@ namespace BusinessLayer
         protected Contexts _context;
         private readonly AppSettings _appSettings;
         EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("D:/Didactical/backend/ClassLibrary1/Email/EmailTemplate.html"));
+        string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
 
         public RegisterUserManager(Contexts context, IOptions<AppSettings> appSettings)
         {

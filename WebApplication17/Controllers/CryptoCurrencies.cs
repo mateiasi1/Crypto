@@ -45,7 +45,6 @@ namespace WebApplication17.Controllers
             }
 
         // POST: api/Currencies
-        [Authorize(Roles = "Admin")]
         [HttpPost]
             public async Task<ActionResult<Currency>> PostCurrency(CryptoCurrency cryptoCurrency)
             {

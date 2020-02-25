@@ -22,7 +22,7 @@ namespace BusinessLayer
 
         private readonly AppSettings _appSettings;
         readonly EmailService emailService = new EmailService();
-        string Body = System.IO.File.ReadAllText(("D:/Didactical/backend/ClassLibrary1/Email/EmailTemplate.html"));
+        string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
         
 
         public UsersManager(Contexts context, IOptions<AppSettings> appSettings)

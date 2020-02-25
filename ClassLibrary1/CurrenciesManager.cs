@@ -52,8 +52,6 @@ namespace BusinessLayer
         }
         public CryptoCurrency AddCryptoCurrency(CryptoCurrency crypto)
         {
-            var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
-            crypto.CryptoCurrencyAbbreviation = cryptoCurrency.CryptoCurrencyAbbreviation;
             _context.CryptoCurrency.Add(crypto);
             _context.SaveChanges();
 
