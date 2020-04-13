@@ -50,7 +50,6 @@ namespace WebApplication17.Controllers
 
 
         // POST: api/Banks
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult<Crypto>> PostCrypto(Crypto crypto)
         {
@@ -60,7 +59,6 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Banks/5
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Crypto>> DeleteCrypto(int id)
         {

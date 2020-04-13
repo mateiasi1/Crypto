@@ -50,7 +50,6 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/FlatRateFees/5
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<FlatRateFee>> DeleteFlatRateFee(int id)
         {

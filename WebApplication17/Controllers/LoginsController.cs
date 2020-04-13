@@ -15,7 +15,6 @@ using WebApplication17.Models;
 
 namespace WebApplication17.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginsController : ControllerBase

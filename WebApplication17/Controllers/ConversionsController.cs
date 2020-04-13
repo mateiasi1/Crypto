@@ -36,7 +36,6 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/Conversions
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Conversion>> PostConversion(Conversion conversion, string percentage)
         {

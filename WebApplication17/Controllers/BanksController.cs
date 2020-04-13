@@ -52,7 +52,6 @@ namespace WebApplication17.Controllers
         
         // POST: api/Banks
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<Bank>> PostBank(Bank bank)
         {
             var bankList = _banksManager.AddBank(bank);
@@ -60,7 +59,6 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Banks/5
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Bank>> DeleteBank(int id)
         {

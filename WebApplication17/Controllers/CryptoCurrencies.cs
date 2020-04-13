@@ -53,7 +53,6 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Currencies/5
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
             public async Task<ActionResult<CryptoCurrency>> DeleteCurrency(int id)
             {
