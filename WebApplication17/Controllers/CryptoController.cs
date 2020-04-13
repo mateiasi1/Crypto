@@ -31,7 +31,9 @@ namespace WebApplication17.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Crypto>>> GetCrypto()
         {
-            return _cryptoManager.GetAllCrypto();
+
+            var cryptoList = _cryptoManager.GetAllCrypto();
+            return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 
         // GET: api/Banks/5

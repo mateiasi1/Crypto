@@ -6,7 +6,9 @@ namespace WebApplication17.DTO
 {
    public class CryptoDTO
     {
-        public string Name { get; set; }
-        public double Price { get; set; }
+        public int Id { get; set; }
+        public string CryptoCurrencyName { get; set; }
+        public string CryptoCurrencyAbbreviation { get; set; }
+        public string Refference { get; set; }
     }
 }
