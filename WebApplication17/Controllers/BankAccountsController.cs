@@ -51,6 +51,7 @@ namespace WebApplication17.Controllers
         // PUT: api/BankAccounts/add  for Add sold
         [HttpPut("add")]
         public IActionResult AddBankAccount()
+        
         {
             string body = this.InputBodyData;
             _banksManager.AddToBankAccount(body);
