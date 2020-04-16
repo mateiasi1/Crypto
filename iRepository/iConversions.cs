@@ -16,5 +16,7 @@ namespace iRepository
         List<Conversion> GetAllConversions();
         Conversion AddConversion(Conversion conversion, string percentage);
         #endregion
+
+        string FiatExchange(string body);
     }
 }

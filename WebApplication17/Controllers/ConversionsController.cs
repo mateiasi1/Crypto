@@ -16,7 +16,7 @@ namespace WebApplication17.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ConversionsController : ControllerBase
+    public class ConversionsController : CustomBaseController
     {
         private readonly ConversionsManager _conversionsManager;
         private readonly IMapper _mapper;
@@ -41,6 +41,14 @@ namespace WebApplication17.Controllers
         {
             var conversionList = _conversionsManager.AddConversion(conversion, percentage);
             return Ok(_mapper.Map<IEnumerable<BankDTO>>(conversionList));
+        }
+
+        [HttpPut("exchangeFiat")]
+        public IActionResult Exchange()
+        {
+            string body = this.InputBodyData;
+            var conversionList = _conversionsManager.FiatExchange(body);
+            return Ok();
         }
     }
 }
