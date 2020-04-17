@@ -61,6 +61,37 @@ namespace BusinessLayer
             _context.SaveChanges();
             return "ok";
         }
+        public string CryptoExchange(string body)
+        {
+            var cryptoCurrencyName = "";
+            var fiatCurrencyName = "";
+
+            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
+            int id = Convert.ToInt32(fieldData["id"]);
+            string selectedValueFrom = Convert.ToString(fieldData["selectedValueFrom"]);
+            string selectedValueTo = Convert.ToString(fieldData["selectedValueTo"]);
+            double amount = Convert.ToDouble(fieldData["amountFrom"]);
+            cryptoCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueFrom).Select(i => i.CryptoCurrencyName).FirstOrDefault();
+            fiatCurrencyName = _context.Currency.Where(i => i.CurrencyAbbreviation == selectedValueTo).Select(i => i.CurrencyName).FirstOrDefault();
+            if(fiatCurrencyName == null)
+            {
+                fiatCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
+
+                var cryptoAccountFrom = _context.CryptoAccount.Where(i => i.Id == id && i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
+                var cryptoAccountTo = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == fiatCurrencyName).FirstOrDefault();
+                cryptoAccountFrom.Sold -= amount;
+                cryptoAccountTo.Sold += amount;
+                _context.SaveChanges(); 
+                return "ok";
+            }
+
+            var acountTo = _context.BankAccount.Where(i => i.CurrencyName == fiatCurrencyName).FirstOrDefault();
+            var acountFrom = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
+            acountFrom.Sold -= amount;
+            acountTo.Sold += amount;
+            _context.SaveChanges();
+            return "ok";
+        }
         #endregion
     }
 }

@@ -18,5 +18,6 @@ namespace iRepository
         #endregion
 
         string FiatExchange(string body);
+        string CryptoExchange(string body);
     }
 }

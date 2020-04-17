@@ -50,5 +50,14 @@ namespace WebApplication17.Controllers
             var conversionList = _conversionsManager.FiatExchange(body);
             return Ok();
         }
+
+
+        [HttpPut("exchangeCrypto")]
+        public IActionResult ExchangeCrypto()
+        {
+            string body = this.InputBodyData;
+            var conversionList = _conversionsManager.CryptoExchange(body);
+            return Ok();
+        }
     }
 }

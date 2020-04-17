@@ -19,7 +19,7 @@ namespace iRepository
 
         #region Bank Account
         List<BankAccount> GetAllBankAccounts();
-        BankAccount GetBankAccountById(int id);
+        List <BankAccount> GetBankAccountById(int id);
         BankAccount AddBankAccount(BankAccount bankAccount);
         BankAccount DeleteBankAccount(int id);
         BankAccount AddToBankAccount(string body);

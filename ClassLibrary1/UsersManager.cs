@@ -74,6 +74,10 @@ namespace BusinessLayer
             {
                 return false;
             }
+            Random rnd = new Random();
+            int referralRandom = rnd.Next(1000000, 9999999);
+
+            user.ReferralId = "CRYPTOAPP" + user.Id.ToString() + user.Username + referralRandom.ToString();
             user.Confirmed = true;
             _context.SaveChanges();
             return true;

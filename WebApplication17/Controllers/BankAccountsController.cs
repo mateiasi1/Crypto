@@ -44,7 +44,7 @@ namespace WebApplication17.Controllers
         {
            var bankAccount = _banksManager.GetBankAccountById(id);
 
-            return bankAccount;
+            return Ok(_mapper.Map<IEnumerable<BankAccountDTO>>(bankAccount));
         }
         
 

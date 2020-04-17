@@ -32,10 +32,7 @@ namespace BusinessLayer
         public RegisterUser AddUser(RegisterUser registerUser)
         {
             User user = new User();
-            Random rnd = new Random();
-            int referralRandom = rnd.Next(1000000, 9999999);
-
-            user.ReferralId = "CRYPTOAPP" + registerUser.Id.ToString() + registerUser.Username + referralRandom.ToString();
+         
             user.Username = registerUser.Username;
             user.Confirmed = false;
             user.Role = "user";

@@ -58,9 +58,10 @@ namespace BusinessLayer
         {
             return _context.BankAccount.ToList();
         }
-        public BankAccount GetBankAccountById(int id)
+
+        public List<BankAccount> GetBankAccountById(int id)
         {
-            return _context.BankAccount.Find(id);
+            return _context.BankAccount.Where(i => i.IdUser == id).ToList();
             //    var bank = _context.Bank.Where(c => c.Id == id).FirstOrDefault();
             //return bank;
         }
