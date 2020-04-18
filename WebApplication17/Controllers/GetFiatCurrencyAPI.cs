@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLayer;
+using Data_Layer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,7 +19,6 @@ namespace WebApplication17.Controllers
     [ApiController]
     public class GetFiatCurrencyAPI : Controller
     {
-
         private readonly IMapper _mapper;
         public GetFiatCurrencyAPI(IMapper mapper)
         {
@@ -59,7 +60,46 @@ namespace WebApplication17.Controllers
                             break;
                         }
                     }
-                    return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currency));
+                    return currency;
+                }
+                catch (HttpRequestException httpRequestException)
+                {
+                    return null;
+                }
+            }
+        }
+
+        [HttpGet("{from}/{to}")]
+        public async Task<ActionResult<ConversionRate>> GetConversionRate(string from, string to)
+        {
+            List<ConversionRate> conversion = new List<ConversionRate>();
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/price?fsym=" + from + "&tsyms=" + to);
+                    var response = await client.GetAsync(client.BaseAddress);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    var jsonData = JObject.Parse(stringResult);
+                    foreach (var item in jsonData)
+                    {
+                        if (item.Key != to)
+                        {
+                            continue;
+                        }
+
+                        foreach (var items in jsonData)
+                        {
+                            var itemValueResult = items.Value.ToString();
+                            ConversionRate conversionRate = new ConversionRate();
+                            conversionRate.ConversionRateValue = Convert.ToDouble(itemValueResult);
+                            conversion.Add(conversionRate);
+                        }
+                    }
+                    return Ok(_mapper.Map<IEnumerable<ConversionRate>>(conversion));
                 }
                 catch (HttpRequestException httpRequestException)
                 {
@@ -67,6 +107,5 @@ namespace WebApplication17.Controllers
                 }
             }
         }
-
     }
 }

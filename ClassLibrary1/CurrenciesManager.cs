@@ -1,7 +1,10 @@
-﻿using iRepository;
+﻿using AutoMapper;
+using iRepository;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using WebApplication17.DTO;
 using WebApplication17.Models;
@@ -10,9 +13,11 @@ namespace BusinessLayer
 {
     public class CurrenciesManager : ICurrencies
     {
+        private readonly IMapper _mapper;
         protected WebApplication17.Data.Contexts _context;
-        public CurrenciesManager(WebApplication17.Data.Contexts context)
+        public CurrenciesManager(WebApplication17.Data.Contexts context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
         #region FiatCurrency
@@ -39,6 +44,7 @@ namespace BusinessLayer
 
             return currency;
         }
+        
         #endregion
 
         #region Crypto Currency

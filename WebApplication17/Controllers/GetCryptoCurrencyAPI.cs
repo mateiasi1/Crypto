@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
+using Data_Layer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -57,6 +58,45 @@ namespace WebApplication17.Controllers
 
                     return Ok(_mapper.Map<IEnumerable<CryptoCurrencyDTO>>(cryptoCurrencyList));
 
+                }
+                catch (HttpRequestException httpRequestException)
+                {
+                    return BadRequest($"Error getting crypto: {httpRequestException.Message}");
+                }
+            }
+        }
+
+        [HttpGet("{from}/{to}")]
+        public async Task<ActionResult<ConversionRate>> GetConversionRate(string from, string to)
+        {
+            List<ConversionRate> conversion = new List<ConversionRate>();
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/price?fsym=" + from + "&tsyms=" + to);
+                    var response = await client.GetAsync(client.BaseAddress);
+
+                    response.EnsureSuccessStatusCode();
+
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    var jsonData = JObject.Parse(stringResult);
+                    foreach (var item in jsonData)
+                    {
+                        if (item.Key != to)
+                        {
+                            continue;
+                        }
+
+                        foreach (var items in jsonData)
+                        {
+                            var itemValueResult = items.Value.ToString();
+                            ConversionRate conversionRate = new ConversionRate();
+                            conversionRate.ConversionRateValue = Convert.ToDouble(itemValueResult);
+                            conversion.Add(conversionRate);
+                        }
+                    }
+                    return Ok(_mapper.Map<IEnumerable<ConversionRate>>(conversion));
                 }
                 catch (HttpRequestException httpRequestException)
                 {
