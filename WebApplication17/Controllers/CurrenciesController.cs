@@ -50,7 +50,6 @@ namespace WebApplication17.Controllers
         }
 
         // POST: api/Currencies
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
         {
@@ -59,7 +58,6 @@ namespace WebApplication17.Controllers
         }
 
         // DELETE: api/Currencies/5
-        [AllowAnonymous]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Currency>> DeleteCurrency(int id)
         {

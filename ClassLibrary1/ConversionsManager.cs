@@ -1,9 +1,11 @@
-﻿using iRepository;
+﻿using Data_Layer.Models;
+using iRepository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using WebApplication17.Models;
 
@@ -53,11 +55,18 @@ namespace BusinessLayer
             double amount = Convert.ToDouble(fieldData["amountFrom"]);
             var fiatCurrencyName = _context.Currency.Where(i => i.CurrencyAbbreviation == selectedValueFrom).Select(i => i.CurrencyName).FirstOrDefault();
             var cryptoCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
-
+            GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();
+            var conversionRate = getConversionRateAsync.GetConversionRate(selectedValueFrom, selectedValueTo);
+            FeesManager fee = new FeesManager(_context);
+            var currentFee = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(fee.GetAllFees())/100) * amount));
             var bankAccount = _context.BankAccount.Where(i => i.Id == id && i.CurrencyName == fiatCurrencyName).FirstOrDefault();
             var cryptoAccount = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
-            bankAccount.Sold -= amount;
-            cryptoAccount.Sold += amount;
+            bankAccount.Sold -= (amount + currentFee);
+            if (bankAccount.Sold < 0)
+            {
+                return null;
+            }
+            cryptoAccount.Sold = amount * Convert.ToDouble(conversionRate); 
             _context.SaveChanges();
             return "ok";
         }
@@ -76,19 +85,35 @@ namespace BusinessLayer
             if(fiatCurrencyName == null)
             {
                 fiatCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
+                GetConversionRateAsync getConversionRateAsyncCrypto = new GetConversionRateAsync();
+                var conversionRateCrypto = getConversionRateAsyncCrypto.GetConversionRate(selectedValueFrom, selectedValueTo);
+                FeesManager feeCrypto = new FeesManager(_context);
+                var currentFeeCrypto = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(feeCrypto.GetAllFees()) / 100) * amount));
 
                 var cryptoAccountFrom = _context.CryptoAccount.Where(i => i.Id == id && i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
                 var cryptoAccountTo = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == fiatCurrencyName).FirstOrDefault();
-                cryptoAccountFrom.Sold -= amount;
-                cryptoAccountTo.Sold += amount;
+                cryptoAccountFrom.Sold -= (amount + currentFeeCrypto);
+                if (cryptoAccountFrom.Sold < 0)
+                {
+                    return null;
+                }
+                cryptoAccountTo.Sold = amount * Convert.ToDouble(conversionRateCrypto);
                 _context.SaveChanges(); 
                 return "ok";
             }
-
+            GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();
+            var conversionRate = getConversionRateAsync.GetConversionRate(selectedValueFrom, selectedValueTo);
+            FeesManager fee = new FeesManager(_context);
+            var currentFee = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(fee.GetAllFees()) / 100) * amount));
             var acountTo = _context.BankAccount.Where(i => i.CurrencyName == fiatCurrencyName).FirstOrDefault();
             var acountFrom = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
-            acountFrom.Sold -= amount;
-            acountTo.Sold += amount;
+            acountFrom.Sold -= (amount + currentFee);
+            if (acountFrom.Sold < 0)
+            {
+                return null;
+            }
+
+            acountTo.Sold = amount * Convert.ToDouble(conversionRate);
             _context.SaveChanges();
             return "ok";
         }

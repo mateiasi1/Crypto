@@ -95,7 +95,7 @@ namespace BusinessLayer
             double amount = Convert.ToDouble(fieldData["amount"]);
             var cryptoAccount = _context.CryptoAccount.Find(id);
             cryptoAccount.Sold += amount;
-            AddCryptoTransaction(cryptoAccount, amount);
+            //AddCryptoTransaction(cryptoAccount, amount);
             _context.SaveChanges();
             return cryptoAccount;
         }

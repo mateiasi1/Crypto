@@ -112,8 +112,14 @@ namespace BusinessLayer
             double amount = Convert.ToDouble(fieldData["amount"]);
 
             var bankAccount = _context.BankAccount.Find(id);
-            bankAccount.Sold -= amount;
+            FeesManager flatRateFee = new FeesManager(_context);
 
+            var flatRate = flatRateFee.GetAllFlatRateFees();
+            bankAccount.Sold -= (amount + flatRate);
+            if (bankAccount.Sold < 0)
+            {
+                return null;
+            }
             AddTransaction(bankAccount, amount);
             _context.SaveChanges();
             return bankAccount;

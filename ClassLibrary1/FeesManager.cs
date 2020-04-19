@@ -15,6 +15,7 @@ namespace BusinessLayer
         {
             _context = context;
         }
+        
 
         #region Flat rate fee
         public double GetAllFlatRateFees()
