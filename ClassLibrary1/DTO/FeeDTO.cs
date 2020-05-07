@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-   public class FeeDTO
+   public class FeeDTO : BaseDTO
     {
         public double Percentage { get; set; }
         public bool Obsolete { get; set; }

@@ -8,13 +8,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using WebApplication17;
+using DataLayer;
 using WebApplication17.Data;
 using WebApplication17.Models;
 
 namespace BusinessLayer
 {
-    public class LoginManager : ILogin
+    public class LoginManager : LoginRepository
     {
         protected Contexts _context;
         private readonly AppSettings _appSettings;
@@ -32,9 +32,7 @@ namespace BusinessLayer
         {
             int userID = _context.User.Where(item => item.Username == username).Select(item => item.Id).FirstOrDefault();
             var user = _context.User.Find(userID);
-
             
-
             // return null if user not found
             if (user == null)
                 return null;
@@ -53,12 +51,12 @@ namespace BusinessLayer
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.Now.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-           
+
             var passwordSalt = user.PasswordSalt;
             string passwordHash = Hash.Create(password, passwordSalt.ToString());
             if (user.Password == passwordHash)
@@ -70,13 +68,14 @@ namespace BusinessLayer
             }
 
             return null;
-            
+
         }
 
         public IEnumerable<User> GetAll()
         {
             // return users without passwords
-            return _users.Select(x => {
+            return _users.Select(x =>
+            {
                 x.Password = null;
                 return x;
             });
@@ -104,5 +103,7 @@ namespace BusinessLayer
             _context.SaveChanges();
             return token;
         }
+
+     
     }
 }

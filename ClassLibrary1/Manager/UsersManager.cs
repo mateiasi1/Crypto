@@ -1,6 +1,5 @@
 ﻿using Data_Layer.Models;
 using iRepository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -9,9 +8,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using WebApplication17;
+using DataLayer;
+using DataLayer.Email;
 using WebApplication17.Data;
-using WebApplication17.Email;
 using WebApplication17.Models;
 
 namespace BusinessLayer

@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication17.Data;
-using WebApplication17.DTO;
-using WebApplication17.Email;
+
+using DataLayer.DTO;
+using DataLayer.Email;
 using WebApplication17.Models;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
    
     [Route("api/[controller]")]

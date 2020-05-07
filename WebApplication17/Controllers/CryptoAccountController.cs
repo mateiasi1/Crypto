@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WebApplication17.Data;
-using WebApplication17.DTO;
+
+using DataLayer.DTO;
 using WebApplication17.Models;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

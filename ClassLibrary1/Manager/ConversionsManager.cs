@@ -7,14 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using WebApplication17.Data;
 using WebApplication17.Models;
 
 namespace BusinessLayer
 {
     public class ConversionsManager : IConversions
     {
-        protected WebApplication17.Data.Contexts _context;
-        public ConversionsManager(WebApplication17.Data.Contexts context)
+        protected Contexts _context;
+        public ConversionsManager(Contexts context)
         {
             _context = context;
         }

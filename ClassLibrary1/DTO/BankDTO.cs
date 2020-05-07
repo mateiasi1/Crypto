@@ -1,12 +1,12 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-    public class BankDTO
+    public class BankDTO : BaseDTO
     {
-        public int Id { get; set; }
         public string BankName { get; set; }
         public string IBAN { get; set; }
         public string CurrencyName { get; set; }

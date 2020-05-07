@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace WebApplication17
+namespace DataLayer
 {
     public class Hash
 {

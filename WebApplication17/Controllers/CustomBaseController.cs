@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
     public class CustomBaseController : ControllerBase
     {

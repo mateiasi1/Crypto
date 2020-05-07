@@ -1,8 +1,5 @@
 ﻿using iRepository;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using WebApplication17.Data;
 using WebApplication17.Models;
 
@@ -16,7 +13,6 @@ namespace BusinessLayer
             _context = context;
         }
         
-
         #region Flat rate fee
         public double GetAllFlatRateFees()
         {

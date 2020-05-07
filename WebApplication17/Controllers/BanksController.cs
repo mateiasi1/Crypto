@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer;
+using BusinessLayer.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApplication17.Data;
-using WebApplication17.DTO;
+using DataLayer.DTO;
 using WebApplication17.Models;
+using OpenQA.Selenium.Remote;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,7 +18,6 @@ namespace WebApplication17.Controllers
         private readonly IMapper _mapper;
         private readonly BanksManager _banksManager;
 
-
         public BanksController(IMapper mapper, BanksManager banksManager)
         {
             _mapper = mapper;
@@ -29,41 +25,89 @@ namespace WebApplication17.Controllers
         }
 
         // GET: api/Banks
-        [HttpGet]
+        [HttpGet, Authorize]
         public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
         {
+            ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
+            ListDTO<BankDTO> list = new ListDTO<BankDTO>();
+            list = _banksManager.GetAllBanks();
+            response.Data = new ListDTO<BankDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
 
-            var bankList = _banksManager.GetAllBanks();
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
+            return NotFound(response);
         }
 
         // GET: api/Banks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Bank>> GetBank(int id)
         {
+            ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
+            ListDTO<BankDTO> list = new ListDTO<BankDTO>();
             var bank = _banksManager.GetBankById(id);
-            if (bank == null)
+            if (bank != null)
             {
-                return NotFound();
+                response.Data = null; //TODO de facut si aici sa prmeasca bank
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
             }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
 
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(_banksManager));
+            return BadRequest(response);
         }
         
         // POST: api/Banks
         [HttpPost]
         public async Task<ActionResult<Bank>> PostBank(Bank bank)
         {
+            ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
+            ListDTO<BankDTO> list = new ListDTO<BankDTO>();
             var bankList = _banksManager.AddBank(bank);
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bankList));
+
+            if (bankList != null)
+            {
+                response.Data = bankList;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return Ok(response);
         }
 
         // DELETE: api/Banks/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Bank>> DeleteBank(int id)
         {
-            var bank = _banksManager.DeleteBank(id);
-            return Ok(_mapper.Map<IEnumerable<BankDTO>>(bank));
+            ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
+            ListDTO<BankDTO> list = new ListDTO<BankDTO>();
+            var bankList = _banksManager.DeleteBank(id);
+            if (bankList != null)
+            {
+                response.Data = bankList;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return Ok(response);
         }
 
         

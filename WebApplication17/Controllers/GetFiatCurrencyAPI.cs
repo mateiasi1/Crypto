@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using WebApplication17.Data;
-using WebApplication17.DTO;
+
+using DataLayer.DTO;
 using WebApplication17.Models;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
 
     [Route("api/[controller]")]

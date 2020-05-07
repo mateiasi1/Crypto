@@ -9,14 +9,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using WebApplication17;
-using WebApplication17.Data;
-using WebApplication17.Email;
+using DataLayer.Email;
 using WebApplication17.Models;
+using WebApplication17.Data;
 
 namespace BusinessLayer
 {
-   public class RegisterUserManager : IRegisterUser
+    public class RegisterUserManager : IRegisterUser
     {
         protected Contexts _context;
         private readonly AppSettings _appSettings;

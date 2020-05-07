@@ -9,11 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication17.Data;
-using WebApplication17.DTO;
-using WebApplication17.Models;
 
-namespace WebApplication17.Controllers
+using DataLayer.DTO;
+using WebApplication17.Models;
+using WebApplication17.Data;
+
+namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -23,29 +24,33 @@ namespace WebApplication17.Controllers
         private readonly LoginManager _loginManager;
         private ILogin _userService;
 
-        public LoginsController(Contexts context, IMapper mapper, LoginManager loginManager, ILogin userService)
+        public LoginsController(Contexts context, IMapper mapper, LoginManager loginManager)
         {
             _mapper = mapper;
             _loginManager = loginManager;
-            _userService = userService;
         }
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody]User userParam)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
-
-            if (user == null)
+            if (userParam.Username == null || userParam.Password == null)
+            {
                 return BadRequest(new { message = "Username or password is incorrect" });
-
-            return Ok(_mapper.Map<LoginDTO>(user));
+            }
+               
+            var user = _loginManager.Authenticate(userParam.Username, userParam.Password);
+            if(user != null)
+            {
+                return Ok(_mapper.Map<LoginDTO>(user));
+            }
+            return Unauthorized();
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromBody] User userParam)
         {
-            var users = _userService.GetAll();
+            var users = _loginManager.GetAll();
             return Ok(users);
         }
 

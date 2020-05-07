@@ -6,13 +6,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication17.Data;
+
 using WebApplication17.Models;
-using WebApplication17.DTO;
+using DataLayer.DTO;
 using BusinessLayer;
 using Microsoft.AspNetCore.Authorization;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

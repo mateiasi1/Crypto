@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-   public class CurrencyDTO
+   public class CurrencyDTO : BaseDTO
     {
         public string CurrencyAbbreviation { get; set; }
         public string CurrencyName { get; set; }

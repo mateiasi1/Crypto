@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApplication17.Data;
+using WebApplication17.Models;
 
-namespace WebApplication17.Controllers
+namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,14 +21,14 @@ namespace WebApplication17.Controllers
 
         // GET: api/Wallets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.Wallet>>> GetWallet()
+        public async Task<ActionResult<IEnumerable<Wallet>>> GetWallet()
         {
             return await _context.Wallet.ToListAsync();
         }
 
         // GET: api/Wallets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Models.Wallet>> GetWallet(int id)
+        public async Task<ActionResult<Wallet>> GetWallet(int id)
         {
             var wallet = await _context.Wallet.FindAsync(id);
 
@@ -43,7 +42,7 @@ namespace WebApplication17.Controllers
 
         // PUT: api/Wallets/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWallet(int id, Models.Wallet wallet)
+        public async Task<IActionResult> PutWallet(int id, Wallet wallet)
         {
             if (id != wallet.Id)
             {
@@ -73,7 +72,7 @@ namespace WebApplication17.Controllers
 
         // POST: api/Wallets
         [HttpPost]
-        public async Task<ActionResult<Models.Wallet>> PostWallet(Models.Wallet wallet)
+        public async Task<ActionResult<Wallet>> PostWallet(Wallet wallet)
         {
             _context.Wallet.Add(wallet);
             await _context.SaveChangesAsync();
@@ -83,7 +82,7 @@ namespace WebApplication17.Controllers
 
         // DELETE: api/Wallets/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Models.Wallet>> DeleteWallet(int id)
+        public async Task<ActionResult<Wallet>> DeleteWallet(int id)
         {
             var wallet = await _context.Wallet.FindAsync(id);
             if (wallet == null)

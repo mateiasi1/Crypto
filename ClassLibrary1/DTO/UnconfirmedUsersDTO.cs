@@ -1,11 +1,12 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-    public class UnconfirmedUsersDTO
+    public class UnconfirmedUsersDTO : BaseDTO
     {
         public int Id { get; set; }
         public string Username { get; set; }

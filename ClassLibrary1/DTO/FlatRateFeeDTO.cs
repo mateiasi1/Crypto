@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-    public class FlatRateFeeDTO
+    public class FlatRateFeeDTO : BaseDTO
     {
         public double Ammount { get; set; }
         public bool Obsolete { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace WebApplication17
+namespace DataLayer
 {
     public class Salt
     {

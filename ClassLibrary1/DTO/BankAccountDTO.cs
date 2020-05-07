@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebApplication17.DTO
+namespace DataLayer.DTO
 {
-  public  class BankAccountDTO
+  public  class BankAccountDTO: BaseDTO
     {
         public int Id { get; set; }
         public string CurrencyName { get; set; }

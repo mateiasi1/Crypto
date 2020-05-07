@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using WebApplication17.Models;
 
-namespace WebApplication17.Email
+namespace DataLayer.Email
 {
     public class EmailService
     {

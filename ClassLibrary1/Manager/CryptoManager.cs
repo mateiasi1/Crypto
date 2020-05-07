@@ -3,28 +3,41 @@ using iRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using WebApplication17.Data;
-using WebApplication17.DTO;
-using WebApplication17.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using WebApplication17.Data;
+using WebApplication17.Models;
+using BusinessLayer.DTO;
+using DataLayer.DTO;
 
 namespace BusinessLayer
 {
     public class CryptoManager : ICrypto
     {
         protected Contexts _context;
+        private readonly IMapper _mapper;
         CryptoAccountTransaction cryptoAccountTransaction = new CryptoAccountTransaction();
-        public CryptoManager(Contexts context)
+        public ListDTO<CryptoDTO> list = new ListDTO<CryptoDTO>();
+        public ListDTO<CryptoAccountDTO> listAccounts = new ListDTO<CryptoAccountDTO>();
+
+
+        public CryptoManager(Contexts context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         #region Crypto
-        public List<Crypto> GetAllCrypto()
+        public ListDTO<CryptoDTO> GetAllCrypto()
         {
-            return _context.Crypto.ToList();
+            list.Items = new List<CryptoDTO>();
+            var bankList = _context.Crypto.ToList();
+            foreach (var item in bankList)
+            {
+                var items = _mapper.Map<CryptoDTO>(item);
+                list.Items.Add(items);
+            }
+            return list;
         }
 
         public Crypto GetCryptoById(int id)
@@ -52,9 +65,16 @@ namespace BusinessLayer
         #endregion
 
         #region Crypto Account
-        public List<CryptoAccount> GetAllCryptoAccounts()
+        public ListDTO<CryptoAccountDTO> GetAllCryptoAccounts()
         {
-            return _context.CryptoAccount.ToList();
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccount = _context.CryptoAccount.ToList();
+            foreach (var item in cryptoAccount)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
         }
         public CryptoAccount GetCryptoAccountById(int id)
         {
