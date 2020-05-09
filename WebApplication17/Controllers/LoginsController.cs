@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using DataLayer.DTO;
 using WebApplication17.Models;
 using WebApplication17.Data;
+using Microsoft.AspNetCore.Cors;
 
 namespace DataLayer.Controllers
 {
@@ -32,6 +33,7 @@ namespace DataLayer.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
+        [EnableCors("AllowOrigin")]
         public IActionResult Authenticate([FromBody]User userParam)
         {
             if (userParam.Username == null || userParam.Password == null)

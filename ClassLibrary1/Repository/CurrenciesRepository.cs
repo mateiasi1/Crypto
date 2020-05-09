@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using DataLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WebApplication17.Models;
@@ -8,17 +10,17 @@ namespace iRepository
     public interface ICurrencies
     {
         #region Fiat Currencies
-        List<Currency> GetAllCurrencies();
-        Currency GetCurrencyById(int id);
-        Currency AddCurrency(Currency currency);
-        Currency DeleteCurrency(int id);
+        ListDTO<CurrencyDTO> GetAllCurrencies();
+        ListDTO<CurrencyDTO> GetCurrencyById(int id);
+        ListDTO<CurrencyDTO> AddCurrency(Currency currency);
+        ListDTO<CurrencyDTO> DeleteCurrency(int id);
         #endregion
 
         #region Crypto Currencies
-        List<CryptoCurrency> GetAllCryptoCurrencies();
-        CryptoCurrency GetCryptoCurrencyById(int id);
-        CryptoCurrency AddCryptoCurrency(CryptoCurrency cryptoCurrency);
-        CryptoCurrency DeleteCryptoCurrency(int id);
+        ListDTO<CryptoCurrencyDTO> GetAllCryptoCurrencies();
+        ListDTO<CryptoCurrencyDTO> GetCryptoCurrencyById(int id);
+        ListDTO<CryptoCurrencyDTO> AddCryptoCurrency(CryptoCurrency cryptoCurrency);
+        ListDTO<CryptoCurrencyDTO> DeleteCryptoCurrency(int id);
         #endregion
     }
 }

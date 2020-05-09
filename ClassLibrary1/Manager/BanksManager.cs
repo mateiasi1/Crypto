@@ -24,27 +24,27 @@ namespace BusinessLayer
             _mapper = mapper;
             _context = context;
         }
-       
+
         #region Bank
         public ListDTO<BankDTO> GetAllBanks()
         {
             list.Items = new List<BankDTO>();
-            var bankList= _context.Bank;
-            foreach(var item in bankList)
+            var bankList = _context.Bank;
+            foreach (var item in bankList)
             {
-               var items = _mapper.Map<BankDTO>(item);
+                var items = _mapper.Map<BankDTO>(item);
                 list.Items.Add(items);
             }
             return list;
         }
-        public BankDTO GetBankById(int id)
+        public ListDTO<BankDTO> GetBankById(int id)
         {
-            var bank = _context.Bank.Find(id);
-            var item = _mapper.Map<BankDTO>(bank);
+            list.Items = new List<BankDTO>();
+            var bankList = _context.Bank.Find(id);
+            var items = _mapper.Map<BankDTO>(bankList);
+            list.Items.Add(items);
 
-            return item;
-            //    var bank = _context.Bank.Where(c => c.Id == id).FirstOrDefault();
-            //return bank;
+            return list;
         }
 
         public ListDTO<BankDTO> AddBank(Bank bank)
@@ -67,10 +67,10 @@ namespace BusinessLayer
             var bank = _context.Bank.Where(c => c.Id == id).FirstOrDefault();
             _context.Bank.Remove(bank);
             _context.SaveChanges();
-            var bankList= _context.Bank;
-            foreach(var item in bankList)
+            var bankList = _context.Bank;
+            foreach (var item in bankList)
             {
-               var items = _mapper.Map<BankDTO>(bankList);
+                var items = _mapper.Map<BankDTO>(bankList);
             }
             return list;
         }
@@ -79,22 +79,25 @@ namespace BusinessLayer
         #region Bank Account
         public ListDTO<BankAccountDTO> GetAllBankAccounts()
         {
-
+            accountList.Items = new List<BankAccountDTO>();
             var bankAccountList = _context.BankAccount;
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
             }
             return accountList;
         }
 
-        public BankAccountDTO GetBankAccountById(int id)
+        public ListDTO<BankAccountDTO> GetBankAccountById(int id)
         {
 
-            var bank = _context.BankAccount.Where(i => i.IdUser == id).ToList();
-            var item = _mapper.Map<BankAccountDTO>(bank);
+            accountList.Items = new List<BankAccountDTO>();
+            var bankList = _context.BankAccount.Where(i => i.IdUser == id).ToList();
+            var items = _mapper.Map<BankAccountDTO>(bankList);
+            accountList.Items.Add(items);
 
-            return item;
+            return accountList;
         }
 
         public ListDTO<BankAccountDTO> AddBankAccount(BankAccount bankAccount)
@@ -112,7 +115,7 @@ namespace BusinessLayer
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-           
+
             }
             return accountList;
 
@@ -129,14 +132,14 @@ namespace BusinessLayer
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-           
+
             }
             return accountList;
         }
 
         public ListDTO<BankAccountDTO> AddToBankAccount(string body)
         {
-           
+
 
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
@@ -150,7 +153,7 @@ namespace BusinessLayer
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-           
+
             }
             return accountList;
         }
@@ -177,7 +180,7 @@ namespace BusinessLayer
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-           
+
             }
             return accountList;
         }

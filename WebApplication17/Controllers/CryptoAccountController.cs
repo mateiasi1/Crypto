@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 
 using DataLayer.DTO;
 using WebApplication17.Models;
+using BusinessLayer.DTO;
 
 namespace DataLayer.Controllers
 {
@@ -43,14 +44,23 @@ namespace DataLayer.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CryptoAccount>> GetCryptoAccount(int id)
         {
-            var cryptoAccount = _cryptoManager.GetCryptoAccountById(id);
 
-            if (cryptoAccount == null)
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            ListDTO<CryptoAccountDTO> list = new ListDTO<CryptoAccountDTO>();
+            list = _cryptoManager.GetCryptoAccountById(id);
+            response.Data = new ListDTO<CryptoAccountDTO>();
+            if (list != null)
             {
-                return NotFound();
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
             }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
 
-            return cryptoAccount;
+            return NotFound(response);
         }
 
 

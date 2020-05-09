@@ -9,14 +9,14 @@ namespace iRepository
     {
         #region Bank
         ListDTO<BankDTO> GetAllBanks();
-        BankDTO GetBankById(int id);
+        ListDTO<BankDTO> GetBankById(int id);
         ListDTO<BankDTO> AddBank(Bank bank);
         ListDTO<BankDTO> DeleteBank(int id);
         #endregion
 
         #region Bank Account
         ListDTO<BankAccountDTO> GetAllBankAccounts();
-        BankAccountDTO GetBankAccountById(int id);
+        ListDTO<BankAccountDTO> GetBankAccountById(int id);
         ListDTO<BankAccountDTO> AddBankAccount(BankAccount bankAccount);
         ListDTO<BankAccountDTO> DeleteBankAccount(int id);
         ListDTO<BankAccountDTO> AddToBankAccount(string body);

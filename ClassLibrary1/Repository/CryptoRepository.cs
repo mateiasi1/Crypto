@@ -9,18 +9,18 @@ namespace iRepository
     {
         #region Crypto
         ListDTO<CryptoDTO> GetAllCrypto();
-        Crypto GetCryptoById(int id);
-        Crypto AddCrypto(Crypto crypto);
-        Crypto DeleteCrypto(int id);
+        ListDTO<CryptoDTO> GetCryptoById(int id);
+        ListDTO<CryptoDTO> AddCrypto(Crypto crypto);
+        ListDTO<CryptoDTO> DeleteCrypto(int id);
         #endregion
 
         #region Crypto Account
         ListDTO<CryptoAccountDTO> GetAllCryptoAccounts();
-        CryptoAccount GetCryptoAccountById(int id);
-        CryptoAccount AddCryptoAccount(CryptoAccount cryptoAccount);
-        CryptoAccount DeleteCryptoAccount(int id);
-        CryptoAccount AddToCryptoAccount(string body);
-        CryptoAccount WithdrawFromCryptoAccount(string body);
+        ListDTO<CryptoAccountDTO> GetCryptoAccountById(int id);
+        ListDTO<CryptoAccountDTO> AddCryptoAccount(CryptoAccount cryptoAccount);
+        ListDTO<CryptoAccountDTO> DeleteCryptoAccount(int id);
+        ListDTO<CryptoAccountDTO> AddToCryptoAccount(string body);
+        ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(string body);
         #endregion
 
         #region Crypto Account Transactions

@@ -40,27 +40,45 @@ namespace BusinessLayer
             return list;
         }
 
-        public Crypto GetCryptoById(int id)
+        public ListDTO<CryptoDTO> GetCryptoById(int id)
         {
-            return _context.Crypto.Find(id);
+            list.Items = new List<CryptoDTO>();
+            var cryptoList = _context.Crypto.Find(id);
+            var items = _mapper.Map<CryptoDTO>(cryptoList);
+            list.Items.Add(items);
+
+            return list;
         }
 
-        public Crypto AddCrypto(Crypto crypto)
+        public ListDTO<CryptoDTO> AddCrypto(Crypto crypto)
         {
+            list.Items = new List<CryptoDTO>();
             var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
             crypto.CryptoCurrencyAbbreviation = cryptoCurrency.CryptoCurrencyAbbreviation;
             _context.Crypto.Add(crypto);
             _context.SaveChanges();
 
-            return crypto;
+            var cryptoList = _context.Crypto;
+            foreach (var item in cryptoList)
+            {
+                var items = _mapper.Map<CryptoDTO>(cryptoList);
+            }
+            return list;
         }
 
-        public Crypto DeleteCrypto(int id)
+        public ListDTO<CryptoDTO> DeleteCrypto(int id)
         {
+            list.Items = new List<CryptoDTO>();
             var crypto = _context.Crypto.Where(c => c.Id == id).FirstOrDefault();
             _context.Crypto.Remove(crypto);
             _context.SaveChanges();
-            return crypto;
+
+            var cryptoList = _context.Crypto;
+            foreach (var item in cryptoList)
+            {
+                var items = _mapper.Map<CryptoDTO>(cryptoList);
+            }
+            return list;
         }
         #endregion
 
@@ -76,14 +94,18 @@ namespace BusinessLayer
             }
             return listAccounts;
         }
-        public CryptoAccount GetCryptoAccountById(int id)
+        public ListDTO<CryptoAccountDTO> GetCryptoAccountById(int id)
         {
-            return _context.CryptoAccount.Find(id);
-            //    var bank = _context.Bank.Where(c => c.Id == id).FirstOrDefault();
-            //return bank;
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccount = _context.CryptoAccount.Find(id);
+
+            var items = _mapper.Map<CryptoAccountDTO>(cryptoAccount);
+            listAccounts.Items.Add(items);
+
+            return listAccounts;
         }
 
-        public CryptoAccount AddCryptoAccount(CryptoAccount cryptoAccount)
+        public ListDTO<CryptoAccountDTO> AddCryptoAccount(CryptoAccount cryptoAccount)
         {
             var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
             var cryptoCurrency = _context.CryptoCurrency.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
@@ -94,21 +116,34 @@ namespace BusinessLayer
             _context.CryptoAccount.Add(cryptoAccount);
             _context.SaveChanges();
 
-            return cryptoAccount;
-
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccountReturn = _context.CryptoAccount.ToList();
+            foreach (var item in cryptoAccountReturn)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
         }
 
-        public CryptoAccount DeleteCryptoAccount(int id)
+        public ListDTO<CryptoAccountDTO> DeleteCryptoAccount(int id)
         {
             var cryptoAccount = _context.CryptoAccount.Find(id);
 
             _context.CryptoAccount.Remove(cryptoAccount);
             _context.SaveChangesAsync();
 
-            return cryptoAccount;
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccountReturn = _context.CryptoAccount.ToList();
+            foreach (var item in cryptoAccountReturn)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
         }
 
-        public CryptoAccount AddToCryptoAccount(string body)
+        public ListDTO<CryptoAccountDTO> AddToCryptoAccount(string body)
         {
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
@@ -117,10 +152,18 @@ namespace BusinessLayer
             cryptoAccount.Sold += amount;
             //AddCryptoTransaction(cryptoAccount, amount);
             _context.SaveChanges();
-            return cryptoAccount;
+
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccountReturn = _context.CryptoAccount.ToList();
+            foreach (var item in cryptoAccountReturn)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
         }
 
-        public CryptoAccount WithdrawFromCryptoAccount(string body)
+        public ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(string body)
         {
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
@@ -131,7 +174,15 @@ namespace BusinessLayer
 
             AddCryptoTransaction(cryptoAccount, amount);
             _context.SaveChanges();
-            return cryptoAccount;
+
+            listAccounts.Items = new List<CryptoAccountDTO>();
+            var cryptoAccountReturn = _context.CryptoAccount.ToList();
+            foreach (var item in cryptoAccountReturn)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
         }
         #endregion
 
