@@ -30,18 +30,13 @@ namespace DataLayer
         {
             //services.AddDbContext<TodoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             var connection = @"Server=(localdb)\mssqllocaldb;Database=CryptoExchange;Trusted_Connection=True;ConnectRetryCount=0";
-           // services.AddDbContext<Contexts>
-               // (options => options.UseInMemoryDatabase("Crypto"));
+            // services.AddDbContext<Contexts>
+            // (options => options.UseInMemoryDatabase("Crypto"));
             /*for create a db: Add - Migration si numele  */
             services.AddDbContext<Contexts>
              (options => options.UseSqlServer(connection));
             services.AddCors().AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddXmlDataContractSerializerFormatters();
-
-
-            services.AddMvc();
-            services.AddCors();
-            services.AddControllers();
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -71,12 +66,12 @@ namespace DataLayer
 
             // configure DI for application services
             services.AddScoped<LoginRepository, LoginManager>();
-        
 
-        var config = new AutoMapper.MapperConfiguration(c =>
-            {
-                c.AddProfile(new ApplicationProfile());
-            });
+
+            var config = new AutoMapper.MapperConfiguration(c =>
+                {
+                    c.AddProfile(new ApplicationProfile());
+                });
 
             var mapper = config.CreateMapper();
             services.RegisterServices(Configuration);
@@ -85,12 +80,17 @@ namespace DataLayer
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                    builder.SetIsOriginAllowed(_ => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                options.AddPolicy("foo",
+                builder =>
+                {
+                    // Not a permanent solution, but just trying to isolate the problem
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
             });
+
+
+            services.AddControllers();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,15 +107,14 @@ namespace DataLayer
             }
             app.UseHttpsRedirection();
 
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("MVC didn't find anything!");
-            //});
             app.UseRouting();
-            
+            app.UseCors("foo");
+            app.UseHttpsRedirection();
+
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllers();
             });
 

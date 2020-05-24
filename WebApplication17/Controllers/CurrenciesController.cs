@@ -11,6 +11,7 @@ using WebApplication17.Models;
 using DataLayer.DTO;
 using BusinessLayer;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLayer.DTO;
 
 namespace DataLayer.Controllers
 {
@@ -31,8 +32,23 @@ namespace DataLayer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Currency>>> GetCurrency()
         {
-           var currencyList = _currenciesManager.GetAllCurrencies();
-            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currencyList));
+            ResponseDTO<CurrencyDTO> response = new ResponseDTO<CurrencyDTO>();
+            ListDTO<CurrencyDTO> list = new ListDTO<CurrencyDTO>();
+
+            list = _currenciesManager.GetAllCurrencies();
+            response.Data = new ListDTO<CurrencyDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return NotFound(response);
         }
 
         // GET: api/Currencies/5

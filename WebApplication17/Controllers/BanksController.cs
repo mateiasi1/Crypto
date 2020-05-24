@@ -25,7 +25,8 @@ namespace DataLayer.Controllers
         }
 
         // GET: api/Banks
-        [HttpGet, Authorize]
+        [HttpGet]
+        //Authorize
         public async Task<ActionResult<IEnumerable<Bank>>> GetBank()
         {
             ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();

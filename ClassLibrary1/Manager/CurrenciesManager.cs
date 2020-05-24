@@ -83,8 +83,8 @@ namespace BusinessLayer
             var cryptoReturn = _context.CryptoCurrency;
             foreach (var item in cryptoReturn)
             {
-                var items = _mapper.Map<CurrencyDTO>(item);
-                list.Items.Add(items);
+                var items = _mapper.Map<CryptoCurrencyDTO>(item);
+                cryptoList.Items.Add(items);
             }
             return cryptoList;
         }
@@ -93,8 +93,8 @@ namespace BusinessLayer
             cryptoList.Items = new List<CryptoCurrencyDTO>();
             var cryptoReturn = _context.CryptoCurrency.Find(id);
 
-            var items = _mapper.Map<CurrencyDTO>(cryptoReturn);
-            list.Items.Add(items);
+            var items = _mapper.Map<CryptoCurrencyDTO>(cryptoReturn);
+            cryptoList.Items.Add(items);
 
             return cryptoList;
         }
@@ -107,8 +107,8 @@ namespace BusinessLayer
             var cryptoReturn = _context.CryptoCurrency;
             foreach (var item in cryptoReturn)
             {
-                var items = _mapper.Map<CurrencyDTO>(item);
-                list.Items.Add(items);
+                var items = _mapper.Map<CryptoCurrencyDTO>(item);
+                cryptoList.Items.Add(items);
             }
             return cryptoList;
         }
@@ -123,8 +123,8 @@ namespace BusinessLayer
             var cryptoReturn = _context.CryptoCurrency;
             foreach (var item in cryptoReturn)
             {
-                var items = _mapper.Map<CurrencyDTO>(item);
-                list.Items.Add(items);
+                var items = _mapper.Map<CryptoCurrencyDTO>(item);
+                cryptoList.Items.Add(items);
             }
             return cryptoList;
         }

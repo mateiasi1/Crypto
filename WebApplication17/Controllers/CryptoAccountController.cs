@@ -37,7 +37,23 @@ namespace DataLayer.Controllers
         {
             var cryptoList = _cryptoManager.GetAllCryptoAccounts();
 
-            return Ok(_mapper.Map<IEnumerable<CryptoAccountDTO>>(cryptoList));
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            ListDTO<CryptoAccountDTO> list = new ListDTO<CryptoAccountDTO>();
+
+            list = _cryptoManager.GetAllCryptoAccounts();
+            response.Data = new ListDTO<CryptoAccountDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return NotFound(response);
         }
 
         // GET: api/BankAccounts/5

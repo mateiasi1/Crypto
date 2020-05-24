@@ -33,7 +33,7 @@ namespace DataLayer.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        [EnableCors("AllowOrigin")]
+        //[EnableCors("AllowOrigin")]
         public IActionResult Authenticate([FromBody]User userParam)
         {
             if (userParam.Username == null || userParam.Password == null)
