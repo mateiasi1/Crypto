@@ -67,6 +67,12 @@ namespace BusinessLayer
             {
                 return null;
             }
+            if (conversionRate == 0)
+            {
+                cryptoAccount.Sold = amount;
+                _context.SaveChanges();
+                return "ok";
+            }
             cryptoAccount.Sold = amount * Convert.ToDouble(conversionRate); 
             _context.SaveChanges();
             return "ok";

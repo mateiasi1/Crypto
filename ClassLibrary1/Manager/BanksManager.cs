@@ -114,8 +114,8 @@ namespace BusinessLayer
             var bankAccountList = _context.BankAccount;
             foreach (var item in bankAccountList)
             {
-                var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-
+                var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
             }
             return accountList;
 
@@ -131,7 +131,8 @@ namespace BusinessLayer
             var bankAccountList = _context.BankAccount;
             foreach (var item in bankAccountList)
             {
-                var items = _mapper.Map<BankAccountDTO>(bankAccountList);
+                var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
 
             }
             return accountList;
@@ -139,8 +140,7 @@ namespace BusinessLayer
 
         public ListDTO<BankAccountDTO> AddToBankAccount(string body)
         {
-
-
+            accountList.Items = new List<BankAccountDTO>();
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
             double amount = Convert.ToDouble(fieldData["amount"]);
@@ -152,7 +152,8 @@ namespace BusinessLayer
             var bankAccountList = _context.BankAccount;
             foreach (var item in bankAccountList)
             {
-                var items = _mapper.Map<BankAccountDTO>(bankAccountList);
+                var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
 
             }
             return accountList;
@@ -160,6 +161,7 @@ namespace BusinessLayer
 
         public ListDTO<BankAccountDTO> WithdrawFromBankAccount(string body)
         {
+            accountList.Items = new List<BankAccountDTO>();
             JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
             int id = Convert.ToInt32(fieldData["id"]);
             double amount = Convert.ToDouble(fieldData["amount"]);
@@ -179,8 +181,8 @@ namespace BusinessLayer
             var bankAccountList = _context.BankAccount;
             foreach (var item in bankAccountList)
             {
-                var items = _mapper.Map<BankAccountDTO>(bankAccountList);
-
+                var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
             }
             return accountList;
         }

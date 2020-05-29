@@ -6,6 +6,7 @@ using BusinessLayer.DTO;
 using Microsoft.AspNetCore.Mvc;
 using DataLayer.DTO;
 using WebApplication17.Models;
+using System;
 
 namespace DataLayer.Controllers
 {
@@ -83,12 +84,12 @@ namespace DataLayer.Controllers
             if (list != null)
             {
                 response.Data = list;
-                response.Message = "List is retrieved successfully";
+                response.Message = "Transaction successful! " + DateTime.Now;
                 response.Success = true;
                 return Ok(response);
             }
             response.Data = null;
-            response.Message = "List is not retrieved successfully";
+            response.Message = "Something went wrong! Please try again or contact an administrator!";
             response.Success = false;
 
             return BadRequest(response);
@@ -107,15 +108,15 @@ namespace DataLayer.Controllers
             if (list != null)
             {
                 response.Data = list;
-                response.Message = "List is retrieved successfully";
+                response.Message = "Transaction successful! " + DateTime.Now ;
                 response.Success = true;
                 return Ok(response);
             }
             response.Data = null;
-            response.Message = "List is not retrieved successfully";
+            response.Message = "Insufficient funds!";
             response.Success = false;
 
-            return BadRequest(response);
+            return Ok(response);
         }
 
         // POST: api/BankAccounts
