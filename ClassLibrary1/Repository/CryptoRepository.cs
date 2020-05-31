@@ -19,8 +19,8 @@ namespace iRepository
         ListDTO<CryptoAccountDTO> GetCryptoAccountById(int id);
         ListDTO<CryptoAccountDTO> AddCryptoAccount(CryptoAccount cryptoAccount);
         ListDTO<CryptoAccountDTO> DeleteCryptoAccount(int id);
-        ListDTO<CryptoAccountDTO> AddToCryptoAccount(string body);
-        ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(string body);
+        ListDTO<CryptoAccountDTO> AddToCryptoAccount(int id, double amount);
+        ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(int id, double amount);
         #endregion
 
         #region Crypto Account Transactions

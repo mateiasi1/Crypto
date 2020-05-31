@@ -19,8 +19,8 @@ namespace iRepository
         ListDTO<BankAccountDTO> GetBankAccountById(int id);
         ListDTO<BankAccountDTO> AddBankAccount(BankAccount bankAccount);
         ListDTO<BankAccountDTO> DeleteBankAccount(int id);
-        ListDTO<BankAccountDTO> AddToBankAccount(string body);
-        ListDTO<BankAccountDTO> WithdrawFromBankAccount(string body);
+        ListDTO<BankAccountDTO> AddToBankAccount(int id, double amount);
+        ListDTO<BankAccountDTO> WithdrawFromBankAccount(int id, double amount);
         #endregion
 
         #region Bank Account Transactions

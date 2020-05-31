@@ -138,12 +138,9 @@ namespace BusinessLayer
             return accountList;
         }
 
-        public ListDTO<BankAccountDTO> AddToBankAccount(string body)
+        public ListDTO<BankAccountDTO> AddToBankAccount(int id, double amount)
         {
             accountList.Items = new List<BankAccountDTO>();
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
             var bankAccount = _context.BankAccount.Find(id);
             bankAccount.Sold += amount;
             AddTransaction(bankAccount, amount);
@@ -159,12 +156,9 @@ namespace BusinessLayer
             return accountList;
         }
 
-        public ListDTO<BankAccountDTO> WithdrawFromBankAccount(string body)
+        public ListDTO<BankAccountDTO> WithdrawFromBankAccount(int id, double amount)
         {
             accountList.Items = new List<BankAccountDTO>();
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
 
             var bankAccount = _context.BankAccount.Find(id);
             FeesManager flatRateFee = new FeesManager(_context);

@@ -143,11 +143,8 @@ namespace BusinessLayer
             return listAccounts;
         }
 
-        public ListDTO<CryptoAccountDTO> AddToCryptoAccount(string body)
+        public ListDTO<CryptoAccountDTO> AddToCryptoAccount(int id, double amount)
         {
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
             var cryptoAccount = _context.CryptoAccount.Find(id);
             cryptoAccount.Sold += amount;
             //AddCryptoTransaction(cryptoAccount, amount);
@@ -163,11 +160,8 @@ namespace BusinessLayer
             return listAccounts;
         }
 
-        public ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(string body)
+        public ListDTO<CryptoAccountDTO> WithdrawFromCryptoAccount(int id, double amount)
         {
-            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
-            int id = Convert.ToInt32(fieldData["id"]);
-            double amount = Convert.ToDouble(fieldData["amount"]);
 
             var cryptoAccount = _context.CryptoAccount.Find(id);
             cryptoAccount.Sold -= amount;

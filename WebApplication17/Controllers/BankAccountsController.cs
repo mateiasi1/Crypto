@@ -5,8 +5,9 @@ using BusinessLayer;
 using BusinessLayer.DTO;
 using Microsoft.AspNetCore.Mvc;
 using DataLayer.DTO;
-using WebApplication17.Models;
 using System;
+using WebApplication17.Models;
+using DataLayer.Models;
 
 namespace DataLayer.Controllers
 {
@@ -72,14 +73,22 @@ namespace DataLayer.Controllers
 
         // PUT: api/BankAccounts/add  for Add sold
         [HttpPut("add")]
-        public IActionResult AddBankAccount()
+        public IActionResult AddBankAccount([FromBody]Deposit deposit)
 
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
             ListDTO<BankAccountDTO> list = new ListDTO<BankAccountDTO>();
 
-            string body = this.InputBodyData;
-           list = _banksManager.AddToBankAccount(body);
+            if (deposit.Amount <= 0)
+            {
+                response.Data = null;
+                response.Message = "The amount should be greater than 0!";
+                response.Success = false;
+                return Ok(response);
+            }
+            
+
+           list = _banksManager.AddToBankAccount(deposit.Id, deposit.Amount);
             response.Data = new ListDTO<BankAccountDTO>();
             if (list != null)
             {
@@ -92,18 +101,26 @@ namespace DataLayer.Controllers
             response.Message = "Something went wrong! Please try again or contact an administrator!";
             response.Success = false;
 
-            return BadRequest(response);
+            return Ok(response);
         }
 
         // PUT: api/BankAccounts/withdraw for withdraw sold
         [HttpPut("withdraw")]
-        public IActionResult WithdrawBankAccount()
+        public IActionResult WithdrawBankAccount([FromBody]Deposit deposit)
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
             ListDTO<BankAccountDTO> list = new ListDTO<BankAccountDTO>();
 
-            string body = this.InputBodyData;
-            list =_banksManager.WithdrawFromBankAccount(body);
+            if (deposit.Amount <= 0)
+            {
+                response.Data = null;
+                response.Message = "The amount should be greater than 0!";
+                response.Success = false;
+                return Ok(response);
+            }
+
+
+            list = _banksManager.WithdrawFromBankAccount(deposit.Id, deposit.Amount);
             response.Data = new ListDTO<BankAccountDTO>();
             if (list != null)
             {

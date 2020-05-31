@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 using DataLayer.DTO;
 using WebApplication17.Models;
 using BusinessLayer.DTO;
+using DataLayer.Models;
 
 namespace DataLayer.Controllers
 {
@@ -82,21 +83,35 @@ namespace DataLayer.Controllers
 
         // PUT: api/AddCryptoAccount/add  for Add sold
         [HttpPut("add")]
-        public IActionResult AddCryptoAccount()
+        public IActionResult AddCryptoAccount([FromBody]Deposit deposit)
         {
             CryptoAccountTransaction cryptoAccountTransaction = new CryptoAccountTransaction();
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            if (deposit.Amount <= 0)
+            {
+                response.Data = null;
+                response.Message = "The amount should be greater than 0!";
+                response.Success = false;
+                return Ok(response);
+            }
 
-            string body = this.InputBodyData;
-            _cryptoManager.AddToCryptoAccount(body);
+            _cryptoManager.AddToCryptoAccount(deposit.Id, deposit.Amount);
             return Ok();
         }
 
         // PUT: api/WithdrawCryptoAccount/withdraw for withdraw sold
         [HttpPut("withdraw")]
-        public IActionResult WithdrawCryptoAccount()
+        public IActionResult WithdrawCryptoAccount([FromBody]Deposit deposit)
         {
-            string body = this.InputBodyData;
-            _cryptoManager.WithdrawFromCryptoAccount(body);
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            if (deposit.Amount <= 0)
+            {
+                response.Data = null;
+                response.Message = "The amount should be greater than 0!";
+                response.Success = false;
+                return Ok(response);
+            }
+            _cryptoManager.WithdrawFromCryptoAccount(deposit.Id, deposit.Amount);
             return Ok();
         }
 

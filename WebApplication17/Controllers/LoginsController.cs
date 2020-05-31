@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using DataLayer.DTO;
-using WebApplication17.Models;
 using WebApplication17.Data;
 using Microsoft.AspNetCore.Cors;
+using WebApplication17.Models;
 
 namespace DataLayer.Controllers
 {
