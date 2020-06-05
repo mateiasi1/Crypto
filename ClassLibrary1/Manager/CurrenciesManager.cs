@@ -49,7 +49,7 @@ namespace BusinessLayer
             _context.SaveChanges();
 
             list.Items = new List<CurrencyDTO>();
-            var currencyReturn = _context.Currency.ToList();
+            var currencyReturn = _context.Currency;
             foreach (var item in currencyReturn)
             {
                 var items = _mapper.Map<CurrencyDTO>(item);

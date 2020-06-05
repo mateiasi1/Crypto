@@ -69,8 +69,24 @@ namespace DataLayer.Controllers
         [HttpPost]
         public async Task<ActionResult<Currency>> PostCurrency(Currency currency)
         {
-            _currenciesManager.AddCurrency(currency);
-            return Ok(_mapper.Map<IEnumerable<CurrencyDTO>>(currency));
+            ResponseDTO<CurrencyDTO> response = new ResponseDTO<CurrencyDTO>();
+            ListDTO<CurrencyDTO> list = new ListDTO<CurrencyDTO>();
+
+            list = _currenciesManager.AddCurrency(currency);
+            response.Data = new ListDTO<CurrencyDTO>();
+
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return NotFound(response);
         }
 
         // DELETE: api/Currencies/5
