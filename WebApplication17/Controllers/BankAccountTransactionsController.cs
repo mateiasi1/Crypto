@@ -5,6 +5,7 @@ using BusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 using DataLayer.DTO;
 using WebApplication17.Models;
+using BusinessLayer.DTO;
 
 namespace DataLayer.Controllers
 {
@@ -24,9 +25,22 @@ namespace DataLayer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BankAccountTransaction>>> GetBankAccountTransaction()
         {
-            var transactionList = _banksManager.GetAllTransactions();
+            ResponseDTO<BankAccountTransactionDTO> response = new ResponseDTO<BankAccountTransactionDTO>();
+            ListDTO<BankAccountTransactionDTO> list = new ListDTO<BankAccountTransactionDTO>();
+            var bankList = _banksManager.GetAllTransactions();
 
-            return Ok(_mapper.Map<IEnumerable<BankAccountTransactionDTO>>(transactionList));
+            if (bankList != null)
+            {
+                response.Data = bankList;
+                response.Message = "Transactions are retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "Transactions are not retrieved successfully";
+            response.Success = false;
+
+            return Ok(response);
         }
 
         // GET: api/BankAccountTransactions/5

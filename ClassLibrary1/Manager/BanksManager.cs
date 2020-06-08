@@ -18,7 +18,7 @@ namespace BusinessLayer
         private readonly IMapper _mapper;
         public ListDTO<BankDTO> list = new ListDTO<BankDTO>();
         public ListDTO<BankAccountDTO> accountList = new ListDTO<BankAccountDTO>();
-        BankAccountTransaction bankAccountTransaction = new BankAccountTransaction();
+        public ListDTO<BankAccountTransactionDTO> bankAccountTransaction = new ListDTO<BankAccountTransactionDTO>();
         public BanksManager(IMapper mapper, Contexts context)
         {
             _mapper = mapper;
@@ -183,25 +183,44 @@ namespace BusinessLayer
         #endregion
 
         #region Bank Account Transactions
-        public List<BankAccountTransaction> GetAllTransactions()
+        public ListDTO<BankAccountTransactionDTO> GetAllTransactions()
         {
-            return _context.BankAccountTransaction.ToList();
+            bankAccountTransaction.Items = new List<BankAccountTransactionDTO>();
+            var bankList = _context.BankAccountTransaction;
+            foreach (var item in bankList)
+            {
+                var items = _mapper.Map<BankAccountTransactionDTO>(item);
+                bankAccountTransaction.Items.Add(items);
+            }
+            return bankAccountTransaction;
         }
 
-        public BankAccountTransaction GetTransactionById(int id)
+        public ListDTO<BankAccountTransactionDTO> GetTransactionById(int id)
         {
-            return _context.BankAccountTransaction.Find(id);
+
+            bankAccountTransaction.Items = new List<BankAccountTransactionDTO>();
+            var bankTransactionList = _context.BankAccountTransaction.Find(id);
+            var items = _mapper.Map<BankAccountTransactionDTO>(bankTransactionList);
+            bankAccountTransaction.Items.Add(items);
+
+            return bankAccountTransaction;
         }
 
-        public BankAccountTransaction AddTransaction(BankAccount bank, double amount)
+        public ListDTO<BankAccountTransactionDTO> AddTransaction(BankAccount bank, double amount)
         {
-            var bankAccount = _context.BankAccount.Find(bank.Id);
-            bankAccountTransaction.Ammount = amount;
-            bankAccountTransaction.IdBankAccount = bank.Id;
-            bankAccountTransaction.IdFlatRateFee = 0;
-            bankAccountTransaction.Status = "Done";
-            _context.BankAccountTransaction.Add(bankAccountTransaction);
+            var accountTransaction = _context.BankAccountTransaction.Find(bank.Id);
+            accountTransaction.Ammount = amount;
+            accountTransaction.IdBankAccount = bank.Id;
+            accountTransaction.IdFlatRateFee = 0;
+            accountTransaction.Status = "Done";
+            _context.BankAccountTransaction.Add(accountTransaction);
             _context.SaveChanges();
+
+            bankAccountTransaction.Items = new List<BankAccountTransactionDTO>();
+            var bankTransactionList = _context.BankAccountTransaction;
+            var items = _mapper.Map<BankAccountTransactionDTO>(bankTransactionList);
+            bankAccountTransaction.Items.Add(items);
+
             return bankAccountTransaction;
         }
         #endregion

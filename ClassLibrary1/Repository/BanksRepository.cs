@@ -24,9 +24,9 @@ namespace iRepository
         #endregion
 
         #region Bank Account Transactions
-        List<BankAccountTransaction> GetAllTransactions();
-        BankAccountTransaction GetTransactionById(int id);
-        BankAccountTransaction AddTransaction(BankAccount bankAccount, double amount);
+        ListDTO<BankAccountTransactionDTO> GetAllTransactions();
+        ListDTO<BankAccountTransactionDTO> GetTransactionById(int id);
+        ListDTO<BankAccountTransactionDTO> AddTransaction(BankAccount bankAccount, double amount);
         #endregion
     }
 }
