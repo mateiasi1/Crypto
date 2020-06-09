@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Data_Layer.Migrations
+namespace DataLayer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Migration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +12,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BankName = table.Column<string>(nullable: true),
                     IBAN = table.Column<string>(nullable: true),
                     CurrencyName = table.Column<string>(nullable: true),
@@ -29,7 +28,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<int>(nullable: false),
                     IdCurrency = table.Column<int>(nullable: false),
                     CurrencyName = table.Column<string>(nullable: true),
@@ -48,11 +47,14 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdBankAccount = table.Column<int>(nullable: false),
+                    From = table.Column<string>(nullable: true),
+                    To = table.Column<string>(nullable: true),
                     Ammount = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: true),
-                    IdFlatRateFee = table.Column<int>(nullable: false)
+                    IdFlatRateFee = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,7 +66,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     AmmountToExchange = table.Column<double>(nullable: false),
                     IdWalletFrom = table.Column<int>(nullable: false),
                     IdWalletTo = table.Column<int>(nullable: false),
@@ -80,7 +82,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdConversion = table.Column<int>(nullable: false),
                     Ammount = table.Column<double>(nullable: false),
                     IdBankAccount = table.Column<int>(nullable: false),
@@ -96,7 +98,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CryptoCurrencyName = table.Column<string>(nullable: true),
                     CryptoCurrencyAbbreviation = table.Column<string>(nullable: true),
                     Refference = table.Column<string>(nullable: true)
@@ -111,7 +113,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdUser = table.Column<int>(nullable: false),
                     IdCryptoCurrency = table.Column<int>(nullable: false),
                     CryptoCurrencyName = table.Column<string>(nullable: true),
@@ -131,7 +133,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdCryptoAccount = table.Column<int>(nullable: false),
                     Ammount = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: true),
@@ -147,7 +149,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CryptoCurrencyAbbreviation = table.Column<string>(nullable: true),
                     CryptoCurrencyName = table.Column<string>(nullable: true)
                 },
@@ -161,7 +163,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CurrencyAbbreviation = table.Column<string>(nullable: true),
                     CurrencyName = table.Column<string>(nullable: true)
                 },
@@ -175,7 +177,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Percentage = table.Column<double>(nullable: false),
                     UserRole = table.Column<string>(nullable: true),
                     Obsolete = table.Column<bool>(nullable: false)
@@ -190,7 +192,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Ammount = table.Column<double>(nullable: false),
                     Obsolete = table.Column<bool>(nullable: false),
                     UserRole = table.Column<string>(nullable: true)
@@ -205,7 +207,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: true),
                     IsOver18 = table.Column<bool>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
@@ -224,9 +226,9 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
-                    TokenGuid = table.Column<string>(nullable: true),
+                    TokenValue = table.Column<string>(nullable: true),
                     Role = table.Column<string>(nullable: true),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false)
@@ -241,7 +243,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     PasswordSalt = table.Column<string>(nullable: true),
@@ -264,7 +266,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdClientCurrency = table.Column<int>(nullable: false),
                     Sold = table.Column<double>(nullable: false),
                     IdBank = table.Column<int>(nullable: false)
@@ -279,7 +281,7 @@ namespace Data_Layer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     TokenId = table.Column<int>(nullable: true)

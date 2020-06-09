@@ -76,7 +76,7 @@ namespace DataLayer.Controllers
 
         // POST: api/Currencies
         [HttpPost]
-        public async Task<ActionResult<Currency>> PostCurrency(CryptoCurrency cryptoCurrency)
+        public async Task<ActionResult<CryptoCurrency>> PostCurrency(CryptoCurrency cryptoCurrency)
         {
             
 
