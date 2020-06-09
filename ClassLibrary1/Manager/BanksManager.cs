@@ -143,7 +143,8 @@ namespace BusinessLayer
             accountList.Items = new List<BankAccountDTO>();
             var bankAccount = _context.BankAccount.Find(id);
             bankAccount.Sold += amount;
-            AddTransaction(bankAccount, amount);
+            string type = "Deposit";
+            AddTransaction(bankAccount, amount, type);
             _context.SaveChanges();
 
             var bankAccountList = _context.BankAccount;
@@ -169,7 +170,8 @@ namespace BusinessLayer
             {
                 return null;
             }
-            AddTransaction(bankAccount, amount);
+            string type = "Withdraw";
+            AddTransaction(bankAccount, amount, type);
             _context.SaveChanges();
 
             var bankAccountList = _context.BankAccount;
@@ -206,7 +208,7 @@ namespace BusinessLayer
             return bankAccountTransaction;
         }
 
-        public ListDTO<BankAccountTransactionDTO> AddTransaction(BankAccount bank, double amount)
+        public ListDTO<BankAccountTransactionDTO> AddTransaction(BankAccount bank, double amount, string type)
         {
             var accountTransaction = new BankAccountTransaction();
             accountTransaction.From = bank.CurrencyName;
@@ -216,6 +218,7 @@ namespace BusinessLayer
             accountTransaction.IdFlatRateFee = 0;
             accountTransaction.Status = "Done";
             accountTransaction.Date = DateTime.Now;
+            accountTransaction.TransactionType = type;
             _context.BankAccountTransaction.Add(accountTransaction);
             _context.SaveChanges();
 

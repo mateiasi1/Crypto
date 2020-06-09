@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class Migration1 : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace DataLayer.Migrations
                     Ammount = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: true),
                     IdFlatRateFee = table.Column<int>(nullable: false),
+                    TransactionType = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

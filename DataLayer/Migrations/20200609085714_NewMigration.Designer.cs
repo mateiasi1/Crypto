@@ -10,8 +10,8 @@ using WebApplication17.Data;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(Contexts))]
-    [Migration("20200609061619_Migration1")]
-    partial class Migration1
+    [Migration("20200609085714_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,6 +104,9 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

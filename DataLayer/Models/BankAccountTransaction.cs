@@ -14,6 +14,7 @@ namespace WebApplication17.Models
         public double Ammount { get; set; }
         public string Status { get; set; }
         public int IdFlatRateFee { get; set; }
+        public string TransactionType { get; set; }
         public DateTime Date { get; set; }
     }
 }

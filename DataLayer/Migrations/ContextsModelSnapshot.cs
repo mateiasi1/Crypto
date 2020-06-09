@@ -104,6 +104,9 @@ namespace DataLayer.Migrations
                     b.Property<string>("To")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TransactionType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("BankAccountTransaction");
