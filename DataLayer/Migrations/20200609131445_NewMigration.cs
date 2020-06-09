@@ -84,10 +84,14 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdConversion = table.Column<int>(nullable: false),
-                    Ammount = table.Column<double>(nullable: false),
                     IdBankAccount = table.Column<int>(nullable: false),
-                    IdFee = table.Column<int>(nullable: false)
+                    From = table.Column<string>(nullable: true),
+                    To = table.Column<string>(nullable: true),
+                    Ammount = table.Column<double>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
+                    IdFlatRateFee = table.Column<int>(nullable: false),
+                    TransactionType = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,10 +139,14 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdCryptoAccount = table.Column<int>(nullable: false),
+                    IdBankAccount = table.Column<int>(nullable: false),
+                    From = table.Column<string>(nullable: true),
+                    To = table.Column<string>(nullable: true),
                     Ammount = table.Column<double>(nullable: false),
                     Status = table.Column<string>(nullable: true),
-                    IdFee = table.Column<int>(nullable: false)
+                    IdFlatRateFee = table.Column<int>(nullable: false),
+                    TransactionType = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

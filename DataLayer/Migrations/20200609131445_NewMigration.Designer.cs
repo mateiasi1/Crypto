@@ -10,7 +10,7 @@ using WebApplication17.Data;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(Contexts))]
-    [Migration("20200609085714_NewMigration")]
+    [Migration("20200609131445_NewMigration")]
     partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -148,14 +148,26 @@ namespace DataLayer.Migrations
                     b.Property<double>("Ammount")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("IdBankAccount")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdConversion")
+                    b.Property<int>("IdFlatRateFee")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFee")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -229,13 +241,25 @@ namespace DataLayer.Migrations
                     b.Property<double>("Ammount")
                         .HasColumnType("float");
 
-                    b.Property<int>("IdCryptoAccount")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdBankAccount")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFee")
+                    b.Property<int>("IdFlatRateFee")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

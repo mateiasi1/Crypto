@@ -25,6 +25,10 @@ namespace BusinessLayer
             _context = context;
         }
 
+        public BanksManager()
+        {
+        }
+
         #region Bank
         public ListDTO<BankDTO> GetAllBanks()
         {

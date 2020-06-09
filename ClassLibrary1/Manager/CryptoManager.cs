@@ -148,6 +148,8 @@ namespace BusinessLayer
             var cryptoAccount = _context.CryptoAccount.Find(id);
             cryptoAccount.Sold += amount;
             //AddCryptoTransaction(cryptoAccount, amount);
+            string type = "Deposit";
+            AddCryptoTransaction(cryptoAccount.CryptoCurrencyName, cryptoAccount.CryptoCurrencyName, amount, type);
             _context.SaveChanges();
 
             listAccounts.Items = new List<CryptoAccountDTO>();
@@ -165,8 +167,8 @@ namespace BusinessLayer
 
             var cryptoAccount = _context.CryptoAccount.Find(id);
             cryptoAccount.Sold -= amount;
-
-            AddCryptoTransaction(cryptoAccount, amount);
+            string type = "Withdraw";
+            AddCryptoTransaction(cryptoAccount.CryptoCurrencyName, cryptoAccount.CryptoCurrencyName, amount, type);
             _context.SaveChanges();
 
             listAccounts.Items = new List<CryptoAccountDTO>();
@@ -191,16 +193,30 @@ namespace BusinessLayer
             return _context.CryptoAccountTransaction.Find(id);
         }
 
-        public CryptoAccountTransaction AddCryptoTransaction(CryptoAccount crypto, double amount)
+        public ListDTO<ConversionTransactionDTO> AddCryptoTransaction(string From, string To, double amount, string type)
         {
-            var cryptoAccount = _context.CryptoAccount.Find(crypto.Id);
-            cryptoAccount.Sold = amount;
-            cryptoAccount.IdCrypto = crypto.Id;
-            cryptoAccount.IdCryptoCurrency = 0;
-            _context.CryptoAccountTransaction.Add(cryptoAccountTransaction);
+            ListDTO<ConversionTransactionDTO> conversionAccountTransaction = new ListDTO<ConversionTransactionDTO>();
+
+            var accountTransaction = new ConversionTransaction();
+            accountTransaction.From = From;
+            accountTransaction.To = To;
+            accountTransaction.Ammount = amount;
+            accountTransaction.IdFlatRateFee = 0;
+            accountTransaction.Status = "Done";
+            accountTransaction.Date = DateTime.Now;
+            accountTransaction.TransactionType = type;
+            _context.ConversionTransaction.Add(accountTransaction);
             _context.SaveChanges();
-            return cryptoAccountTransaction;
+
+            conversionAccountTransaction.Items = new List<ConversionTransactionDTO>();
+            var conversionTransactions = _context.ConversionTransaction;
+            foreach (var item in conversionTransactions)
+            {
+                var items = _mapper.Map<ConversionTransactionDTO>(item);
+                conversionAccountTransaction.Items.Add(items);
+            }
+            return conversionAccountTransaction;
         }
-        #endregion
-    }
+    #endregion
+}
 }

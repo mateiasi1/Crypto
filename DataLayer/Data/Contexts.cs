@@ -31,5 +31,6 @@ public DbSet<Crypto> Crypto { get; set; }
 public DbSet<CryptoAccount> CryptoAccount { get; set; }
 public DbSet<CryptoCurrency> CryptoCurrency { get; set; }
 public DbSet<CryptoAccountTransaction> CryptoAccountTransaction { get; set; }
+
     }
 }

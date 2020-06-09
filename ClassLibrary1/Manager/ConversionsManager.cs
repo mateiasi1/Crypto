@@ -1,4 +1,7 @@
-﻿using Data_Layer.Models;
+﻿using AutoMapper;
+using BusinessLayer.DTO;
+using Data_Layer.Models;
+using DataLayer.DTO;
 using iRepository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,9 +18,12 @@ namespace BusinessLayer
     public class ConversionsManager : IConversions
     {
         protected Contexts _context;
-        public ConversionsManager(Contexts context)
+        private readonly IMapper _mapper;
+        public ListDTO<ConversionTransactionDTO> conversionTransactions = new ListDTO<ConversionTransactionDTO>();
+        public ConversionsManager(Contexts context, IMapper mapper)
         {
-            _context = context;
+            _mapper = mapper;
+               _context = context;
         }
 
         #region Conversion
@@ -42,9 +48,17 @@ namespace BusinessLayer
             _context.SaveChangesAsync();
             return conversionTransaction;
         }
-        public List<ConversionTransaction> GetAllConversionTransactions()
+        public ListDTO<ConversionTransactionDTO> GetAllConversionTransactions()
         {
-            return _context.ConversionTransaction.ToList();
+            conversionTransactions.Items = new List<ConversionTransactionDTO>();
+            var bankList = _context.ConversionTransaction;
+            foreach (var item in bankList)
+            {
+                var items = _mapper.Map<ConversionTransactionDTO>(item);
+                conversionTransactions.Items.Add(items);
+            }
+            return conversionTransactions;
+
         }
 
         public string FiatExchange(string body)
@@ -75,6 +89,10 @@ namespace BusinessLayer
             }
             cryptoAccount.Sold = amount * Convert.ToDouble(conversionRate); 
             _context.SaveChanges();
+
+            string type = "Fiat Transaction";
+            CryptoManager transaction = new CryptoManager(_context, _mapper);
+            transaction.AddCryptoTransaction(selectedValueFrom,selectedValueTo, amount, type);
             return "ok";
         }
         public string CryptoExchange(string body)
@@ -105,7 +123,10 @@ namespace BusinessLayer
                     return null;
                 }
                 cryptoAccountTo.Sold = amount * Convert.ToDouble(conversionRateCrypto);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
+                string type = "Crypto Transaction";
+                CryptoManager transaction = new CryptoManager(_context, _mapper);
+                transaction.AddCryptoTransaction(selectedValueFrom, selectedValueTo, amount, type);
                 return "ok";
             }
             GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();

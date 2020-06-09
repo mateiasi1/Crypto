@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLayer.DTO;
+using DataLayer.DTO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using WebApplication17.Models;
@@ -8,7 +10,7 @@ namespace iRepository
     public interface IConversions
     {
         #region ConversionTransactions
-        List<ConversionTransaction> GetAllConversionTransactions();
+        ListDTO<ConversionTransactionDTO> GetAllConversionTransactions();
         ConversionTransaction AddConversionTransaction(ConversionTransaction conversionTransaction);
         #endregion
 

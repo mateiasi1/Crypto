@@ -26,7 +26,7 @@ namespace iRepository
         #region Crypto Account Transactions
         List<CryptoAccountTransaction> GetAllCryptoTransactions();
         CryptoAccountTransaction GetCryptoTransactionById(int id);
-        CryptoAccountTransaction AddCryptoTransaction(CryptoAccount cryptoAccount, double amount);
+        ListDTO<ConversionTransactionDTO> AddCryptoTransaction(string From, string To, double amount,string type);
         #endregion
     }
 }

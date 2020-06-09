@@ -146,14 +146,26 @@ namespace DataLayer.Migrations
                     b.Property<double>("Ammount")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("IdBankAccount")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdConversion")
+                    b.Property<int>("IdFlatRateFee")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFee")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -227,13 +239,25 @@ namespace DataLayer.Migrations
                     b.Property<double>("Ammount")
                         .HasColumnType("float");
 
-                    b.Property<int>("IdCryptoAccount")
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdBankAccount")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdFee")
+                    b.Property<int>("IdFlatRateFee")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransactionType")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

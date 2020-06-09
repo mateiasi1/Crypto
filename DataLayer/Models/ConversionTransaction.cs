@@ -8,9 +8,13 @@ namespace WebApplication17.Models
     public class ConversionTransaction
     {
         public int Id { get; set; }
-        public int IdConversion { get; set; }
-        public double Ammount { get; set; }
         public int IdBankAccount { get; set; }
-        public int IdFee { get; set; }
+        public string From { get; set; }
+        public string To { get; set; }
+        public double Ammount { get; set; }
+        public string Status { get; set; }
+        public int IdFlatRateFee { get; set; }
+        public string TransactionType { get; set; }
+        public DateTime Date { get; set; }
     }
 }
