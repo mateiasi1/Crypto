@@ -111,11 +111,12 @@ namespace BusinessLayer
             {
                 fiatCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
                 GetConversionRateAsync getConversionRateAsyncCrypto = new GetConversionRateAsync();
-                var conversionRateCrypto = getConversionRateAsyncCrypto.GetConversionRate(selectedValueFrom, selectedValueTo);
+                double conversionRateCrypto = getConversionRateAsyncCrypto.GetConversionRate(selectedValueFrom, selectedValueTo);
+
                 FeesManager feeCrypto = new FeesManager(_context);
                 var currentFeeCrypto = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(feeCrypto.GetAllFees()) / 100) * amount));
 
-                var cryptoAccountFrom = _context.CryptoAccount.Where(i => i.Id == id && i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
+                var cryptoAccountFrom = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
                 var cryptoAccountTo = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == fiatCurrencyName).FirstOrDefault();
                 cryptoAccountFrom.Sold -= (amount + currentFeeCrypto);
                 if (cryptoAccountFrom.Sold < 0)

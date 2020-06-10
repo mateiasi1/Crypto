@@ -127,8 +127,24 @@ namespace DataLayer.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<CryptoAccount>> DeleteCryptoAccount(int id)
         {
-            _cryptoManager.DeleteCryptoAccount(id);
-            return Ok();
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            ListDTO<CryptoAccountDTO> list = new ListDTO<CryptoAccountDTO>();
+
+            list = _cryptoManager.DeleteCryptoAccount(id);
+            response.Data = new ListDTO<CryptoAccountDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "Bank was successfully deleted";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "An error occured, please try again!";
+            response.Success = false;
+
+            return BadRequest(response);
+
         }
 
         
