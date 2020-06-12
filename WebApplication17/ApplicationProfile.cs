@@ -53,6 +53,8 @@ namespace DataLayer
             CreateMap<ChangePasswordDTO, ChangePassword>().ReverseMap();
             CreateMap<Ibans, IbansDTO>().ReverseMap();
             CreateMap<IbansDTO, Ibans>().ReverseMap();
+            CreateMap<Transfer, TransferDTO>().ReverseMap();
+            CreateMap<TransferDTO, Transfer>().ReverseMap();
         }
     }
 }

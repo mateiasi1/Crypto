@@ -243,5 +243,33 @@ namespace BusinessLayer
             
             return listPasswordChange;
         }
+
+        public ListDTO<TransferDTO> Transfer(Transfer transfer)
+        { 
+            ListDTO<TransferDTO> transferList = new ListDTO<TransferDTO>();
+            transferList.Items = new List<TransferDTO>();
+            var userFrom = _context.User.Where(u => u.Id == transfer.IdUserFrom).FirstOrDefault();
+            var userTo = _context.User.Where(u => u.ReferralId == transfer.RefferalUserTo).FirstOrDefault();
+            var userAccountFrom = _context.CryptoAccount.Where(c => c.IdUser == userFrom.Id && c.CryptoCurrencyName == transfer.CoinName).FirstOrDefault();
+            var userAccountTo = _context.CryptoAccount.Where(c => c.IdUser == userTo.Id && c.CryptoCurrencyName == transfer.CoinName).FirstOrDefault();
+            if ((userAccountFrom  == null) || (userAccountTo == null))
+            {
+                transferList.Items = null;
+                return transferList;
+            }
+            userAccountFrom.Sold -= transfer.Amount;
+            userAccountTo.Sold += transfer.Amount;
+            transfer.Date = DateTime.Now;
+
+            string type = "Transfer to " + userTo.Username;
+            CryptoManager transaction = new CryptoManager(_context, _mapper);
+            transaction.AddCryptoTransaction(transfer.CoinName, transfer.CoinName, transfer.Amount, type);
+
+            _context.Transfer.Add(transfer);
+            _context.SaveChanges();
+            var items = _mapper.Map<TransferDTO>(transfer);
+            transferList.Items.Add(items);
+            return transferList;
+        }
     }
 }

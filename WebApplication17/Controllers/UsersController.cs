@@ -176,5 +176,26 @@ namespace DataLayer.Controllers
 
             return NotFound(response);
         }
+
+        [HttpPost("transfer")]
+        public IActionResult Transfer(Transfer transfer)
+        {
+            ResponseDTO<TransferDTO> response = new ResponseDTO<TransferDTO>();
+            ListDTO<TransferDTO> list = new ListDTO<TransferDTO>();
+            list = _userManager.Transfer(transfer);
+            response.Data = new ListDTO<TransferDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "Transfer was made!";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "An error occured, please try again!";
+            response.Success = false;
+
+            return NotFound(response);
+        }
     }
 }
