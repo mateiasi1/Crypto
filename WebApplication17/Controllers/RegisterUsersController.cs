@@ -12,17 +12,18 @@ using Microsoft.EntityFrameworkCore;
 using DataLayer.DTO;
 using DataLayer.Email;
 using WebApplication17.Models;
+using DataLayer.Models;
 
 namespace DataLayer.Controllers
 {
-   
+
     [Route("api/[controller]")]
     [ApiController]
     public class RegisterUsersController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly RegisterUserManager _registerUserManager;
-        
+
 
         public RegisterUsersController(IMapper mapper, RegisterUserManager registerUserManager)
         {
@@ -61,6 +62,6 @@ namespace DataLayer.Controllers
             var registeredUser = _registerUserManager.AddUser(registerUser);
             return Ok(_mapper.Map<IEnumerable<RegisterUserDTO>>(registeredUser));
         }
-        
+
     }
 }

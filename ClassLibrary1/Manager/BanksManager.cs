@@ -9,6 +9,8 @@ using Newtonsoft.Json.Linq;
 using BusinessLayer.DTO;
 using WebApplication17.Data;
 using WebApplication17.Models;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 namespace BusinessLayer
 {
@@ -55,6 +57,7 @@ namespace BusinessLayer
         {
             var currency = _context.Currency.Where(c => c.CurrencyAbbreviation == bank.CurrencyAbbreviation).FirstOrDefault();
             bank.CurrencyName = currency.CurrencyName;
+            bank.IBAN = GetIban();
             _context.Bank.Add(bank);
             _context.SaveChanges();
 
@@ -234,6 +237,18 @@ namespace BusinessLayer
                 bankAccountTransaction.Items.Add(items);
             }
             return bankAccountTransaction;
+        }
+        public string GetIban()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless");
+            IWebDriver driver = new ChromeDriver(@"D:\DidacticalProjects\Crypto\backend", options);
+
+            driver.Navigate().GoToUrl(@"http://randomiban.com/?country=Romania");
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+            string iban = driver.FindElement(By.Id("demo")).Text;
+
+            return iban;
         }
         #endregion
     }

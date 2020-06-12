@@ -12,6 +12,8 @@ using System.Text;
 using DataLayer.Email;
 using WebApplication17.Models;
 using WebApplication17.Data;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
 
 namespace BusinessLayer
 {
@@ -39,7 +41,6 @@ namespace BusinessLayer
             user.IsOver18 = registerUser.IsOver18;
             user.FirstName = registerUser.FirstName;
             user.LastName = registerUser.LastName;
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -85,5 +86,6 @@ namespace BusinessLayer
 
             return registerUser;
         }
+
     }
 }
