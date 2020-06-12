@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLayer.DTO;
 using DataLayer.DTO;
+using DataLayer.Models;
 using WebApplication17.Models;
 
 namespace DataLayer
@@ -47,6 +49,10 @@ namespace DataLayer
             CreateMap<CryptoCurrencyDTO, CryptoCurrency>().ReverseMap();
             CreateMap<User, LoginDTO>().ReverseMap();
             CreateMap<UserDTO, Login>().ReverseMap();
+            CreateMap<ChangePassword, ChangePasswordDTO>().ReverseMap();
+            CreateMap<ChangePasswordDTO, ChangePassword>().ReverseMap();
+            CreateMap<Ibans, IbansDTO>().ReverseMap();
+            CreateMap<IbansDTO, Ibans>().ReverseMap();
         }
     }
 }

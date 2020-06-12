@@ -12,20 +12,26 @@ using DataLayer;
 using DataLayer.Email;
 using WebApplication17.Data;
 using WebApplication17.Models;
+using BusinessLayer.DTO;
+using DataLayer.DTO;
+using AutoMapper;
+using DataLayer.Models;
 
 namespace BusinessLayer
 {
     public class UsersManager : IUsers
     {
         protected Contexts _context;
+        private readonly IMapper _mapper;
 
         private readonly AppSettings _appSettings;
         readonly EmailService emailService = new EmailService();
         string Body = System.IO.File.ReadAllText(("D:/DidacticalProjects/Crypto/backend/ClassLibrary1/Email/EmailTemplate.html"));
-        
+        public ListDTO<UserDTO> list = new ListDTO<UserDTO>();
 
-        public UsersManager(Contexts context, IOptions<AppSettings> appSettings)
+        public UsersManager(Contexts context, IOptions<AppSettings> appSettings, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _appSettings = appSettings.Value;
         }
@@ -42,10 +48,14 @@ namespace BusinessLayer
             return users;
         }
 
-        public User GetRegisterUserById(int id)
+        public ListDTO<UserDTO> GetRegisterUserById(int id)
         {
-            var users = _context.User.Find(id);
-            return users;
+            list.Items = new List<UserDTO>();
+            var user = _context.User.Find(id);
+            var items = _mapper.Map<UserDTO>(user);
+            list.Items.Add(items);
+
+            return list;
         }
 
         public List<User> GetUnConfirmedUsers()
@@ -186,6 +196,52 @@ namespace BusinessLayer
             emailService.SendEmail(model);
 
             return true;
+        }
+
+        public ListDTO<UserDTO> ChangeUser(User user)
+        {
+            list.Items = new List<UserDTO>();
+            User userFromDb = _context.User.Where(u => u.Username == user.Username).FirstOrDefault();
+            userFromDb.Email = user.Email;
+            userFromDb.FirstName = user.FirstName;
+            userFromDb.LastName = user.LastName;
+            _context.SaveChanges();
+            var items = _mapper.Map<UserDTO>(user);
+            list.Items.Add(items);
+            return list;
+        }
+
+        public ListDTO<ChangePasswordDTO> ChangePassword(ChangePassword password)
+        {
+            ListDTO<ChangePasswordDTO> listPasswordChange = new ListDTO<ChangePasswordDTO>();
+
+            listPasswordChange.Items = new List<ChangePasswordDTO>();
+
+            var user = _context.User.Where(u => u.Id == password.UserId).FirstOrDefault();
+            if (password.NewPassword != password.ConfirmPassword)
+            {
+                listPasswordChange.Items = null;
+                return listPasswordChange;
+            }
+            if (user != null)
+            {
+                string passwordHash = Hash.Create(password.Password, user.PasswordSalt);
+                password.Password = passwordHash;
+            }
+            if (user.Password == password.Password)
+            {
+                Salt salt = new Salt();
+                var passwordSalt = salt.ReturnSalt();
+                string passwordHash = Hash.Create(password.NewPassword, passwordSalt.ToString());
+                user.PasswordSalt = passwordSalt.ToString();
+                user.Password = passwordHash;
+                _context.SaveChanges();
+                password.Password = user.Password;
+                var items = _mapper.Map<ChangePasswordDTO>(password);
+                listPasswordChange.Items.Add(items);
+            }
+            
+            return listPasswordChange;
         }
     }
 }

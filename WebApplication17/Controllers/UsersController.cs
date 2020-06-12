@@ -12,6 +12,8 @@ using DataLayer.DTO;
 using iRepository;
 using WebApplication17.Models;
 using Data_Layer.Models;
+using BusinessLayer.DTO;
+using DataLayer.Models;
 
 namespace DataLayer.Controllers
 {
@@ -112,5 +114,67 @@ namespace DataLayer.Controllers
             return Ok();
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetUserProfile(int id)
+        {
+            ResponseDTO<UserDTO> response = new ResponseDTO<UserDTO>();
+            ListDTO<UserDTO> list = new ListDTO<UserDTO>();
+            list = _userManager.GetRegisterUserById(id);
+            response.Data = new ListDTO<UserDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "List is retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "List is not retrieved successfully";
+            response.Success = false;
+
+            return NotFound(response);
+        }
+
+        [HttpPost("change")]
+        public IActionResult ChangeUser(User user)
+        {
+            ResponseDTO<UserDTO> response = new ResponseDTO<UserDTO>();
+            ListDTO<UserDTO> list = new ListDTO<UserDTO>();
+            list = _userManager.ChangeUser(user);
+            response.Data = new ListDTO<UserDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "Your user is updated!";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "An error occured, please try again!";
+            response.Success = false;
+
+            return NotFound(response);
+        }
+
+        [HttpPost("changePassword")]
+        public IActionResult ChangePassword(ChangePassword password)
+        {
+            ResponseDTO<ChangePasswordDTO> response = new ResponseDTO<ChangePasswordDTO>();
+            ListDTO<ChangePasswordDTO> list = new ListDTO<ChangePasswordDTO>();
+            list = _userManager.ChangePassword(password);
+            response.Data = new ListDTO<ChangePasswordDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "Your user is updated!";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "An error occured, please try again!";
+            response.Success = false;
+
+            return NotFound(response);
+        }
     }
 }
