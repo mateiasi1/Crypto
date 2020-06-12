@@ -110,11 +110,13 @@ namespace BusinessLayer
         public ListDTO<CryptoAccountDTO> GetCryptoAccountById(int id)
         {
             listAccounts.Items = new List<CryptoAccountDTO>();
-            var cryptoAccount = _context.CryptoAccount.Find(id);
+            var cryptoAccount = _context.CryptoAccount.Where(c => c.IdUser == id).ToList();
 
-            var items = _mapper.Map<CryptoAccountDTO>(cryptoAccount);
-            listAccounts.Items.Add(items);
-
+            foreach (var item in cryptoAccount)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
             return listAccounts;
         }
 
