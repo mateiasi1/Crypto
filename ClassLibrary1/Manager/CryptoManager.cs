@@ -52,9 +52,22 @@ namespace BusinessLayer
 
         public ListDTO<CryptoDTO> AddCrypto(Crypto crypto)
         {
+            Crypto cryptoExists = _context.Crypto.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
+            if(cryptoExists != null)
+            {
+                list.Items = null;
+                return list;
+            }
             list.Items = new List<CryptoDTO>();
             var cryptoCurrency = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
             crypto.CryptoCurrencyAbbreviation = cryptoCurrency.CryptoCurrencyAbbreviation;
+
+            Random rnd = new Random();
+            int referralRandomStart = rnd.Next(10, 99999);
+            int referralRandom = rnd.Next(1000000, 9999999);
+            string refference = "CRYPTOAPP" + referralRandomStart.ToString() + crypto.CryptoCurrencyName + referralRandom.ToString();
+            crypto.Refference = refference.Replace(" ", "");
+
             _context.Crypto.Add(crypto);
             _context.SaveChanges();
 
@@ -107,12 +120,20 @@ namespace BusinessLayer
 
         public ListDTO<CryptoAccountDTO> AddCryptoAccount(CryptoAccount cryptoAccount)
         {
+            CryptoAccount cryptoAccountExists = _context.CryptoAccount.Where(c => c.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
+            if (cryptoAccountExists != null)
+            {
+                listAccounts.Items = null;
+                return listAccounts;
+            }
+
             var crypto = _context.Crypto.Find(cryptoAccount.IdCrypto);
             var cryptoCurrency = _context.CryptoCurrency.Where(b => b.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
 
             cryptoAccount.IdCrypto = crypto.Id;
             cryptoAccount.IdCryptoCurrency = crypto.Id;
             cryptoAccount.Sold = 0;
+            cryptoAccount.Refference = crypto.Refference;
             _context.CryptoAccount.Add(cryptoAccount);
             _context.SaveChanges();
 

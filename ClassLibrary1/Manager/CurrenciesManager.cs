@@ -45,10 +45,18 @@ namespace BusinessLayer
         }
         public ListDTO<CurrencyDTO> AddCurrency(Currency currency)
         {
+            list.Items = new List<CurrencyDTO>();
+            Currency currencyAccountExists = _context.Currency.Where(c => c.CurrencyName == currency.CurrencyName).FirstOrDefault();
+            if (currencyAccountExists != null)
+            {
+                list.Items = null;
+                return list;
+            }
+
             _context.Currency.Add(currency);
             _context.SaveChanges();
 
-            list.Items = new List<CurrencyDTO>();
+           
             var currencyReturn = _context.Currency;
             foreach (var item in currencyReturn)
             {
@@ -100,10 +108,17 @@ namespace BusinessLayer
         }
         public ListDTO<CryptoCurrencyDTO> AddCryptoCurrency(CryptoCurrency crypto)
         {
+            cryptoList.Items = new List<CryptoCurrencyDTO>();
+            CryptoCurrency cryptoAccountExists = _context.CryptoCurrency.Where(c => c.CryptoCurrencyName == crypto.CryptoCurrencyName).FirstOrDefault();
+            if (cryptoAccountExists != null)
+            {
+                cryptoList.Items = null;
+                return cryptoList;
+            }
             _context.CryptoCurrency.Add(crypto);
             _context.SaveChanges();
 
-            cryptoList.Items = new List<CryptoCurrencyDTO>();
+          
             var cryptoReturn = _context.CryptoCurrency;
             foreach (var item in cryptoReturn)
             {
