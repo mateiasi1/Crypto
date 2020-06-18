@@ -66,7 +66,7 @@ namespace BusinessLayer
             int referralRandomStart = rnd.Next(10, 99999);
             int referralRandom = rnd.Next(1000000, 9999999);
             string refference = "CRYPTOAPP" + referralRandomStart.ToString() + crypto.CryptoCurrencyName + referralRandom.ToString();
-            crypto.Refference = refference.Replace(" ", "");
+            // crypto.Refference = refference.Replace(" ", "");
 
             _context.Crypto.Add(crypto);
             _context.SaveChanges();

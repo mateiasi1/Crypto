@@ -77,9 +77,16 @@ namespace DataLayer.Controllers
         {
             ResponseDTO<CryptoDTO> response = new ResponseDTO<CryptoDTO>();
             ListDTO<CryptoDTO> list = new ListDTO<CryptoDTO>();
+            try
+            {
+                var cryptoList = _cryptoManager.AddCrypto(crypto);
+                return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
+            }
+            catch (Exception ex)
+            {
+                throw new System.Exception(ex.Message);
+            }
 
-            var cryptoList = _cryptoManager.AddCrypto(crypto);
-            return Ok(_mapper.Map<IEnumerable<CryptoDTO>>(cryptoList));
         }
 
         // DELETE: api/Banks/5
