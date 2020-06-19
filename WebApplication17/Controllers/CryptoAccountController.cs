@@ -65,7 +65,6 @@ namespace DataLayer.Controllers
             ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
             ListDTO<CryptoAccountDTO> list = new ListDTO<CryptoAccountDTO>();
             list = _cryptoManager.GetCryptoAccountById(id);
-            response.Data = new ListDTO<CryptoAccountDTO>();
             if (list != null)
             {
                 response.Data = list;

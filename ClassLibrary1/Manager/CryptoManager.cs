@@ -122,7 +122,7 @@ namespace BusinessLayer
 
         public ListDTO<CryptoAccountDTO> AddCryptoAccount(CryptoAccount cryptoAccount)
         {
-            CryptoAccount cryptoAccountExists = _context.CryptoAccount.Where(c => c.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName).FirstOrDefault();
+            CryptoAccount cryptoAccountExists = _context.CryptoAccount.Where(c => c.CryptoCurrencyName == cryptoAccount.CryptoCurrencyName && c.IdUser == cryptoAccount.IdUser).FirstOrDefault();
             if (cryptoAccountExists != null)
             {
                 listAccounts.Items = null;

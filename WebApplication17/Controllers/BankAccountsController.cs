@@ -54,11 +54,11 @@ namespace DataLayer.Controllers
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
             ListDTO<BankAccountDTO> list = new ListDTO<BankAccountDTO>();
 
-            var bankAccount = _banksManager.GetBankAccountById(id);
+            list = _banksManager.GetBankAccountById(id);
 
-            if (bankAccount != null)
+            if (list != null)
             {
-                response.Data = null; //TODO de facut si aici sa returneze
+                response.Data = list; //TODO de facut si aici sa returneze
                 response.Message = "List is retrieved successfully";
                 response.Success = true;
                 return Ok(response);
