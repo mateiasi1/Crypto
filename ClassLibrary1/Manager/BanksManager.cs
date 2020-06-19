@@ -46,7 +46,7 @@ namespace BusinessLayer
         public ListDTO<BankDTO> GetBankById(int id)
         {
             list.Items = new List<BankDTO>();
-            var bankList = _context.Bank.Find(id);
+            var bankList = _context.Bank.Where(i => i.Id == id).FirstOrDefault();
             var items = _mapper.Map<BankDTO>(bankList);
             list.Items.Add(items);
 

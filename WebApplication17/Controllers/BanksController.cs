@@ -53,14 +53,15 @@ namespace DataLayer.Controllers
         {
             ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
             ListDTO<BankDTO> list = new ListDTO<BankDTO>();
-            var bank = _banksManager.GetBankById(id);
-            if (bank != null)
+            list = _banksManager.GetBankById(id);
+            if (list != null)
             {
-                response.Data = null; //TODO de facut si aici sa prmeasca bank
+                response.Data = list; //TODO de facut si aici sa prmeasca bank
                 response.Message = "List is retrieved successfully";
                 response.Success = true;
                 return Ok(response);
             }
+            
             response.Data = null;
             response.Message = "List is not retrieved successfully";
             response.Success = false;
