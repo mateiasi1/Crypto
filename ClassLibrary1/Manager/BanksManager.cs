@@ -101,8 +101,12 @@ namespace BusinessLayer
 
             accountList.Items = new List<BankAccountDTO>();
             var bankList = _context.BankAccount.Where(i => i.IdUser == id).ToList();
-            var items = _mapper.Map<BankAccountDTO>(bankList);
-            accountList.Items.Add(items);
+            
+            foreach (var item in bankList)
+            {
+                var items = _mapper.Map<BankAccountDTO>(item);
+                accountList.Items.Add(items);
+            }
 
             return accountList;
         }
@@ -118,7 +122,7 @@ namespace BusinessLayer
             _context.BankAccount.Add(bankAccount);
             _context.SaveChanges();
 
-            var bankAccountList = _context.BankAccount;
+            var bankAccountList = _context.BankAccount.Where(b => b.IdUser == bankAccount.IdUser).ToList();
             foreach (var item in bankAccountList)
             {
                 var items = _mapper.Map<BankAccountDTO>(item);

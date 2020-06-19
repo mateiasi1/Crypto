@@ -10,8 +10,8 @@ using WebApplication17.Data;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(Contexts))]
-    [Migration("20200612080330_NewMigration2")]
-    partial class NewMigration2
+    [Migration("20200618131350_NewMigration")]
+    partial class NewMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,33 @@ namespace DataLayer.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataLayer.Models.Transfer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CoinName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdUserFrom")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RefferalUserTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transfer");
+                });
 
             modelBuilder.Entity("WebApplication17.Models.Bank", b =>
                 {
@@ -189,6 +216,9 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("Refference")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

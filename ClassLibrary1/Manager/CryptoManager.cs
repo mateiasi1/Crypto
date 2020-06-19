@@ -135,7 +135,11 @@ namespace BusinessLayer
             cryptoAccount.IdCrypto = crypto.Id;
             cryptoAccount.IdCryptoCurrency = crypto.Id;
             cryptoAccount.Sold = 0;
-            cryptoAccount.Refference = crypto.Refference;
+
+            Random rnd = new Random();
+            int referralRandom = rnd.Next(1000000, 9999999);
+            cryptoAccount.Refference = "CRYPTOAPP" + cryptoAccount.IdCryptoCurrency.ToString() + cryptoAccount.IdUser + referralRandom.ToString();
+
             _context.CryptoAccount.Add(cryptoAccount);
             _context.SaveChanges();
 

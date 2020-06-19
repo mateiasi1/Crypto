@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class NewMigration2 : Migration
+    public partial class NewMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -104,6 +104,7 @@ namespace DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
                     CryptoCurrencyName = table.Column<string>(nullable: true),
                     CryptoCurrencyAbbreviation = table.Column<string>(nullable: true),
                     Refference = table.Column<string>(nullable: true)
@@ -248,6 +249,23 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Transfer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdUserFrom = table.Column<int>(nullable: false),
+                    RefferalUserTo = table.Column<string>(nullable: true),
+                    CoinName = table.Column<string>(nullable: true),
+                    Amount = table.Column<double>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Transfer", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -355,6 +373,9 @@ namespace DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "RegisterUser");
+
+            migrationBuilder.DropTable(
+                name: "Transfer");
 
             migrationBuilder.DropTable(
                 name: "User");
