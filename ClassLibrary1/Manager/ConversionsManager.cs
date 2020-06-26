@@ -74,7 +74,7 @@ namespace BusinessLayer
             var conversionRate = getConversionRateAsync.GetConversionRate(selectedValueFrom, selectedValueTo);
             FeesManager fee = new FeesManager(_context);
             var currentFee = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(fee.GetAllFees())/100) * amount));
-            var bankAccount = _context.BankAccount.Where(i => i.Id == id && i.CurrencyName == fiatCurrencyName).FirstOrDefault();
+            var bankAccount = _context.BankAccount.Where(i => i.IdUser == id && i.CurrencyName == fiatCurrencyName).FirstOrDefault();
             var cryptoAccount = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
             bankAccount.Sold -= (amount + currentFee);
             if (bankAccount.Sold < 0)

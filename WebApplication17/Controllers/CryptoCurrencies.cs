@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using WebApplication17.Models;
 using DataLayer.DTO;
 using BusinessLayer;
-using Microsoft.AspNetCore.Authorization;
 using BusinessLayer.DTO;
 
 namespace DataLayer.Controllers
