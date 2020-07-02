@@ -51,7 +51,7 @@ namespace BusinessLayer
         public ListDTO<ConversionTransactionDTO> GetAllConversionTransactions()
         {
             conversionTransactions.Items = new List<ConversionTransactionDTO>();
-            var bankList = _context.ConversionTransaction;
+            var bankList = from s in _context.ConversionTransaction orderby s.Date descending select s;
             foreach (var item in bankList)
             {
                 var items = _mapper.Map<ConversionTransactionDTO>(item);
@@ -87,7 +87,9 @@ namespace BusinessLayer
                 _context.SaveChanges();
                 return "ok";
             }
-            cryptoAccount.Sold = amount * Convert.ToDouble(conversionRate); 
+            var test = Convert.ToDouble(conversionRate);
+            var test1 = test * amount;
+            cryptoAccount.Sold += amount * Convert.ToDouble(conversionRate); 
             _context.SaveChanges();
 
             string type = "Fiat Transaction";

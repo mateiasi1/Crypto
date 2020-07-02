@@ -199,7 +199,7 @@ namespace BusinessLayer
         public ListDTO<BankAccountTransactionDTO> GetAllTransactions()
         {
             bankAccountTransaction.Items = new List<BankAccountTransactionDTO>();
-            var bankList = _context.BankAccountTransaction;
+            var bankList = from s in _context.BankAccountTransaction orderby s.Date descending select s;
             foreach (var item in bankList)
             {
                 var items = _mapper.Map<BankAccountTransactionDTO>(item);
