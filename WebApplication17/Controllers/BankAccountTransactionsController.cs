@@ -47,9 +47,23 @@ namespace DataLayer.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BankAccountTransaction>> GetBankAccountTransaction(int id)
         {
-            var transactionList = _banksManager.GetTransactionById(id);
 
-            return Ok(_mapper.Map<IEnumerable<BankAccountTransactionDTO>>(transactionList));
+            ResponseDTO<BankAccountTransactionDTO> response = new ResponseDTO<BankAccountTransactionDTO>();
+            ListDTO<BankAccountTransactionDTO> list = new ListDTO<BankAccountTransactionDTO>();
+            var bankList = _banksManager.GetTransactionById(id);
+
+            if (bankList != null)
+            {
+                response.Data = bankList;
+                response.Message = "Transactions are retrieved successfully";
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "Transactions are not retrieved successfully";
+            response.Success = false;
+
+            return Ok(response);
         }
 
        

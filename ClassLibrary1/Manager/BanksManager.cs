@@ -212,10 +212,19 @@ namespace BusinessLayer
         {
 
             bankAccountTransaction.Items = new List<BankAccountTransactionDTO>();
-            var bankTransactionList = _context.BankAccountTransaction.Find(id);
-            var items = _mapper.Map<BankAccountTransactionDTO>(bankTransactionList);
-            bankAccountTransaction.Items.Add(items);
-
+            var bankTransactionList = from bankAccount in _context.BankAccountTransaction
+                                      join bank in _context.BankAccount on bankAccount.IdBankAccount equals bank.Id
+                                      where bank.IdUser == id
+                                      select new
+                                      {
+                                          bankAccount
+                                      };
+            foreach (var item in bankTransactionList)
+            {
+                var items = _mapper.Map<BankAccountTransactionDTO>(item.bankAccount);
+                bankAccountTransaction.Items.Add(items);
+            }
+           
             return bankAccountTransaction;
         }
 

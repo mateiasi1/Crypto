@@ -31,22 +31,8 @@ namespace DataLayer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConversionTransaction>>> GetConversionTransaction()
         {
-            ResponseDTO<ConversionTransactionDTO> response = new ResponseDTO<ConversionTransactionDTO>();
-            ListDTO<ConversionTransactionDTO> list = new ListDTO<ConversionTransactionDTO>();
             var conversions = _conversionsManager.GetAllConversionTransactions();
-
-            if (conversions != null)
-            {
-                response.Data = conversions;
-                response.Message = "Transactions are retrieved successfully";
-                response.Success = true;
-                return Ok(response);
-            }
-            response.Data = null;
-            response.Message = "Transactions are not retrieved successfully";
-            response.Success = false;
-
-            return Ok(response);
+            return Ok(conversions);
         }
         // POST: api/ConversionTransactions
         [HttpPost]
