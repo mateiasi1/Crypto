@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using DataLayer.DTO;
 using WebApplication17.Models;
 using BusinessLayer.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BankAccountTransactionsController : ControllerBase
     {
         private readonly BanksManager _banksManager;

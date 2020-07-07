@@ -149,5 +149,12 @@ namespace BusinessLayer
             return "ok";
         }
         #endregion
+    
+        public double GetConversionRate(string from, string to)
+        {
+            GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();
+            var conversionRate = getConversionRateAsync.GetConversionRate(from, to);
+            return conversionRate;
+        }
     }
 }

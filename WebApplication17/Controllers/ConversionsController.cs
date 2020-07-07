@@ -16,6 +16,7 @@ namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ConversionsController : CustomBaseController
     {
         private readonly ConversionsManager _conversionsManager;
@@ -59,5 +60,14 @@ namespace DataLayer.Controllers
             var conversionList = _conversionsManager.CryptoExchange(body);
             return Ok();
         }
+
+        // GET: api/ConversionsRate
+        [HttpGet("{from}/{to}")]
+        public double GetConversionRate(string from, string to)
+        {
+            double conversionRate =_conversionsManager.GetConversionRate(from, to);
+            return conversionRate;
+        }
+       
     }
 }

@@ -8,11 +8,13 @@ using DataLayer.DTO;
 using System;
 using WebApplication17.Models;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BankAccountsController : CustomBaseController
     {
         private readonly IMapper _mapper;
@@ -26,6 +28,7 @@ namespace DataLayer.Controllers
 
         // GET: api/BankAccounts
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<BankAccount>>> GetBankAccount()
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
@@ -49,6 +52,7 @@ namespace DataLayer.Controllers
 
         // GET: api/BankAccounts/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<BankAccount>> GetBankAccount(int id)
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
@@ -73,6 +77,7 @@ namespace DataLayer.Controllers
 
         // PUT: api/BankAccounts/add  for Add sold
         [HttpPut("add")]
+        [Authorize]
         public IActionResult AddBankAccount([FromBody]Deposit deposit)
 
         {
@@ -106,6 +111,7 @@ namespace DataLayer.Controllers
 
         // PUT: api/BankAccounts/withdraw for withdraw sold
         [HttpPut("withdraw")]
+        [Authorize]
         public IActionResult WithdrawBankAccount([FromBody]Deposit deposit)
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
@@ -138,6 +144,7 @@ namespace DataLayer.Controllers
 
         // POST: api/BankAccounts
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<BankAccount>> PostBankAccount(BankAccount bankAccount)
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();
@@ -161,6 +168,7 @@ namespace DataLayer.Controllers
 
         // DELETE: api/BankAccounts/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult<BankAccount>> DeleteBankAccount(int id)
         {
             ResponseDTO<BankAccountDTO> response = new ResponseDTO<BankAccountDTO>();

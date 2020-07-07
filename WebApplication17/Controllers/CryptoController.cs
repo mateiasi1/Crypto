@@ -17,6 +17,7 @@ namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CryptoController : ControllerBase
     {
         private readonly IMapper _mapper;

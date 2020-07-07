@@ -14,11 +14,13 @@ using WebApplication17.Models;
 using Data_Layer.Models;
 using BusinessLayer.DTO;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -52,6 +54,7 @@ namespace DataLayer.Controllers
 
         // PUT: api/Users
         [HttpPut]
+        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword([FromBody]int id)
         {
             if (_userManager.ResetPassword(id))
@@ -84,6 +87,7 @@ namespace DataLayer.Controllers
         }
 
         [HttpPut("setPassword")]
+        [AllowAnonymous]
         public async Task<ActionResult> SetPassword([FromBody]PasswordToSet password)
         {
             if (_userManager.SetPassword(password))
@@ -108,6 +112,7 @@ namespace DataLayer.Controllers
         }
 
         [HttpPost("forgot")]
+        [AllowAnonymous]
         public async Task<ActionResult<User>> ForgotPassword([FromBody] int id)
         {
             _userManager.ForgotPassword(id);

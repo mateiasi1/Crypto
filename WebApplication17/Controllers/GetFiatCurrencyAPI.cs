@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 
 using DataLayer.DTO;
 using WebApplication17.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GetFiatCurrencyAPI : Controller
     {
         private readonly IMapper _mapper;

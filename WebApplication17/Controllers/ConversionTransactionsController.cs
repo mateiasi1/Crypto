@@ -11,11 +11,13 @@ using Microsoft.EntityFrameworkCore;
 using DataLayer.DTO;
 using WebApplication17.Models;
 using BusinessLayer.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ConversionTransactionsController : ControllerBase
     {
         private readonly ConversionsManager _conversionsManager;

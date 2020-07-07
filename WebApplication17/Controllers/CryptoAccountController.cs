@@ -21,6 +21,7 @@ namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CryptoAccountController : CustomBaseController
     {
         private readonly IMapper _mapper;

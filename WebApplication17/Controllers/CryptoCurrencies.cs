@@ -7,11 +7,13 @@ using WebApplication17.Models;
 using DataLayer.DTO;
 using BusinessLayer;
 using BusinessLayer.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CryptoCurrencies : ControllerBase
     {
         private readonly IMapper _mapper;

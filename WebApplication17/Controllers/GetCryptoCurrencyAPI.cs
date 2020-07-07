@@ -11,11 +11,13 @@ using Newtonsoft.Json.Linq;
 
 using DataLayer.DTO;
 using WebApplication17.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DataLayer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GetCryptoCurrencyAPI : CustomBaseController
     {
         private readonly IMapper _mapper;
