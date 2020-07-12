@@ -10,8 +10,8 @@ using WebApplication17.Data;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(Contexts))]
-    [Migration("20200618131350_NewMigration")]
-    partial class NewMigration
+    [Migration("20200710120844_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

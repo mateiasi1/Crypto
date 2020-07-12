@@ -18,9 +18,9 @@ namespace BusinessLayer
     {
         protected Contexts _context;
         private readonly IMapper _mapper;
-        public ListDTO<BankDTO> list = new ListDTO<BankDTO>();
-        public ListDTO<BankAccountDTO> accountList = new ListDTO<BankAccountDTO>();
-        public ListDTO<BankAccountTransactionDTO> bankAccountTransaction = new ListDTO<BankAccountTransactionDTO>();
+        private ListDTO<BankDTO> _list = new ListDTO<BankDTO>();
+        private ListDTO<BankAccountDTO> accountList = new ListDTO<BankAccountDTO>();
+        private ListDTO<BankAccountTransactionDTO> bankAccountTransaction = new ListDTO<BankAccountTransactionDTO>();
         public BanksManager(IMapper mapper, Contexts context)
         {
             _mapper = mapper;
@@ -34,23 +34,23 @@ namespace BusinessLayer
         #region Bank
         public ListDTO<BankDTO> GetAllBanks()
         {
-            list.Items = new List<BankDTO>();
+            _list.Items = new List<BankDTO>();
             var bankList = _context.Bank;
             foreach (var item in bankList)
             {
                 var items = _mapper.Map<BankDTO>(item);
-                list.Items.Add(items);
+                _list.Items.Add(items);
             }
-            return list;
+            return _list;
         }
         public ListDTO<BankDTO> GetBankById(int id)
         {
-            list.Items = new List<BankDTO>();
+            _list.Items = new List<BankDTO>();
             var bankList = _context.Bank.Where(i => i.Id == id).FirstOrDefault();
             var items = _mapper.Map<BankDTO>(bankList);
-            list.Items.Add(items);
+            _list.Items.Add(items);
 
-            return list;
+            return _list;
         }
 
         public ListDTO<BankDTO> AddBank(Bank bank)
@@ -66,7 +66,7 @@ namespace BusinessLayer
             {
                 var items = _mapper.Map<BankDTO>(bankList);
             }
-            return list;
+            return _list;
         }
 
         public ListDTO<BankDTO> DeleteBank(int id)
@@ -79,7 +79,7 @@ namespace BusinessLayer
             {
                 var items = _mapper.Map<BankDTO>(bankList);
             }
-            return list;
+            return _list;
         }
         #endregion
 

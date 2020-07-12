@@ -44,7 +44,8 @@ namespace DataLayer.Controllers
             var user = _loginManager.Authenticate(userParam.Username, userParam.Password);
             if(user != null)
             {
-                return Ok(_mapper.Map<LoginDTO>(user));
+
+                return BadRequest(new { message = "Your account is not confirmed yet! Please contact the adminitrator." });
             }
             return Unauthorized();
         }
