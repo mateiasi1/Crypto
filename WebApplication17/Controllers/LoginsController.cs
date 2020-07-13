@@ -45,7 +45,7 @@ namespace DataLayer.Controllers
             if(user != null)
             {
 
-                return BadRequest(new { message = "Your account is not confirmed yet! Please contact the adminitrator." });
+                return Ok(_mapper.Map<LoginDTO>(user));
             }
             return Unauthorized();
         }
