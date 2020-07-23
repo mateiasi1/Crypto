@@ -244,6 +244,32 @@ namespace BusinessLayer
             }
             return conversionAccountTransaction;
         }
-    #endregion
-}
+        #endregion
+
+        public ListDTO<CryptoAccountDTO> WithdrawToWallet(int id, double amount)
+        {
+            listAccounts.Items = new List<CryptoAccountDTO>();
+
+            var cryptoAccount = _context.CryptoAccount.Find(id);
+            FeesManager flatRateFee = new FeesManager(_context);
+
+            var flatRate = flatRateFee.GetAllFlatRateFees();
+            cryptoAccount.Sold -= (amount + flatRate);
+            if (cryptoAccount.Sold < 0)
+            {
+                return null;
+            }
+            string type = "Withdraw";
+            AddCryptoTransaction(cryptoAccount.CryptoCurrencyName, cryptoAccount.CryptoCurrencyName, amount, type);
+            _context.SaveChanges();
+
+            var bankAccountList = _context.CryptoAccount;
+            foreach (var item in bankAccountList)
+            {
+                var items = _mapper.Map<CryptoAccountDTO>(item);
+                listAccounts.Items.Add(items);
+            }
+            return listAccounts;
+        }
+    }
 }

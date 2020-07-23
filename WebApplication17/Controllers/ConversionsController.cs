@@ -61,6 +61,13 @@ namespace DataLayer.Controllers
             return Ok();
         }
 
+        [HttpPut("exchangeCryptoToFiat")]
+        public IActionResult ExchangeCryptoToFiat()
+        {
+            string body = this.InputBodyData;
+            var conversionList = _conversionsManager.ExchangeCryptoToFiat(body);
+            return Ok();
+        }
         // GET: api/ConversionsRate
         [HttpGet("{from}/{to}")]
         public double GetConversionRate(string from, string to)

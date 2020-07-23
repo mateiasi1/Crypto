@@ -99,22 +99,6 @@ namespace DataLayer.Controllers
             return Ok();
         }
 
-        // PUT: api/WithdrawCryptoAccount/withdraw for withdraw sold
-        [HttpPut("withdraw")]
-        public IActionResult WithdrawCryptoAccount([FromBody]Deposit deposit)
-        {
-            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
-            if (deposit.Amount <= 0)
-            {
-                response.Data = null;
-                response.Message = "The amount should be greater than 0!";
-                response.Success = false;
-                return Ok(response);
-            }
-            _cryptoManager.WithdrawFromCryptoAccount(deposit.Id, deposit.Amount);
-            return Ok();
-        }
-
         // POST: api/PostCryptoAccount
         [HttpPost]
         public async Task<ActionResult<CryptoAccount>> PostCryptoAccount(CryptoAccount cryptoAccount)
@@ -147,6 +131,38 @@ namespace DataLayer.Controllers
 
         }
 
-        
+        [HttpPut("withdraw")]
+        [Authorize]
+        public IActionResult WithdrawCryptoAccount([FromBody]Deposit deposit)
+        {
+            ResponseDTO<CryptoAccountDTO> response = new ResponseDTO<CryptoAccountDTO>();
+            ListDTO<CryptoAccountDTO> list = new ListDTO<CryptoAccountDTO>();
+
+            if (deposit.Amount <= 0)
+            {
+                response.Data = null;
+                response.Message = "The amount should be greater than 0!";
+                response.Success = false;
+                return Ok(response);
+            }
+
+
+            list = _cryptoManager.WithdrawToWallet(deposit.Id, deposit.Amount);
+            response.Data = new ListDTO<CryptoAccountDTO>();
+            if (list != null)
+            {
+                response.Data = list;
+                response.Message = "Transaction successful! " + DateTime.Now;
+                response.Success = true;
+                return Ok(response);
+            }
+            response.Data = null;
+            response.Message = "Insufficient funds!";
+            response.Success = false;
+
+            return Ok(response);
+        }
+
+
     }
 }

@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace WebApplication17.Models
 {
-    public class Fee
+    public class Fee : BaseFee
     {
-        public int Id { get; set; }
         public double Percentage { get; set; }
-        public string UserRole { get; set; }
-        public bool Obsolete { get; set; }
     }
 }

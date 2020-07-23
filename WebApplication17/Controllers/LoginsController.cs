@@ -47,7 +47,7 @@ namespace DataLayer.Controllers
 
                 return Ok(_mapper.Map<LoginDTO>(user));
             }
-            return Unauthorized();
+            return Unauthorized(user);
         }
 
         [HttpGet]

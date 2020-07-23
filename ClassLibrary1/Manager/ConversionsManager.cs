@@ -149,7 +149,61 @@ namespace BusinessLayer
             return "ok";
         }
         #endregion
-    
+
+        public string ExchangeCryptoToFiat(string body)
+        {
+            var cryptoCurrencyName = "";
+            var fiatCurrencyName = "";
+
+            JObject fieldData = JsonConvert.DeserializeObject<JObject>(body);
+            int id = Convert.ToInt32(fieldData["id"]);
+            string selectedValueTo = Convert.ToString(fieldData["selectedValueFrom"]);
+            string selectedValueFrom = Convert.ToString(fieldData["selectedValueTo"]);
+            double amount = Convert.ToDouble(fieldData["amountFrom"]);
+            cryptoCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
+            fiatCurrencyName = _context.Currency.Where(i => i.CurrencyAbbreviation == selectedValueFrom).Select(i => i.CurrencyName).FirstOrDefault();
+            if (fiatCurrencyName == null)
+            {
+                fiatCurrencyName = _context.CryptoCurrency.Where(i => i.CryptoCurrencyAbbreviation == selectedValueTo).Select(i => i.CryptoCurrencyName).FirstOrDefault();
+                GetConversionRateAsync getConversionRateAsyncCrypto = new GetConversionRateAsync();
+                double conversionRateCrypto = getConversionRateAsyncCrypto.GetConversionRate(selectedValueFrom, selectedValueTo);
+
+                FeesManager feeCrypto = new FeesManager(_context);
+                var currentFeeCrypto = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(feeCrypto.GetAllFees()) / 100) * amount));
+
+                var cryptoAccountFrom = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
+                var cryptoAccountTo = _context.BankAccount.Where(i => i.CurrencyName == fiatCurrencyName).FirstOrDefault();
+                cryptoAccountFrom.Sold -= (amount + currentFeeCrypto);
+                if (cryptoAccountFrom.Sold < 0)
+                {
+                    return null;
+                }
+                cryptoAccountTo.Sold = amount * Convert.ToDouble(conversionRateCrypto);
+                _context.SaveChanges();
+                string type = "Crypto Transaction";
+                CryptoManager transaction = new CryptoManager(_context, _mapper);
+                transaction.AddCryptoTransaction(selectedValueFrom, selectedValueTo, amount, type);
+                return "ok";
+            }
+            GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();
+            var conversionRate = getConversionRateAsync.GetConversionRate(selectedValueFrom, selectedValueTo);
+            FeesManager fee = new FeesManager(_context);
+            var currentFee = Convert.ToDouble((int)Math.Round((double)(Convert.ToDouble(fee.GetAllFees()) / 100) * amount));
+            var acountTo = _context.BankAccount.Where(i => i.CurrencyName == fiatCurrencyName).FirstOrDefault();
+            var acountFrom = _context.CryptoAccount.Where(i => i.CryptoCurrencyName == cryptoCurrencyName).FirstOrDefault();
+            acountFrom.Sold -= (amount + currentFee);
+            if (acountFrom.Sold < 0)
+            {
+                return null;
+            }
+
+            acountTo.Sold += amount * Convert.ToDouble(conversionRate);
+            string typetransaction = "Withdraw Crypto Transaction";
+            CryptoManager transactionCrypto = new CryptoManager(_context, _mapper);
+            transactionCrypto.AddCryptoTransaction(selectedValueTo, selectedValueFrom, amount, typetransaction);
+            _context.SaveChanges();
+            return "ok";
+        }
         public double GetConversionRate(string from, string to)
         {
             GetConversionRateAsync getConversionRateAsync = new GetConversionRateAsync();
