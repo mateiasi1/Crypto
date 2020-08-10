@@ -13,6 +13,10 @@ using iRepository;
 using BusinessLayer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebApplication17.Data;
+using NLog;
+using System.IO;
+using LoggerService;
+using WebApplication17.Extensions;
 
 namespace DataLayer
 {
@@ -20,6 +24,7 @@ namespace DataLayer
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -28,6 +33,7 @@ namespace DataLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ILoggerManager, LoggerManager>();
             //services.AddDbContext<TodoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             var connection = @"Server=(localdb)\mssqllocaldb;Database=CryptoExchange;Trusted_Connection=True;ConnectRetryCount=0";
             // services.AddDbContext<Contexts>
@@ -94,7 +100,7 @@ namespace DataLayer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -105,6 +111,7 @@ namespace DataLayer
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.ConfigureCustomExceptionMiddleware();
             app.UseHttpsRedirection();
 
             app.UseRouting();
