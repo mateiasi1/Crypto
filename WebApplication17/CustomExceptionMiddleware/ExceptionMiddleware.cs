@@ -27,7 +27,7 @@ namespace WebApplication17.CustomExceptionMiddleware
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong: {ex}");
+                _logger.LogError($"{ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
@@ -40,7 +40,7 @@ namespace WebApplication17.CustomExceptionMiddleware
             return context.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error from the custom middleware."
+                Message = "Internal Server Error."
             }.ToString());
         }
     }
