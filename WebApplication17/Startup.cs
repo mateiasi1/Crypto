@@ -17,6 +17,7 @@ using NLog;
 using System.IO;
 using LoggerService;
 using WebApplication17.Extensions;
+using CryptoExchangeAPI.Framework;
 
 namespace DataLayer
 {
@@ -112,6 +113,7 @@ namespace DataLayer
                 app.UseHsts();
             }
             app.ConfigureCustomExceptionMiddleware();
+            app.UseCustomExceptionHandler();
             app.UseHttpsRedirection();
 
             app.UseRouting();
