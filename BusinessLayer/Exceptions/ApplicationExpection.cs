@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CryptoExchangeAPI.Exceptions
+namespace BusinessLayer.Exceptions
 {
-    public abstract class ApplicationExpection : Exception
+    public  class ApplicationExpection : Exception
     {
-        public abstract class ApplicationException : Exception
+        
+        public  class ApplicationException : Exception
         {
             public string Code { get; }
 
@@ -18,6 +19,9 @@ namespace CryptoExchangeAPI.Exceptions
             public ApplicationException(string code)
             {
                 Code = code;
+            }
+            public ApplicationException(Exception ex)
+            {
             }
 
             public ApplicationException(string message, params object[] args)

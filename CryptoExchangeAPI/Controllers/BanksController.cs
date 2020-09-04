@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using DataLayer.DTO;
 using WebApplication17.Models;
 using OpenQA.Selenium.Remote;
+using static BusinessLayer.Exceptions.ApplicationExpection;
+using LoggerService;
 
 namespace DataLayer.Controllers
 {
@@ -17,10 +19,13 @@ namespace DataLayer.Controllers
     public class BanksController : ControllerBase
     {
         private readonly IMapper _mapper;
+
+        private readonly ILoggerManager _logger;
         private readonly BanksManager _banksManager;
 
-        public BanksController(IMapper mapper, BanksManager banksManager)
+        public BanksController(IMapper mapper, BanksManager banksManager, ILoggerManager logger)
         {
+            _logger = logger;
             _mapper = mapper;
             _banksManager = banksManager;
         }
@@ -32,20 +37,25 @@ namespace DataLayer.Controllers
         {
             ResponseDTO<BankDTO> response = new ResponseDTO<BankDTO>();
             ListDTO<BankDTO> list = new ListDTO<BankDTO>();
-            list = _banksManager.GetAllBanks();
-            response.Data = new ListDTO<BankDTO>();
-            if (list != null)
+            try
             {
+                list = _banksManager.GetAllBanks();
                 response.Data = list;
                 response.Message = "List is retrieved successfully";
                 response.Success = true;
                 return Ok(response);
             }
-            response.Data = null;
-            response.Message = "List is not retrieved successfully";
-            response.Success = false;
+            catch (ApplicationException ex)
+            {
+                _logger.LogError($"{ex}");
+                response.Data = null;
+                response.Message = ex.Message;//"List is not retrieved successfully";
+                response.Success = false;
 
-            return NotFound(response);
+                return NotFound(response);
+            }
+           
+
         }
 
         // GET: api/Banks/5

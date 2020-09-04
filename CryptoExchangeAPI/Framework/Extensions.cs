@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CryptoExchangeAPI.Framework
+namespace BusinessLayer.Framework
 {
     public static class Extensions
     {

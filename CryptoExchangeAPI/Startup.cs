@@ -17,7 +17,7 @@ using NLog;
 using System.IO;
 using LoggerService;
 using WebApplication17.Extensions;
-using CryptoExchangeAPI.Framework;
+using BusinessLayer.Framework;
 
 namespace DataLayer
 {

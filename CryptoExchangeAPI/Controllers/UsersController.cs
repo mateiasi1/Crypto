@@ -15,7 +15,7 @@ using Data_Layer.Models;
 using BusinessLayer.DTO;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Authorization;
-using CryptoExchangeAPI.Exceptions;
+using BusinessLayer.Exceptions;
 
 namespace DataLayer.Controllers
 {
@@ -43,7 +43,7 @@ namespace DataLayer.Controllers
         public IActionResult GetConfirmedUsers()
         {
             var users = _userManager.GetConfirmedUsers();
-            throw new ApplicationException(ErrorCodes.InvalidUsername, new Exception("This is the custom exception when the role is invalid"));
+           
             return Ok(_mapper.Map<IEnumerable<UnconfirmedUsersDTO>>(users));
         }
 

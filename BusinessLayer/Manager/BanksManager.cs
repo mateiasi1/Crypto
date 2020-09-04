@@ -11,6 +11,7 @@ using WebApplication17.Data;
 using WebApplication17.Models;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using BusinessLayer.Exceptions;
 
 namespace BusinessLayer
 {
@@ -35,13 +36,21 @@ namespace BusinessLayer
         public ListDTO<BankDTO> GetAllBanks()
         {
             _list.Items = new List<BankDTO>();
-            var bankList = _context.Bank;
-            foreach (var item in bankList)
+            try
             {
-                var items = _mapper.Map<BankDTO>(item);
-                _list.Items.Add(items);
+                var bankList = _context.Bank;
+                foreach (var item in bankList)
+                {
+                    var items = _mapper.Map<BankDTO>(item);
+                    _list.Items.Add(items);
+                }
+                return _list;
             }
-            return _list;
+            catch (Exception ex)
+            {
+                throw new ApplicationExpection.ApplicationException(ex);
+            }
+           
         }
         public ListDTO<BankDTO> GetBankById(int id)
         {
